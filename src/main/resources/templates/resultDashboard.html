@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link rel="icon"
+          th:href="@{assets/favicon.ico}" />
+    <title>HPC Results Dashboard</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">HPC Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-5 mb-5">
+            <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Job Id</th>
+                    <th>Application</th>
+                    <th>Benchmark</th>
+                    <th>Node count</th>
+                    <th>Cores</th>
+                    <th>Node</th>
+                    <th>Result</th>
+                    <th>CPU</th>
+                </tr>
+                </thead>
+<!--                <tfoot>-->
+<!--                <tr>-->
+<!--                    <th>Job Id</th>-->
+<!--                    <th>Application</th>-->
+<!--                    <th>Benchmark</th>-->
+<!--                    <th>Node count</th>-->
+<!--                    <th>Cores</th>-->
+<!--                    <th>Node</th>-->
+<!--                    <th>Result</th>-->
+<!--                    <th>CPU</th>-->
+<!--                </tr>-->
+<!--                </tfoot>-->
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script th:src="@{assets/datatable/datatables.js}"></script>
+
+<script>
+    $('#ajax').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/resultAjax",
+            "type": "POST",
+            "dataType": "json",
+            "contentType": "application/json",
+            "data": function (d) {
+                return JSON.stringify(d);
+            }
+        },
+        "columns": [
+            {"data": "job_id", "width": "20%"},
+            {"data": "app_name","width": "20%"},
+            {"data": "bm_name", "width": "20%"},
+            {"data": "nodes", "width": "20%"},
+            {"data": "cores", "width": "20%"},
+            {"data": "node_name", "width": "20%"},
+            {"data": "result", "width": "20%"},
+            {"data": "cpu", "width": "20%"}
+
+        ]
+    });
+</script>
+
+</body>
+</html>
