@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -102,7 +103,7 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
-    $('#ajax').DataTable({
+     $('#ajax').removeAttr('width').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -115,24 +116,24 @@
             }
         },
         "columns": [
-            {"data": "app_name", "width": "20%"},
-            {"data": "app_verion","width": "20%"},
-            {"data": "precision_info", "width": "20%"},
-            {"data": "binary_info", "width": "20%"},
-            {"data": "comp_name", "width": "20%"},
-            {"data": "comp_flags", "width": "20%"},
-            {"data": "lib_name", "width": "20%"},
-            {"data": "lib_ver", "width": "20%"},
-            {"data": "lib_flags", "width": "20%"},
-            {"data": "avx2_accel","width": "20%"},
-            {"data": "avx512_accel", "width": "20%"},
-            {"data": "lic_exp", "width": "20%"},
-            {"data": "lib_fftw", "width": "20%"},
-            {"data": "lib_dgemm", "width": "20%"},
-            {"data": "lib_blas", "width": "20%"},
-            {"data": "app_bound", "width": "20%"}
+            {"data": "app_name", width: 200, targets: 0},
+            {"data": "app_verion",width: 100, targets: 1},
+            {"data": "precision_info", width: 100, targets: 2},
+            {"data": "binary_info", width: 100, targets: 3},
+            {"data": "comp_name", width: 100, targets: 4},
+            {"data": "comp_flags", width: 50, targets: 5},
+            {"data": "lib_name", width: 50, targets: 6},
+            {"data": "lib_ver", width: 50, targets: 7},
+            {"data": "lib_flags", width: 50, targets: 8},
+            {"data": "avx2_accel",width: 50, targets: 9},
+            {"data": "avx512_accel", width: 50, targets: 10},
+            {"data": "lic_exp", width: 50, targets: 11},
+            {"data": "lib_fftw", width: 50, targets: 12},
+            {"data": "lib_dgemm", width: 50, targets: 13},
+            {"data": "lib_blas", width: 50, targets: 14},
+            {"data": "app_bound", width: 50, targets: 15}
         ]
-
+        ,fixedColumns: true
     });
 </script>
 

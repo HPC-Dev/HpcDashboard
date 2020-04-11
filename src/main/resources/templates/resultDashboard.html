@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -93,7 +94,10 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
-    $('#ajax').DataTable({
+    $('#ajax').removeAttr('width').DataTable({
+        scrollY: "500px",
+        scrollX: true,
+        scrollCollapse: true,
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -106,16 +110,16 @@
             }
         },
         "columns": [
-            {"data": "job_id", "width": "20%"},
-            {"data": "app_name","width": "20%"},
-            {"data": "bm_name", "width": "20%"},
-            {"data": "nodes", "width": "20%"},
-            {"data": "cores", "width": "20%"},
-            {"data": "node_name", "width": "20%"},
-            {"data": "result", "width": "20%"},
-            {"data": "cpu", "width": "20%"}
-
-        ]
+            {"data": "job_id", width: 60, targets: 0},
+            {"data": "app_name",width: 80, targets: 1},
+            {"data": "bm_name", width: 140, targets: 2},
+            {"data": "nodes", width: 120, targets: 3},
+            {"data": "cores", width: 40, targets: 4},
+            {"data": "node_name", width: 300, targets: 5},
+            {"data": "result", width: 60, targets: 6},
+            {"data": "cpu", width: 50, targets: 7},
+           ],
+           fixedColumns: true
     });
 </script>
 

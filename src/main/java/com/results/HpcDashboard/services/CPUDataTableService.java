@@ -62,7 +62,11 @@ public class CPUDataTableService implements DataTableService<CPU> {
                 .contains(value)
                 || cpu.getCpu_sku()
                 .toLowerCase()
+                .contains(value)
+                || cpu.getCpu_sku()
+                .toUpperCase()
                 .contains(value);
+
     }
 
     public Comparator<CPU> sortData(PagingRequest pagingRequest) {

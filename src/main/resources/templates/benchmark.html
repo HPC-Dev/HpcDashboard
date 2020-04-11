@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -98,7 +99,10 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
-    $('#ajax').DataTable({
+    $('#ajax').removeAttr('width').DataTable({
+<!--        scrollY: "500px",-->
+<!--        scrollX: true,-->
+<!--        scrollCollapse: true,-->
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -111,17 +115,18 @@
             }
         },
         "columns": [
-            {"data": "app_name", "width": "20%"},
-            {"data": "bm_name","width": "20%"},
-            {"data": "bm_full_name", "width": "20%"},
-            {"data": "bm_dur", "width": "20%"},
-            {"data": "bm_metric", "width": "20%"},
-            {"data": "bm_size", "width": "20%"},
-            {"data": "bm_size_units", "width": "20%"},
-            {"data": "bm_dur_units", "width": "20%"},
-            {"data": "bm_units", "width": "20%"},
-            {"data": "est_runtime", "width": "20%"}
+            {"data": "app_name", width: 80, targets: 0},
+            {"data": "bm_name",width: 80, targets: 1},
+            {"data": "bm_full_name", width: 160, targets: 2},
+            {"data": "bm_dur", width: 60, targets: 3},
+            {"data": "bm_metric", width: 400, targets: 4},
+            {"data": "bm_size", width: 60, targets: 5},
+            {"data": "bm_size_units", width: 140, targets: 6},
+            {"data": "bm_dur_units", width: 60, targets: 7},
+            {"data": "bm_units", width: 40, targets: 8},
+            {"data": "est_runtime", width: 100, targets: 9}
         ]
+        ,fixedColumns: true
     });
 </script>
 

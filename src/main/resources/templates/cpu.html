@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -67,7 +68,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-16 mt-5 mb-5">
-            <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
+            <table id="ajax" class="table table-bordered table-responsive " style="width: 100%">
                 <thead>
                 <tr>
                     <th>Manufacturer</th>
@@ -83,6 +84,8 @@
                 </tr>
                 </thead>
             </table>
+            <br>
+            <p style="font-size:12px;text-align:right;font-family:verdana;">*8 channel and 3200 capable,  Performance Optimized to 4 channels @ 2666</p>
         </div>
     </div>
 </div>
@@ -96,7 +99,10 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
-    $('#ajax').DataTable({
+    $('#ajax').removeAttr('width').DataTable({
+        scrollY: "500px",
+        scrollX: true,
+        scrollCollapse: true,
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -108,19 +114,20 @@
                 return JSON.stringify(d);
             }
         },
-        "columns": [
-            {"data": "cpu_manufacturer", "width": "20%"},
-            {"data": "cpu_generation","width": "20%"},
-            {"data": "cpu_sku", "width": "20%"},
-            {"data": "tdp", "width": "20%"},
-            {"data": "cores", "width": "20%"},
-            {"data": "base_freq", "width": "20%"},
-            {"data": "peak_freq", "width": "20%"},
-            {"data": "l3_cache", "width": "20%"},
-             {"data": "ddr_channels", "width": "20%"},
-            {"data": "max_ddr_freq", "width": "20%"}
+       "columns": [
+            {"data": "cpu_manufacturer", width: 100, targets: 0},
+            {"data": "cpu_generation",width: 70, targets: 1},
+            {"data": "cpu_sku", width: 30, targets: 2},
+            {"data": "tdp", width: 30, targets: 3},
+            {"data": "cores", width: 30, targets: 4},
+            {"data": "base_freq", width: 160, targets: 5},
+            {"data": "peak_freq", width: 160, targets: 6},
+            {"data": "l3_cache", width: 140, targets: 7},
+            {"data": "ddr_channels", width: 200, targets: 8},
+            {"data": "max_ddr_freq", width: 160, targets: 9}
 
         ]
+        ,fixedColumns: true
     });
 </script>
 
