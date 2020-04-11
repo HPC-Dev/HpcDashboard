@@ -3,6 +3,7 @@ package com.results.HpcDashboard.controller;
 import com.results.HpcDashboard.dto.FormCommand;
 import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.repo.ApplicationRepo;
+import com.results.HpcDashboard.services.ApplicationService;
 import com.results.HpcDashboard.services.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 @Controller
 public class ApplicationController {
     @Autowired
-    ApplicationRepo applicationRepo;
+    ApplicationService applicationService;
 
 
     @GetMapping("/application")

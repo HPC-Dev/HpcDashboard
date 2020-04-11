@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 public class CPUDataTableService implements DataTableService<CPU> {
 
     @Autowired
-    CPURepo cpuRepo;
+    CPUService cpuService;
     private static final Comparator<CPU> EMPTY_COMPARATOR = (e1, e2) -> 0;
 
     public Page<CPU> getData(PagingRequest pagingRequest)  {
-        List<CPU> cpus = cpuRepo.findAll();
+        List<CPU> cpus = cpuService.getAllCPUs();
         return getPage(cpus, pagingRequest);
     }
 

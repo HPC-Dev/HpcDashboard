@@ -22,15 +22,12 @@ import java.util.stream.Collectors;
 public class BenchmarkDataTableService implements DataTableService<BenchmarkDto> {
 
     @Autowired
-    Util util;
-
-    @PersistenceContext
-    private EntityManager entityManager;
+    BenchmarkService benchmarkService;
 
     private static final Comparator<BenchmarkDto> EMPTY_COMPARATOR = (e1, e2) -> 0;
 
     public Page<BenchmarkDto> getData(PagingRequest pagingRequest)  {
-        List<BenchmarkDto> benchmarks = util.getBenchmarks(entityManager);
+        List<BenchmarkDto> benchmarks = benchmarkService.getAllBenchmarks();
         return getPage(benchmarks, pagingRequest);
     }
 

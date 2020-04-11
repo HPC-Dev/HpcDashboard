@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 public class ApplicationDataTableService implements DataTableService<Application> {
 
     @Autowired
-    ApplicationRepo applicationRepo;
+    ApplicationService applicationService;
     private static final Comparator<Application> EMPTY_COMPARATOR = (e1, e2) -> 0;
 
     public Page<Application> getData(PagingRequest pagingRequest)  {
-        List<Application> applications = applicationRepo.findAll();
+        List<Application> applications = applicationService.getAllApplications();
         return getPage(applications, pagingRequest);
     }
 

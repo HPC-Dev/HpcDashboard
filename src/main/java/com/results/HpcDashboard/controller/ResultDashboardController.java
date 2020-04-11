@@ -22,9 +22,6 @@ public class ResultDashboardController {
     @Autowired
     Util util;
 
-    @Autowired
-    String[]  performRegex;
-
     @ModelAttribute("command")
     public FormCommand formCommand() {
         return new FormCommand();
