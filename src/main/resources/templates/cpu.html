@@ -13,7 +13,7 @@
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
           th:href="@{assets/favicon.ico}" />
-    <title>HPC Results Dashboard</title>
+    <title>CPU</title>
 </head>
 
 <body>
@@ -41,16 +41,17 @@
                     <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
                 </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
+                <li class="nav-item active ">
+                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU <span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard <span class="sr-only">(current)</span></a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
@@ -65,18 +66,21 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 mt-5 mb-5">
+        <div class="col-lg-16 mt-5 mb-5">
             <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
                 <thead>
                 <tr>
-                    <th>Job Id</th>
-                    <th>Application</th>
-                    <th>Benchmark</th>
-                    <th>Node count</th>
+                    <th>Manufacturer</th>
+                    <th>Generation</th>
+                    <th>SKU</th>
+                    <th>TDP</th>
                     <th>Cores</th>
-                    <th>Node</th>
-                    <th>Result</th>
-                    <th>CPU</th>
+                    <th>Base Freq</th>
+                    <th>All Core Freq</th>
+                    <th>Peak Freq</th>
+                    <th>L3 cache</th>
+                    <th>DDR channels</th>
+                    <th>DDR Freq</th>
                 </tr>
                 </thead>
             </table>
@@ -97,7 +101,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "/resultAjax",
+            "url": "/cpuAjax",
             "type": "POST",
             "dataType": "json",
             "contentType": "application/json",
@@ -106,14 +110,17 @@
             }
         },
         "columns": [
-            {"data": "job_id", "width": "20%"},
-            {"data": "app_name","width": "20%"},
-            {"data": "bm_name", "width": "20%"},
-            {"data": "nodes", "width": "20%"},
+            {"data": "cpu_manufacturer", "width": "20%"},
+            {"data": "cpu_generation","width": "20%"},
+            {"data": "cpu_sku", "width": "20%"},
+            {"data": "tdp", "width": "20%"},
             {"data": "cores", "width": "20%"},
-            {"data": "node_name", "width": "20%"},
-            {"data": "result", "width": "20%"},
-            {"data": "cpu", "width": "20%"}
+            {"data": "base_freq", "width": "20%"},
+            {"data": "all_core_freq", "width": "20%"},
+            {"data": "peak_freq", "width": "20%"},
+            {"data": "l3_cache", "width": "20%"},
+             {"data": "ddr_channels", "width": "20%"},
+            {"data": "max_ddr_freq", "width": "20%"}
 
         ]
     });

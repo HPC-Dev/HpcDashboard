@@ -1,5 +1,6 @@
 package com.results.HpcDashboard.services;
 
+import com.results.HpcDashboard.dto.ResultComparators;
 import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.paging.*;
 
@@ -9,33 +10,31 @@ import org.springframework.util.StringUtils;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-
 @Service
-public class DatatableService {
+public class ResultDashboardService implements DataTableService<Result> {
 
     @Autowired
     ResultService resultService;
     private static final Comparator<Result> EMPTY_COMPARATOR = (e1, e2) -> 0;
 
-    public Page<Result> getResults(PagingRequest pagingRequest)  {
+    public Page<Result> getData(PagingRequest pagingRequest)  {
             List<Result> results = resultService.getAllResults();
             return getPage(results, pagingRequest);
 }
 
-    private Page<Result> getPage(List<Result> results, PagingRequest pagingRequest) {
+    public Page<Result> getPage(List<Result> results, PagingRequest pagingRequest) {
         List<Result> filtered = results.stream()
-                .sorted(sortResults(pagingRequest))
-                .filter(filterResults(pagingRequest))
+                .sorted(sortData(pagingRequest))
+                .filter(filterData(pagingRequest))
                 .skip(pagingRequest.getStart())
                 .limit(pagingRequest.getLength())
                 .collect(Collectors.toList());
 
         long count = results.stream()
-                .filter(filterResults(pagingRequest))
+                .filter(filterData(pagingRequest))
                 .count();
 
         Page<Result> page = new Page<>(filtered);
@@ -45,7 +44,7 @@ public class DatatableService {
         return page;
     }
 
-    private Predicate<Result> filterResults(PagingRequest pagingRequest) {
+    public Predicate<Result> filterData(PagingRequest pagingRequest) {
         if (pagingRequest.getSearch() == null || StringUtils.isEmpty(pagingRequest.getSearch()
                 .getValue())) {
             return result -> true;
@@ -70,11 +69,10 @@ public class DatatableService {
                 .toUpperCase()
                 .contains(value)
                 || result.getJob_id()
-                .contains(value)
-                ;
+                .contains(value);
     }
 
-    private Comparator<Result> sortResults(PagingRequest pagingRequest) {
+    public Comparator<Result> sortData(PagingRequest pagingRequest) {
         if (pagingRequest.getOrder() == null) {
             return EMPTY_COMPARATOR;
         }

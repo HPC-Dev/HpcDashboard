@@ -1,14 +1,10 @@
 package com.results.HpcDashboard.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "benchmarks")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Benchmarks implements Serializable {
+public class Benchmark implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +25,7 @@ public class Benchmarks implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_name")
     @Getter(AccessLevel.NONE)
-    private Applications app_name;
+    private Application app_name;
 
     private String bm_size;
 
@@ -46,7 +42,7 @@ public class Benchmarks implements Serializable {
     private long est_runtime;
 
 
-    public Benchmarks(String bm_name, String bm_full_name, String bm_size, String bm_size_units, int bm_dur, String bm_dur_units,  String bm_metric, String bm_units, int est_runtime) {
+    public Benchmark(String bm_name, String bm_full_name, String bm_size, String bm_size_units, int bm_dur, String bm_dur_units, String bm_metric, String bm_units, int est_runtime) {
 
         this.bm_name = bm_name;
         this.bm_full_name = bm_full_name;
@@ -59,9 +55,9 @@ public class Benchmarks implements Serializable {
         this.est_runtime = est_runtime;
     }
 
-    public Benchmarks(String bm_name, String bm_full_name, String app_name, String bm_size, String bm_size_units, int bm_dur, String bm_dur_units,  String bm_metric, String bm_units, int est_runtime) {
+    public Benchmark(String bm_name, String bm_full_name, String app_name, String bm_size, String bm_size_units, int bm_dur, String bm_dur_units, String bm_metric, String bm_units, int est_runtime) {
 
-        this.app_name = new Applications();
+        this.app_name = new Application();
         this.bm_name = bm_name;
         this.bm_full_name = bm_full_name;
         this.app_name.setApp_name(app_name);

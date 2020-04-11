@@ -27,11 +27,27 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/index}">Home</a>
                 </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form  <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
 
                 <li class="nav-item">
@@ -42,9 +58,6 @@
     </div>
 </nav>
 
-
-
-
 <br>
 <br>
 
@@ -52,28 +65,36 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
-            <h2>Result Form</h2>
+            <h3>Result Form</h3>
 
             <div th:if="${param.success}">
-                <div class="alert alert-success">Result is successfully inserted!</div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Result is successfully inserted!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
 
             <div th:if="${param.failure}">
-                <div class="alert alert-warning">Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)</div>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
 
-            <form th:action="@{/result}"  method="post">
+
+
+
+            <form action="#" th:action="@{/result}" th:object="${command}" method="post">
 
                 <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
                    th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
                     error</p>
 
-
-                <div class="form-group">
-                    <label for="result" class="control-label"></label> <input type="text"
-                    id="result" name="result" class="form-control"
-                    autofocus="autofocus" placeholder="Result" th:name="data"/>
-                </div>
+                <textarea rows="8" cols="60" th:field="*{textareaField}" ></textarea>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Submit</button>

@@ -1,26 +1,79 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
           th:href="@{assets/favicon.ico}" />
     <title>Index</title>
 </head>
+
 <body>
-<div th:replace="includes/header :: header">
-</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">HPC Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" th:href="@{/index}">Home  <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <br>
 <br>
 <div class="container">
     <h5 th:text="'Welcome ' + ${user}"></h5>
 </div>
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 
 </body>
 </html>

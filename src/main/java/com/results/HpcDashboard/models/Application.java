@@ -5,23 +5,20 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 @Entity
 @Table(name = "applications")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Applications implements Serializable {
+public class Application implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int app_id;
+    private String app_id;
 
     private String app_name;
 
@@ -56,10 +53,11 @@ public class Applications implements Serializable {
     private String app_bound;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "app_name", cascade = CascadeType.ALL)
-    private Set<Benchmarks> apps;
+    private Set<Benchmark> apps;
 
 
-    public Applications(String app_name, String app_verion, String precision_info, String binary_info, String comp_name, String comp_flags, String lib_name, String lib_ver, String lib_flags, Boolean avx2_accel, Boolean avx512_accel, LocalDate lic_exp, Boolean lib_fftw, Boolean lib_dgemm, Boolean lib_blas, String app_bound, Set<Benchmarks> apps) {
+    public Application(String app_id, String app_name, String app_verion, String precision_info, String binary_info, String comp_name, String comp_flags, String lib_name, String lib_ver, String lib_flags, Boolean avx2_accel, Boolean avx512_accel, LocalDate lic_exp, Boolean lib_fftw, Boolean lib_dgemm, Boolean lib_blas, String app_bound, Set<Benchmark> apps) {
+        this.app_id = app_id;
         this.app_name = app_name;
         this.app_verion = app_verion;
         this.precision_info = precision_info;

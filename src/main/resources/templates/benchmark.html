@@ -13,7 +13,7 @@
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
           th:href="@{assets/favicon.ico}" />
-    <title>HPC Results Dashboard</title>
+    <title>Benchmarks</title>
 </head>
 
 <body>
@@ -37,8 +37,8 @@
                     <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
                 </li>
 
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks <span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item ">
@@ -48,9 +48,11 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard <span class="sr-only">(current)</span></a>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
@@ -69,14 +71,17 @@
             <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
                 <thead>
                 <tr>
-                    <th>Job Id</th>
                     <th>Application</th>
                     <th>Benchmark</th>
-                    <th>Node count</th>
-                    <th>Cores</th>
-                    <th>Node</th>
-                    <th>Result</th>
-                    <th>CPU</th>
+                    <th>Name</th>
+                    <th>duration</th>
+                    <th>metric</th>
+                    <th>size</th>
+                    <th>size units</th>
+                    <th>dur units</th>
+                    <th>units</th>
+                    <th>est runtime</th>
+
                 </tr>
                 </thead>
             </table>
@@ -97,7 +102,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "/resultAjax",
+            "url": "/benchmarkAjax",
             "type": "POST",
             "dataType": "json",
             "contentType": "application/json",
@@ -106,15 +111,16 @@
             }
         },
         "columns": [
-            {"data": "job_id", "width": "20%"},
-            {"data": "app_name","width": "20%"},
-            {"data": "bm_name", "width": "20%"},
-            {"data": "nodes", "width": "20%"},
-            {"data": "cores", "width": "20%"},
-            {"data": "node_name", "width": "20%"},
-            {"data": "result", "width": "20%"},
-            {"data": "cpu", "width": "20%"}
-
+            {"data": "app_name", "width": "20%"},
+            {"data": "bm_name","width": "20%"},
+            {"data": "bm_full_name", "width": "20%"},
+            {"data": "bm_dur", "width": "20%"},
+            {"data": "bm_metric", "width": "20%"},
+            {"data": "bm_size", "width": "20%"},
+            {"data": "bm_size_units", "width": "20%"},
+            {"data": "bm_dur_units", "width": "20%"},
+            {"data": "bm_units", "width": "20%"},
+            {"data": "est_runtime", "width": "20%"}
         ]
     });
 </script>

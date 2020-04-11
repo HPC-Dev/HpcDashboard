@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "results")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@Builder
 public class Result implements Serializable {
     @Id
     private String job_id;

@@ -1,17 +1,13 @@
 package com.results.HpcDashboard;
 
-import com.results.HpcDashboard.models.Applications;
-import com.results.HpcDashboard.models.Benchmarks;
-import com.results.HpcDashboard.models.CPU;
-import com.results.HpcDashboard.repo.ApplicationsRepo;
-import com.results.HpcDashboard.repo.BenchmarksRepo;
+import com.results.HpcDashboard.repo.ApplicationRepo;
+import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.repo.CPURepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,19 +16,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
 @SpringBootApplication
 @EnableSwagger2
 public class HpcDashboardApplication implements CommandLineRunner {
 
 	@Autowired
-	ApplicationsRepo applicationsRepo;
+	ApplicationRepo applicationRepo;
 
 	@Autowired
-	BenchmarksRepo benchmarksRepo;
+	BenchmarkRepo benchmarkRepo;
 
 	@Autowired
 	CPURepo cpuRepo;
@@ -51,7 +43,7 @@ public class HpcDashboardApplication implements CommandLineRunner {
 //			benchmarks.add(new Benchmarks("ls-neon","Neon_Refined_Revised","535k","cells",150,"ms","Elapsed Time","sec",300));
 //			benchmarks.add(new Benchmarks("ls-odb-10m","ODB-10M","10m","cells",80,"ms","Elapsed Time","sec",86400));
 //
-//			Applications applications = new Applications("ls-dyna","9.1.3","","","ifortran","","mkl","","",false ,false,LocalDate.now(),false,false,false,"",benchmarks);
+//			Applications applications = new Applications("ls-dyna-9.1.3","ls-dyna","9.1.3","","","ifortran","","mkl","","",false ,false,LocalDate.now(),false,false,false,"",benchmarks);
 //			applicationsRepo.save(applications);
 
 		    //cpuRepo.save(CPU.builder().cpu_generation("ROME").cpu_sku("7742").cpu_manufacturer("AMD").all_core_freq(2.7).base_freq(2.25).cores(64).ddr_channels(8).l3_cache(256).max_ddr_freq(3200).peak_freq(3.4).tdp(225).build());

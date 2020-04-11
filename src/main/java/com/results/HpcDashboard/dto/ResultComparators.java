@@ -1,7 +1,8 @@
-package com.results.HpcDashboard.models;
+package com.results.HpcDashboard.dto;
 
 import java.util.*;
 
+import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.paging.Direction;
 import lombok.*;
 public final class ResultComparators {
