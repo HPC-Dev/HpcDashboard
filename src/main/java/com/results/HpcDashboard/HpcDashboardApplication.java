@@ -46,8 +46,6 @@ public class HpcDashboardApplication implements CommandLineRunner {
 //			Applications applications = new Applications("ls-dyna-9.1.3","ls-dyna","9.1.3","","","ifortran","","mkl","","",false ,false,LocalDate.now(),false,false,false,"",benchmarks);
 //			applicationsRepo.save(applications);
 
-		    //cpuRepo.save(CPU.builder().cpu_generation("ROME").cpu_sku("7742").cpu_manufacturer("AMD").all_core_freq(2.7).base_freq(2.25).cores(64).ddr_channels(8).l3_cache(256).max_ddr_freq(3200).peak_freq(3.4).tdp(225).build());
-			//cpuRepo.save(CPU.builder().cpu_generation("ROME").cpu_sku("7702").cpu_manufacturer("AMD").base_freq(2.0).cores(64).ddr_channels(8).l3_cache(256).max_ddr_freq(3200).peak_freq(3.35).tdp(200).build());
 		}
 
 

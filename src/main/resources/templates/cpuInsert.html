@@ -1,21 +1,15 @@
-<!DOCTYPE HTML>
-
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
-    <link rel="icon"
-          th:href="@{assets/favicon.ico}" />
-    <title>CPU</title>
-</head>
 
+    <title>CPU Form</title>
+</head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -64,65 +58,49 @@
     </div>
 </nav>
 
+
+<br>
+<br>
+
 <div class="container">
     <div class="row">
-        <div class="col-lg-16 mt-5 mb-5">
-            <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
-                <thead>
-                <tr>
-                    <th>Manufacturer</th>
-                    <th>Generation</th>
-                    <th>SKU</th>
-                    <th>TDP</th>
-                    <th>Cores</th>
-                    <th>Base Freq</th>
-                    <th>Peak Freq</th>
-                    <th>L3 cache</th>
-                    <th>DDR channels</th>
-                    <th>DDR Freq</th>
-                </tr>
-                </thead>
-            </table>
+        <div class="col-md-6 col-md-offset-3">
+
+            <h2>CPU Insert Form</h2>
+
+            <div th:if="${param.success}">
+                <div class="alert alert-success">CPU Data is successfully inserted!</div>
+            </div>
+
+            <div th:if="${param.failure}">
+                <div class="alert alert-warning">Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)</div>
+            </div>
+
+            <form th:action="@{/cpu}"  method="post">
+
+                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+                    error</p>
+
+
+                <div class="form-group">
+                    <label for="result" class="control-label"></label> <input type="text"
+                                                                              id="result" name="result" class="form-control"
+                                                                              autofocus="autofocus" placeholder="Result" th:name="data"/>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+
+            </form>
         </div>
     </div>
 </div>
 
-
 <script type="text/javascript"
         th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
 <script type="text/javascript"
         th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
-<script th:src="@{assets/datatable/datatables.js}"></script>
-
-<script>
-    $('#ajax').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "/cpuAjax",
-            "type": "POST",
-            "dataType": "json",
-            "contentType": "application/json",
-            "data": function (d) {
-                return JSON.stringify(d);
-            }
-        },
-        "columns": [
-            {"data": "cpu_manufacturer", "width": "20%"},
-            {"data": "cpu_generation","width": "20%"},
-            {"data": "cpu_sku", "width": "20%"},
-            {"data": "tdp", "width": "20%"},
-            {"data": "cores", "width": "20%"},
-            {"data": "base_freq", "width": "20%"},
-            {"data": "peak_freq", "width": "20%"},
-            {"data": "l3_cache", "width": "20%"},
-             {"data": "ddr_channels", "width": "20%"},
-            {"data": "max_ddr_freq", "width": "20%"}
-
-        ]
-    });
-</script>
-
 </body>
 </html>

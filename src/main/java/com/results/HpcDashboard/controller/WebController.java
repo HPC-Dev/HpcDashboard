@@ -17,9 +17,6 @@ import java.security.Principal;
 @Controller
 public class WebController {
 
-
-    @Autowired
-        ResultService resultService;
     @Autowired
     UserService userService;
 
@@ -29,7 +26,6 @@ public class WebController {
         if(user!=null){
             model.addAttribute("user", user.getFirstName());
         }
-
         return "index";
     }
 

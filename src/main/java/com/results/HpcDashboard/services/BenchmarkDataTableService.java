@@ -1,78 +1,95 @@
 package com.results.HpcDashboard.services;
 
-import com.results.HpcDashboard.dto.ResultComparators;
+import com.results.HpcDashboard.dto.BenchmarkComparators;
+import com.results.HpcDashboard.dto.BenchmarkDto;
 import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.paging.*;
 
+import com.results.HpcDashboard.repo.BenchmarkRepo;
+import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class ResultDashboardService implements DataTableService<Result> {
+public class BenchmarkDataTableService implements DataTableService<BenchmarkDto> {
 
     @Autowired
-    ResultService resultService;
-    private static final Comparator<Result> EMPTY_COMPARATOR = (e1, e2) -> 0;
+    Util util;
 
-    public Page<Result> getData(PagingRequest pagingRequest)  {
-            List<Result> results = resultService.getAllResults();
-            return getPage(results, pagingRequest);
-}
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public Page<Result> getPage(List<Result> results, PagingRequest pagingRequest) {
-        List<Result> filtered = results.stream()
+    private static final Comparator<BenchmarkDto> EMPTY_COMPARATOR = (e1, e2) -> 0;
+
+    public Page<BenchmarkDto> getData(PagingRequest pagingRequest)  {
+        List<BenchmarkDto> benchmarks = util.getBenchmarks(entityManager);
+        return getPage(benchmarks, pagingRequest);
+    }
+
+    public Page<BenchmarkDto> getPage(List<BenchmarkDto> benchmarks, PagingRequest pagingRequest) {
+        List<BenchmarkDto> filtered = benchmarks.stream()
                 .sorted(sortData(pagingRequest))
                 .filter(filterData(pagingRequest))
                 .skip(pagingRequest.getStart())
                 .limit(pagingRequest.getLength())
                 .collect(Collectors.toList());
 
-        long count = results.stream()
+        long count = benchmarks.stream()
                 .filter(filterData(pagingRequest))
                 .count();
 
-        Page<Result> page = new Page<>(filtered);
+        Page<BenchmarkDto> page = new Page<>(filtered);
         page.setRecordsFiltered((int) count);
         page.setRecordsTotal((int) count);
         page.setDraw(pagingRequest.getDraw());
         return page;
     }
 
-    public Predicate<Result> filterData(PagingRequest pagingRequest) {
+    public Predicate<BenchmarkDto> filterData(PagingRequest pagingRequest) {
         if (pagingRequest.getSearch() == null || StringUtils.isEmpty(pagingRequest.getSearch()
                 .getValue())) {
-            return result -> true;
+            return benchmark -> true;
         }
 
         String value = pagingRequest.getSearch()
                 .getValue();
 
-        return result -> result.getApp_name()
+        return benchmark -> benchmark.getApp_name()
                 .toLowerCase()
                 .contains(value)
-                || result.getBm_name()
+                || benchmark.getBm_name()
                 .toLowerCase()
                 .contains(value)
-                || result.getNode_name()
+                || benchmark.getBm_full_name()
                 .toLowerCase()
                 .contains(value)
-                || result.getCpu()
+                || benchmark.getBm_metric()
                 .toLowerCase()
                 .contains(value)
-                || result.getCpu()
-                .toUpperCase()
+                || benchmark.getBm_size()
+                .toLowerCase()
                 .contains(value)
-                || result.getJob_id()
+                || benchmark.getBm_size_units()
+                .toLowerCase()
+                .contains(value)
+                || benchmark.getBm_dur_units()
+                .toLowerCase()
+                .contains(value)
+                || benchmark.getBm_units()
+                .toLowerCase()
                 .contains(value);
+
     }
 
-    public Comparator<Result> sortData(PagingRequest pagingRequest) {
+    public Comparator<BenchmarkDto> sortData(PagingRequest pagingRequest) {
         if (pagingRequest.getOrder() == null) {
             return EMPTY_COMPARATOR;
         }
@@ -85,19 +102,17 @@ public class ResultDashboardService implements DataTableService<Result> {
             Column column = pagingRequest.getColumns()
                     .get(columnIndex);
 
-            Comparator<Result> comparator = ResultComparators.getComparator(column.getData(), order.getDir());
+            Comparator<BenchmarkDto> comparator = BenchmarkComparators.getComparator(column.getData(), order.getDir());
             if (comparator == null) {
                 return EMPTY_COMPARATOR;
             }
-        return comparator;
+            return comparator;
 
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
-     return EMPTY_COMPARATOR;
+        return EMPTY_COMPARATOR;
     }
 
 
 }
-
-

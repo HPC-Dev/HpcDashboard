@@ -28,20 +28,20 @@ public class CPU implements Serializable {
 
     String cpu_sku;
 
-    int tdp;
+    String tdp;
 
     int cores;
 
-    double base_freq;
+    String base_freq;
 
-    double all_core_freq;
+    String all_core_freq;
 
-    double peak_freq;
+    String peak_freq;
 
     int l3_cache;
 
     int ddr_channels;
 
-    int max_ddr_freq;
+    String max_ddr_freq;
 
 }
