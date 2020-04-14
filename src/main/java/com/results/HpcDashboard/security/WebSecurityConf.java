@@ -55,8 +55,10 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/result",
                         "/resultAjax",
                         "/app/**",
+                        "/avg/**",
                         "/register**",
                         "/js/**",
+                        "/data",
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
@@ -64,7 +66,6 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-//                .defaultSuccessUrl("/index", true)
                 .permitAll()
                 .and()
                 .logout()

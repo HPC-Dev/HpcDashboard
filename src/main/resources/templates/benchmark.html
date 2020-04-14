@@ -12,6 +12,7 @@
     <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+
     <link rel="icon"
           th:href="@{assets/favicon.ico}" />
     <title>Benchmarks</title>
@@ -20,7 +21,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
+    <div class="container-fluid" style="max-width:1225px">
         <a class="navbar-brand" href="/">HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -66,9 +67,9 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid" style="max-width:1225px">
     <div class="row">
-        <div class="col-lg-12 mt-5 mb-5">
+        <div class="col-xl-12 mt-5 mb-5">
             <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
                 <thead>
                 <tr>
@@ -100,9 +101,9 @@
 
 <script>
     $('#ajax').removeAttr('width').DataTable({
-<!--        scrollY: "500px",-->
-<!--        scrollX: true,-->
-<!--        scrollCollapse: true,-->
+        scrollY: "400px",
+        scrollX: true,
+        scrollCollapse: true,
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -117,9 +118,9 @@
         "columns": [
             {"data": "app_name", width: 80, targets: 0},
             {"data": "bm_name",width: 80, targets: 1},
-            {"data": "bm_full_name", width: 160, targets: 2},
+            {"data": "bm_full_name", width: 120, targets: 2},
             {"data": "bm_dur", width: 60, targets: 3},
-            {"data": "bm_metric", width: 400, targets: 4},
+            {"data": "bm_metric", width: 200, targets: 4},
             {"data": "bm_size", width: 60, targets: 5},
             {"data": "bm_size_units", width: 140, targets: 6},
             {"data": "bm_dur_units", width: 60, targets: 7},

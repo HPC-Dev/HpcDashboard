@@ -22,7 +22,7 @@ public class CPUDataTableService implements DataTableService<CPU> {
     private static final Comparator<CPU> EMPTY_COMPARATOR = (e1, e2) -> 0;
 
     public Page<CPU> getData(PagingRequest pagingRequest)  {
-        List<CPU> cpus = cpuService.getAllCPUs();
+        List<CPU> cpus = cpuService.getAllCPUData();
         return getPage(cpus, pagingRequest);
     }
 

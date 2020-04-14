@@ -15,12 +15,15 @@ import java.util.Set;
 @EqualsAndHashCode
 @Entity
 @Table(name = "applications")
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Application implements Serializable {
     @Id
     private String app_id;
 
     private String app_name;
+
+    private String app_category;
 
     private String app_verion;
 
@@ -29,6 +32,8 @@ public class Application implements Serializable {
     private String binary_info;
 
     private String comp_name;
+
+    private String comp_ver;
 
     private String comp_flags;
 
@@ -56,13 +61,15 @@ public class Application implements Serializable {
     private Set<Benchmark> apps;
 
 
-    public Application(String app_id, String app_name, String app_verion, String precision_info, String binary_info, String comp_name, String comp_flags, String lib_name, String lib_ver, String lib_flags, Boolean avx2_accel, Boolean avx512_accel, LocalDate lic_exp, Boolean lib_fftw, Boolean lib_dgemm, Boolean lib_blas, String app_bound, Set<Benchmark> apps) {
+    public Application(String app_id, String app_name, String app_category, String app_verion, String precision_info, String binary_info, String comp_name, String comp_ver, String comp_flags, String lib_name, String lib_ver, String lib_flags, Boolean avx2_accel, Boolean avx512_accel, LocalDate lic_exp, Boolean lib_fftw, Boolean lib_dgemm, Boolean lib_blas, String app_bound, Set<Benchmark> apps) {
         this.app_id = app_id;
         this.app_name = app_name;
+        this.app_category = app_category;
         this.app_verion = app_verion;
         this.precision_info = precision_info;
         this.binary_info = binary_info;
         this.comp_name = comp_name;
+        this.comp_ver = comp_ver;
         this.comp_flags = comp_flags;
         this.lib_name = lib_name;
         this.lib_ver = lib_ver;

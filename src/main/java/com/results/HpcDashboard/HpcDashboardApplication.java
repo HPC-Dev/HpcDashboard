@@ -1,5 +1,8 @@
 package com.results.HpcDashboard;
 
+import com.results.HpcDashboard.models.Application;
+import com.results.HpcDashboard.models.AverageResult;
+import com.results.HpcDashboard.models.Benchmark;
 import com.results.HpcDashboard.repo.ApplicationRepo;
 import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.repo.CPURepo;
@@ -16,6 +19,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @SpringBootApplication
 @EnableSwagger2
 public class HpcDashboardApplication implements CommandLineRunner {
@@ -31,21 +38,17 @@ public class HpcDashboardApplication implements CommandLineRunner {
 
 		@Override
 	public void run(String... args) throws Exception {
-//			applicationsRepo.save(new Applications("ls-dyna","9.1.3","","","ifortran","","mkl","","",false ,false,LocalDate.now(),false,false,false,""));
-//			benchmarksRepo.save(new Benchmarks("ls-3cars","3-Cars","ls-dyna","","cells",0,"ms","Elapsed Time","sec",1800));
-//			benchmarksRepo.save(new Benchmarks("ls-car2car","Car-2-Car","ls-dyna","2.4m","cells",120,"ms","Elapsed Time","sec",900));
-//			benchmarksRepo.save(new Benchmarks("ls-neon","Neon_Refined_Revised","ls-dyna","535k","cells",150,"ms","Elapsed Time","sec",300));
-//			benchmarksRepo.save(new Benchmarks("ls-odb-10m","ODB-10M","ls-dyna","10m","cells",80,"ms","Elapsed Time","sec",86400));
 
-//			Set<Benchmarks> benchmarks = new HashSet<>();
-//			benchmarks.add(new Benchmarks("ls-3cars","3-Cars","","cells",0,"ms","Elapsed Time","sec",1800));
-//			benchmarks.add(new Benchmarks("ls-car2car","Car-2-Car","ls-dyna","2.4m","cells",120,"ms","Elapsed Time","sec",900));
-//			benchmarks.add(new Benchmarks("ls-neon","Neon_Refined_Revised","535k","cells",150,"ms","Elapsed Time","sec",300));
-//			benchmarks.add(new Benchmarks("ls-odb-10m","ODB-10M","10m","cells",80,"ms","Elapsed Time","sec",86400));
+//			Set<Benchmark> benchmarks = new HashSet<>();
+//			benchmarks.add(new Benchmark("ls-3cars","3-Cars","","cells",0,"ms","Elapsed Time","sec",1800));
+//			benchmarks.add(new Benchmark("ls-car2car","Car-2-Car","ls-dyna","2.4m","cells",120,"ms","Elapsed Time","sec",900));
+//			benchmarks.add(new Benchmark("ls-neon","Neon_Refined_Revised","535k","cells",150,"ms","Elapsed Time","sec",300));
+//			benchmarks.add(new Benchmark("ls-odb-10m","ODB-10M","10m","cells",80,"ms","Elapsed Time","sec",86400));
 //
-//			Applications applications = new Applications("ls-dyna-9.1.3","ls-dyna","9.1.3","","","ifortran","","mkl","","",false ,false,LocalDate.now(),false,false,false,"",benchmarks);
-//			applicationsRepo.save(applications);
+//			Application applications = new Application("ls-dyna-9.1.3","ls-dyna","ISV","9.1.3","","","ifortran","","","mkl","","",false ,false, LocalDate.now(),false,false,false,"",benchmarks);
+//			applicationRepo.save(applications);
 
+			//AverageResult avg = AverageResult.builder().app_name("lsdyna").avg_result(1140.67).bm_name("ls-3cars").cores(48).cpu_sku("7F72").nodes(1).build();
 		}
 
 
@@ -66,7 +69,7 @@ public class HpcDashboardApplication implements CommandLineRunner {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("HPC Dashboard Controller")
-				.description("Services")
+				.description("")
 				.build();
 	}
 

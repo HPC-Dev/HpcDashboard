@@ -31,7 +31,7 @@ public class CPUController {
 
 
     @GetMapping("/cpuInsert")
-    public String showCPU1() {
+    public String showCPUForm() {
         return "cpuInsert";
     }
 

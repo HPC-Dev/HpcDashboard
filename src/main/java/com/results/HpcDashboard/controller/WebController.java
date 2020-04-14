@@ -39,4 +39,9 @@ public class WebController {
         return "charts";
     }
 
+    @GetMapping("/data")
+    public String showData(Model model) {
+        return "result";
+    }
+
 }

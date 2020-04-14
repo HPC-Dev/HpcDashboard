@@ -20,7 +20,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
+    <div class="container-fluid" style="max-width:1225px">
         <a class="navbar-brand" href="/">HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -65,9 +65,9 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid" style="max-width:1225px">
     <div class="row">
-        <div class="col-lg-16 mt-5 mb-5">
+        <div class="col-lg-12 mt-5 mb-5">
             <table id="ajax" class="table table-bordered table-responsive " style="width: 100%">
                 <thead>
                 <tr>
@@ -100,7 +100,7 @@
 
 <script>
     $('#ajax').removeAttr('width').DataTable({
-        scrollY: "500px",
+        scrollY: "380px",
         scrollX: true,
         scrollCollapse: true,
         "processing": true,
@@ -115,16 +115,16 @@
             }
         },
        "columns": [
-            {"data": "cpu_manufacturer", width: 100, targets: 0},
-            {"data": "cpu_generation",width: 70, targets: 1},
-            {"data": "cpu_sku", width: 30, targets: 2},
-            {"data": "tdp", width: 30, targets: 3},
-            {"data": "cores", width: 30, targets: 4},
-            {"data": "base_freq", width: 160, targets: 5},
-            {"data": "peak_freq", width: 160, targets: 6},
-            {"data": "l3_cache", width: 140, targets: 7},
-            {"data": "ddr_channels", width: 200, targets: 8},
-            {"data": "max_ddr_freq", width: 160, targets: 9}
+            {"data": "cpu_manufacturer", width: 110, targets: 0},
+            {"data": "cpu_generation",width: 80, targets: 1},
+            {"data": "cpu_sku", width: 60, targets: 2},
+            {"data": "tdp", width: 50, targets: 3},
+            {"data": "cores", width: 40, targets: 4},
+            {"data": "base_freq", width: 120, targets: 5},
+            {"data": "peak_freq", width: 120, targets: 6},
+            {"data": "l3_cache", width: 120, targets: 7},
+            {"data": "ddr_channels", width: 160, targets: 8},
+            {"data": "max_ddr_freq", width: 120, targets: 9}
 
         ]
         ,fixedColumns: true

@@ -45,6 +45,7 @@ public class ResultDataTableService implements DataTableService<Result> {
     }
 
     public Predicate<Result> filterData(PagingRequest pagingRequest) {
+
         if (pagingRequest.getSearch() == null || StringUtils.isEmpty(pagingRequest.getSearch()
                 .getValue())) {
             return result -> true;
@@ -52,6 +53,23 @@ public class ResultDataTableService implements DataTableService<Result> {
 
         String value = pagingRequest.getSearch()
                 .getValue();
+
+
+        if(pagingRequest.getSearch()
+                .getValue().contains("&")) {
+            String[] val = pagingRequest.getSearch()
+                    .getValue().split("&");
+            if(val.length>1)
+            {
+                return result -> result.getApp_name()
+                        .toLowerCase()
+                        .contains(value)
+                        && result.getBm_name()
+                        .toLowerCase()
+                        .contains(value);
+            }
+        }
+
 
         return result -> result.getApp_name()
                 .toLowerCase()

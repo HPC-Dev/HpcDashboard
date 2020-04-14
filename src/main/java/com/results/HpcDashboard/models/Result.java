@@ -33,7 +33,7 @@ public class Result implements Serializable {
 
     private String node_name;
 
-    private BigDecimal result;
+    private double result;
 
     private String cpu;
 

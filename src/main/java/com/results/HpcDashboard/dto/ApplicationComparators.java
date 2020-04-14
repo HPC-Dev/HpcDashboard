@@ -33,6 +33,10 @@ public final class ApplicationComparators {
         map.put(new Key("app_name", Direction.desc), Comparator.comparing(Application::getApp_name)
                 .reversed());
 
+        map.put(new Key("app_category", Direction.asc), Comparator.comparing(Application::getApp_category));
+        map.put(new Key("app_category", Direction.desc), Comparator.comparing(Application::getApp_category)
+                .reversed());
+
         map.put(new Key("app_verion", Direction.asc), Comparator.comparing(Application::getApp_verion));
         map.put(new Key("app_verion", Direction.desc), Comparator.comparing(Application::getApp_verion)
                 .reversed());
@@ -47,6 +51,10 @@ public final class ApplicationComparators {
 
         map.put(new Key("comp_name", Direction.asc), Comparator.comparing(Application::getComp_name));
         map.put(new Key("comp_name", Direction.desc), Comparator.comparing(Application::getComp_name)
+                .reversed());
+
+        map.put(new Key("comp_ver", Direction.asc), Comparator.comparing(Application::getComp_ver));
+        map.put(new Key("comp_ver", Direction.desc), Comparator.comparing(Application::getComp_ver)
                 .reversed());
 
         map.put(new Key("comp_flags", Direction.asc), Comparator.comparing(Application::getComp_flags));

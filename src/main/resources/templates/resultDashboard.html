@@ -20,7 +20,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
+    <div class="container-fluid" style="max-width:1225px">
         <a class="navbar-brand" href="/">HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -64,10 +64,10 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid" style="max-width:1225px">
     <div class="row">
         <div class="col-lg-12 mt-5 mb-5">
-            <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
+            <table id="ajax" class="table table-responsive table-bordered" style="width: 100%">
                 <thead>
                 <tr>
                     <th>Job Id</th>
@@ -94,8 +94,9 @@
 <script th:src="@{assets/datatable/datatables.js}"></script>
 
 <script>
+ $(document).ready(function () {
     $('#ajax').removeAttr('width').DataTable({
-        scrollY: "500px",
+        scrollY: "400px",
         scrollX: true,
         scrollCollapse: true,
         "processing": true,
@@ -110,16 +111,17 @@
             }
         },
         "columns": [
-            {"data": "job_id", width: 60, targets: 0},
-            {"data": "app_name",width: 80, targets: 1},
+            {"data": "job_id", width: 65, targets: 0},
+            {"data": "app_name",width: 120, targets: 1},
             {"data": "bm_name", width: 140, targets: 2},
-            {"data": "nodes", width: 120, targets: 3},
+            {"data": "nodes", width: 60, targets: 3},
             {"data": "cores", width: 40, targets: 4},
-            {"data": "node_name", width: 300, targets: 5},
-            {"data": "result", width: 60, targets: 6},
-            {"data": "cpu", width: 50, targets: 7},
+            {"data": "node_name", width: 250, targets: 5},
+            {"data": "result", width: 80, targets: 6},
+            {"data": "cpu", width: 40, targets: 7},
            ],
            fixedColumns: true
+    });
     });
 </script>
 

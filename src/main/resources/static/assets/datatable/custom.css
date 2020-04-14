@@ -2,7 +2,3 @@ th, td { white-space: nowrap; }
     div.dataTables_wrapper {
         margin: 0 auto;
     }
-
-    div.container {
-        width: 80%;
-    }

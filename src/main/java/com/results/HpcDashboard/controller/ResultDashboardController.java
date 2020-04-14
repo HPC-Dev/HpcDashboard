@@ -52,6 +52,8 @@ public class ResultDashboardController {
                 return "redirect:/result?failure";
             }
         resultService.insertResult(resultData);
+
+
         }
         return "redirect:/result?success";
     }
