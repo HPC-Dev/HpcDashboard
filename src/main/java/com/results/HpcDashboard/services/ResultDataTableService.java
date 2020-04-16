@@ -59,17 +59,33 @@ public class ResultDataTableService implements DataTableService<Result> {
                 .getValue().contains("&")) {
             String[] val = pagingRequest.getSearch()
                     .getValue().split("&");
-            if(val.length>1)
+            if(val.length==3)
             {
                 return result -> result.getApp_name()
                         .toLowerCase()
-                        .contains(value)
+                        .contains(val[0])
                         && result.getBm_name()
                         .toLowerCase()
-                        .contains(value);
+                        .contains(val[1])
+                        &&
+                        result.getCpu()
+                        .toLowerCase()
+                        .contains(val[2])
+                        ||
+                        result.getCpu()
+                        .toUpperCase()
+                        .contains(val[2]);
+            }
+            if(val.length==2)
+            {
+                return result -> result.getApp_name()
+                        .toLowerCase()
+                        .contains(val[0])
+                        && result.getBm_name()
+                        .toLowerCase()
+                        .contains(val[1]);
             }
         }
-
 
         return result -> result.getApp_name()
                 .toLowerCase()

@@ -1,8 +1,10 @@
 package com.results.HpcDashboard.controller;
 
+import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.repo.AverageResultRepo;
 import com.results.HpcDashboard.services.AverageResultService;
+import com.results.HpcDashboard.services.CPUService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,10 @@ public class AverageResultController {
     @Autowired
     AverageResultService averageResultService;
 
+    @Autowired
+    CPUService cpuService;
+
+
     @GetMapping("/result")
     public List<AverageResult> getAvgResult(){
         List<AverageResult> list = null;
@@ -31,38 +37,35 @@ public class AverageResultController {
         return list;
     }
 
-//    @GetMapping("/resultSingle")
-//    public AverageResult getSingleAvgResult(String cpu_sku, String bm_name, int nodes){
-//        AverageResult list = null;
-//        list = averageResultService.getSingleAvgResult(bm_name,cpu_sku,nodes);
+
+    @GetMapping("/result/{cpu}/{app_name}")
+    public List<AverageResult> getAvgResultCPU(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name){
+        List<AverageResult> list = null;
+        list = averageResultService.getAvgResultCPUApp(cpu,app_name);
+        if(list ==null){
+            return Collections.emptyList();
+        }
+        return list;
+    }
+
+    @GetMapping("/cpus")
+    public List<CPUDto> getAllCPUsCores(){
+        List<CPUDto> list = null;
+        list = cpuService.getAllCPUsCores();
+        if(list ==null){
+            return Collections.emptyList();
+        }
+        return list;
+    }
+
+//    @GetMapping("/cpus")
+//    public List<CPUDto> getAllCPUsCores(){
+//        List<CPUDto> list = null;
+//        list = cpuService.getAllCPUsCores();
 //        if(list ==null){
-//            return null;
+//            return Collections.emptyList();
 //        }
 //        return list;
 //    }
-
-
-//    @PostMapping("/result")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResponseEntity insertAvgResult(@RequestBody AverageResult averageResult){
-//        if (averageResult.getCpu_sku() == "" || averageResult.getCpu_sku().equals(null) || averageResult.getBm_name() == "" || averageResult.getBm_name().equals(null) )
-//            return null;
-//        averageResultService.insertAverage(averageResult);
-//        return ResponseEntity.ok().build();
-//    }
-
-
-//    @PutMapping("/result/{bm_name}/{cpu_sku}/{nodes}/{avg}")
-//    public ResponseEntity updateBook(@PathVariable("bm_name") String bm_name, @PathVariable("cpu_sku") String cpu_sku, @PathVariable("nodes") int nodes, @PathVariable("avg") double avg) {
-//        averageResultService.updateAverage(cpu_sku, nodes, bm_name,avg);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @DeleteMapping(value = "/result/{bm_name}/{cpu_sku}/{nodes}")
-//    public ResponseEntity deleteAverage(@PathVariable("bm_name") String bm_name, @PathVariable("cpu_sku") String cpu_sku, @PathVariable("nodes") int nodes) {
-//        averageResultService.deleteAverage(cpu_sku, nodes, bm_name);
-//        return ResponseEntity.ok().build();
-//    }
-
 
 }

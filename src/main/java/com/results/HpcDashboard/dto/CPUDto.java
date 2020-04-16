@@ -1,10 +1,7 @@
 package com.results.HpcDashboard.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -13,6 +10,7 @@ import java.math.BigInteger;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CPUDto implements Serializable {
     @JsonProperty("cpu_sku")
     private String cpu_sku;

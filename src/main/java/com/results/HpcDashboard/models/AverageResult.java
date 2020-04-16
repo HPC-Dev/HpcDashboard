@@ -36,4 +36,6 @@ public class AverageResult implements Serializable {
 
     double avg_result;
 
+    double variance;
+
 }

@@ -48,7 +48,6 @@ public class HpcDashboardApplication implements CommandLineRunner {
 //			Application applications = new Application("ls-dyna-9.1.3","ls-dyna","ISV","9.1.3","","","ifortran","","","mkl","","",false ,false, LocalDate.now(),false,false,false,"",benchmarks);
 //			applicationRepo.save(applications);
 
-			//AverageResult avg = AverageResult.builder().app_name("lsdyna").avg_result(1140.67).bm_name("ls-3cars").cores(48).cpu_sku("7F72").nodes(1).build();
 		}
 
 

@@ -33,7 +33,13 @@ public class CPUService {
         return cpuRepo.findAll();
     }
 
-    public Map<String,Integer> getAllCPUs(){
+    public List<CPUDto> getAllCPUsCores(){
         return util.findAllCPUs(entityManager);
     }
+
+    public List<String> getAllCPUs(){
+        return cpuRepo.findAllCPUs();
+    }
+
+
 }

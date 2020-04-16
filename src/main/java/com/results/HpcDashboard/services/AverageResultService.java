@@ -34,6 +34,7 @@ public class AverageResultService {
     public void insertAverageResult(AverageResult averageResult) {
         if (averageResult== null || averageResult.getCpu_sku() == "" || averageResult.getCpu_sku().equals(null) || averageResult.getBm_name() == "" || averageResult.getBm_name().equals(null) )
             return;
+        //insert variance below
         AverageResult avg = AverageResult.builder().app_name(averageResult.getApp_name()).avg_result(averageResult.getAvg_result()).bm_name(averageResult.getBm_name()).cores(averageResult.getCores()).cpu_sku(averageResult.getCpu_sku()).nodes(averageResult.getNodes()).build();
         averageResultRepo.save(averageResult);
     }
@@ -57,4 +58,41 @@ public class AverageResultService {
         }
         return list;
     }
+
+
+    public List<AverageResult> getAvgResultCPUApp(String cpu_sku,String app_name) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.getAverageResultCPUApp(cpu_sku,app_name);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+    public List<String> getApp() {
+
+        List<String> app_list = null;
+        app_list = averageResultRepo.getAPP();
+
+        if(app_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return app_list;
+    }
+
+    public List<String> getCpu() {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getCPU();
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+
+
 }

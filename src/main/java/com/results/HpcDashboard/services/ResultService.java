@@ -41,6 +41,7 @@ public class ResultService {
         AverageResult averageResult = averageResultService.getSingleAvgResult(bm_name,cpu,nodes);
 
         if(averageResult == null){
+            //insert variance
          AverageResult aResult = AverageResult.builder().app_name(app_name).bm_name(bm_name).cores(cores).cpu_sku(cpu).avg_result(avgResult).nodes(nodes).build();
          averageResultService.insertAverageResult(aResult);
         }

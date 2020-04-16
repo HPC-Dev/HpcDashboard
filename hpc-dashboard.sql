@@ -42,6 +42,7 @@ select app_name from benchmarks;
 #ALTER TABLE my_user_details auto_increment=1;
 #
 
+drop table average_result;
 
 drop table benchmarks;
 

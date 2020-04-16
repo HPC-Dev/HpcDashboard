@@ -36,17 +36,17 @@ public class Util {
         }
     }
 
-    public Map<String,Integer> findAllCPUs(EntityManager entityManager) {
+    public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
         String queryStr = "select cpu_sku,cores from cpu_info";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
             List<Object[]> objectList = query.getResultList();
-            Map<String,Integer> map = new HashMap<>();
+            List<CPUDto> list = new ArrayList<>();
             for (Object[] row : objectList) {
                 CPUDto c = new CPUDto(row);
-                map.put(c.getCpu_sku(),c.getCores());
+                list.add(new CPUDto(c.getCpu_sku(),c.getCores()));
             }
-            return map;
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

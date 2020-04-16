@@ -23,4 +23,9 @@ public class ApplicationService {
     public List<Application> getAllApplications(){
         return applicationRepo.findAll();
     }
+
+
+    public List<String>  getAllAppNames(){
+        return applicationRepo.findAllApps();
+    }
 }
