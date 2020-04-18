@@ -13,11 +13,33 @@ public interface ResultRepo extends JpaRepository<Result,Integer> {
     public static final String FIND_RESULTS_APP = "SELECT result FROM results where bm_name=:bm_name";
     public static final String FIND_RESULTS_APP_CPU_NODE = "SELECT result FROM results where bm_name=:bm_name and cpu=:cpu and nodes=:nodes ";
 
+    public static final String GET_CPU = "select DISTINCT cpu from results ORDER BY cpu ASC";
+    public static final String GET_APP = "select DISTINCT app_name from results ORDER BY app_name ASC";
+    public static final String GET_BM = "select DISTINCT bm_name from results ORDER BY bm_name ASC";
+    public static final String GET_Nodes = "select DISTINCT nodes from results ORDER BY nodes ASC";
+
+    public static final String GET_SELECTED_BM = "select DISTINCT bm_name from results where app_name=:app_name ORDER BY nodes ASC";
+
+
     @Query(value = FIND_RESULTS_APP, nativeQuery = true)
     public List<Double> findresultsByApp(String bm_name);
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
     public List<Double> findresultsByAppCPUNode(String bm_name, String cpu, int nodes);
 
+    @Query(value = GET_CPU, nativeQuery = true)
+    List<String> getCpu();
+
+    @Query(value = GET_APP, nativeQuery = true)
+    List<String> getApp();
+
+    @Query(value = GET_BM, nativeQuery = true)
+    List<String> getBm();
+
+    @Query(value = GET_Nodes, nativeQuery = true)
+    List<Integer> getNodes();
+
+    @Query(value = GET_SELECTED_BM, nativeQuery = true)
+    List<String> getSelectedBm(String app_name);
 
 }

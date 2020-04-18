@@ -64,10 +64,49 @@
     </div>
 </nav>
 
+<br>
+
+
 <div class="container-fluid" style="max-width:1225px">
     <div class="row">
-        <div class="col-lg-12 mt-5 mb-5">
-            <table id="ajax" class="table table-responsive table-bordered" style="width: 100%">
+
+        <div id="app" class="col-sm-2">
+            <select class="form-control form-control-sm" id="appDrop" name="appDrop">
+                <option value="">--App--</option>
+                <option th:each="app : ${apps}"
+                        th:value="${app}"
+                        th:text="${app}"></option>
+            </select>
+        </div>
+
+
+        <div id="bm" class="col-sm-2" style='display:none;'>
+            <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
+                <option value="">--Benchmark--</option>
+            </select>
+        </div>
+
+        <div id="node" class="col-sm-2">
+            <select class="form-control form-control-sm" id="nodeDrop" name="nodeDrop">
+                <option value="">--Node count--</option>
+                <option th:each="node : ${nodes}"
+                        th:value="${node}"
+                        th:text="${node}"></option>
+            </select>
+        </div>
+
+
+        <div id="cpu" class="col-sm-2">
+            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
+                <option value="">--CPU--</option>
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+            </select>
+        </div>
+
+        <div class="col-lg-12 mt-4 mb-4 table-responsive">
+            <table id="ajax" class="table table-bordered" style="width: 100%">
                 <thead>
                 <tr>
                     <th>Job Id</th>
@@ -92,38 +131,7 @@
 <script type="text/javascript"
         th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script th:src="@{assets/datatable/datatables.js}"></script>
-
-<script>
- $(document).ready(function () {
-    $('#ajax').removeAttr('width').DataTable({
-        scrollY: "400px",
-        scrollX: true,
-        scrollCollapse: true,
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "/resultAjax",
-            "type": "POST",
-            "dataType": "json",
-            "contentType": "application/json",
-            "data": function (d) {
-                return JSON.stringify(d);
-            }
-        },
-        "columns": [
-            {"data": "job_id", width: 65, targets: 0},
-            {"data": "app_name",width: 120, targets: 1},
-            {"data": "bm_name", width: 140, targets: 2},
-            {"data": "nodes", width: 60, targets: 3},
-            {"data": "cores", width: 40, targets: 4},
-            {"data": "node_name", width: 250, targets: 5},
-            {"data": "result", width: 80, targets: 6},
-            {"data": "cpu", width: 40, targets: 7}
-           ],
-           fixedColumns: true
-    });
-    });
-</script>
+<script type="text/javascript" th:src="@{assets/custom/dashboard.js}"></script>
 
 </body>
 </html>

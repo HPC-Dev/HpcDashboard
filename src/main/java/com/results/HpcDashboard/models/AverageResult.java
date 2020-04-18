@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode
+@ToString
 @Table(name = "average_result")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @Builder

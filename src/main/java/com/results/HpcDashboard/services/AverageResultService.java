@@ -92,7 +92,4 @@ public class AverageResultService {
         }
         return cpu_list;
     }
-
-
-
 }

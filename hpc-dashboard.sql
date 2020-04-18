@@ -14,16 +14,30 @@ select * from applications;
 
 select * from results where bm_name="ls-3cars" and cpu="7F72" and nodes=1;
 
-select * from results;
+select * from results where app_name='fluent' and bm_name='fluent-sed4';
 
-delete from results where job_id in ("66215","66216");
+select bm_name from results where app_name='fluent' and bm_name='fluent-sed4';
+
 
 select * from average_result where bm_name="ls-3cars" and cpu_sku = "7F72" and nodes =1;
 
-select * from average_result;
+select DISTINCT app_name from average_result;
+
+
+select DISTINCT app_name from results ORDER BY app_name ASC;
+
+select DISTINCT bm_name from results ORDER BY bm_name ASC;
+
+select DISTINCT nodes from results ORDER BY nodes ASC;
+
+select DISTINCT cpu from results ORDER BY cpu ASC;
+
+
+
+
 
 select * from user;
-select * from role;
+select * from role;	
 select * from users_roles;
 
 

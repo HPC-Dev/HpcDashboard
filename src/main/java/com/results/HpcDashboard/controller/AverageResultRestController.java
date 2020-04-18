@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/avg")
-public class AverageResultController {
+public class AverageResultRestController {
 
     @Autowired
     AverageResultRepo averageResultRepo;

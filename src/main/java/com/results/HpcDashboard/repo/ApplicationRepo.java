@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ApplicationRepo extends JpaRepository<Application,Integer> {
 
-    public static final String FIND_APP_NAME = "select app_name from applications";
+    public static final String FIND_APP_NAME = "select app_name from applications ORDER BY app_name ASC";
 
     @Query(value = FIND_APP_NAME, nativeQuery = true)
     public List<String> findAllApps();

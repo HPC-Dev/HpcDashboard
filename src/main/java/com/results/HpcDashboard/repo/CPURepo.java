@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CPURepo extends JpaRepository<CPU,Integer> {
 
-    public static final String FIND_CPU_LIST = "select cpu_sku from cpu_info";
+    public static final String FIND_CPU_LIST = "select cpu_sku from cpu_info ORDER BY cpu_sku ASC";
 
     @Query(value = FIND_CPU_LIST, nativeQuery = true)
     public List<String> findAllCPUs();

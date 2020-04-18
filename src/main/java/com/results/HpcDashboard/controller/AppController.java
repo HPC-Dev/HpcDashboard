@@ -60,4 +60,5 @@ public class AppController {
         model.addAttribute("apps", app_list );
         return "result";
     }
+
 }

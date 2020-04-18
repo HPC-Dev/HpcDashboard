@@ -1,6 +1,5 @@
 package com.results.HpcDashboard.services;
 
-import com.results.HpcDashboard.controller.AverageResultController;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.repo.ResultRepo;
@@ -9,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -58,4 +57,62 @@ public class ResultService {
     public List<Result> getAllResults(){
         return resultRepo.findAll();
     }
+
+
+    public List<String> getApp() {
+
+        List<String> app_list = null;
+        app_list = resultRepo.getApp();
+
+        if(app_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return app_list;
+    }
+
+    public List<String> getCpu() {
+
+        List<String> cpu_list = null;
+        cpu_list = resultRepo.getCpu();
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+    public List<String> getBm() {
+
+        List<String> bm_list = null;
+        bm_list = resultRepo.getBm();
+
+        if(bm_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return bm_list;
+    }
+
+    public List<String> getSelectBm(String app_name) {
+
+        List<String> bm_list = null;
+        bm_list = resultRepo.getSelectedBm(app_name);
+
+        if(bm_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return bm_list;
+    }
+
+    public List<Integer> getNodes() {
+
+        List<Integer> node_list = null;
+        node_list = resultRepo.getNodes();
+
+        if(node_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return node_list;
+    }
+
+
 }

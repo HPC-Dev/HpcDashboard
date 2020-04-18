@@ -15,8 +15,8 @@ public interface AverageResultRepo extends JpaRepository<AverageResult, AverageR
     public static final String DELETE_AVG_RESULT = "DELETE FROM average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String GET_AVG_RESULT = "SELECT * from average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String GET_AVG_RESULT_CPU_APP = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name";
-    public static final String GET_CPU = "select DISTINCT cpu_sku from average_result";
-    public static final String GET_APP = "select DISTINCT app_name from average_result";
+    public static final String GET_CPU = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
+    public static final String GET_APP = "select DISTINCT app_name from average_result ORDER BY app_name ASC";
 
     @Modifying
     @Query(value = UPDATE_AVG_RESULT, nativeQuery = true)

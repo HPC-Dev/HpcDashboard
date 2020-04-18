@@ -74,8 +74,8 @@
 
 <div class="container-fluid" style="max-width:1225px">
     <div class="row" >
-        <div class="col-sm-2 dropdown">
-            <select class="form-control" id="cpuDrop" name="cpuDrop">
+        <div class="col-sm-1 dropdown">
+            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
                 <option value="">CPU</option>
                 <option th:each="cpu : ${cpus}"
                         th:value="${cpu}"
@@ -88,8 +88,8 @@
     </div>
 
     <div class="row" style="margin-top: 5px;">
-        <div id="app" class="col-sm-3 dropdown" style='display:none;'>
-            <select class="form-control" id="appDrop" name="appDrop">
+        <div id="app" class="col-sm-2 dropdown" style='display:none;'>
+            <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="">App</option>
                 <option th:each="app : ${apps}"
                         th:value="${app}"

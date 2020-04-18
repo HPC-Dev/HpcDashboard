@@ -6,6 +6,7 @@ import com.results.HpcDashboard.models.Benchmark;
 import com.results.HpcDashboard.repo.ApplicationRepo;
 import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.repo.CPURepo;
+import com.results.HpcDashboard.services.AverageResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,8 +21,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -36,6 +36,9 @@ public class HpcDashboardApplication implements CommandLineRunner {
 	@Autowired
 	CPURepo cpuRepo;
 
+	@Autowired
+	AverageResultService averageResultService;
+
 		@Override
 	public void run(String... args) throws Exception {
 
@@ -48,7 +51,36 @@ public class HpcDashboardApplication implements CommandLineRunner {
 //			Application applications = new Application("ls-dyna-9.1.3","ls-dyna","ISV","9.1.3","","","ifortran","","","mkl","","",false ,false, LocalDate.now(),false,false,false,"",benchmarks);
 //			applicationRepo.save(applications);
 
+//			List<AverageResult> list = averageResultService.getAvgResultCPUApp("7F52", "acusolve");
+//
+//
+//			List<List<AverageResult>> l = new ArrayList<>();
+//
+//			for(AverageResult a:list){
+//				List<AverageResult> b;
+//				boolean bool = false;
+//				for(List<AverageResult> c : l){
+//
+//					if(c.size() >0 && c.get(0).getNodes()==a.getNodes())
+//						{
+//							c.add(a);
+//							bool = true;
+//							break;
+//						}
+//
+//					}
+//
+//				if(bool == false){
+//					b = new ArrayList<>();
+//					b.add(a);
+//					l.add(b);
+//				}
+//
+//			}
+//			System.out.println(l);
+
 		}
+
 
 
 	public static void main(String[] args) {
