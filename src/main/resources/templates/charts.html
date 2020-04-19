@@ -4,19 +4,23 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
     <link rel="stylesheet" type="text/css"
-          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
-    <link rel="icon"
-          th:href="@{assets/favicon.ico}" />
-    <title>Charts</title>
-</head>
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link rel="icon" th:href="@{assets/favicon.ico}"/>
 
-<body>
+    <title>Charts</title>
+    <style>
+
+    </style>
+
+</head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container-fluid" style="max-width:1225px">
@@ -37,20 +41,22 @@
                     <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
                 </li>
 
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/result}">Result Form <span class="sr-only">(current)</span></a>
+                </li>
                 <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
                 </li>
 
                 <li class="nav-item active">
@@ -65,11 +71,51 @@
     </div>
 </nav>
 
+<br>
+<br>
 
-<script type="text/javascript"
-        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-<script type="text/javascript"
-        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+
+<div class="container-fluid" style="max-width:1225px">
+    <div class="row" >
+        <div class="col-sm-1 dropdown">
+            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
+                <option value="" selected="true" disabled="disabled">CPU</option>
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+            </select>
+        </div>
+        <div id="coreCount" style='display:none;' class="col-sm-3 ">
+            <input style="font-size:15px;" type="text" class="no-outline" id="coreValue" size="6" readonly></input>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;">
+        <div id="app" class="col-sm-2 dropdown" style='display:none;'>
+            <select class="form-control form-control-sm" id="appDrop" name="appDrop">
+                <option value="" selected="true" disabled="disabled">App</option>
+                <option th:each="app : ${apps}"
+                        th:value="${app}"
+                        th:text="${app}"></option>
+            </select>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container-fluid" style="max-width:1225px; overflow-x:auto;">
+
+
+
+</div>
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{assets/custom/data.js}"></script>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.models.CPU;
+import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.repo.CPURepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CPUService {
@@ -25,12 +29,22 @@ public class CPUService {
     private EntityManager entityManager;
 
     public void insertCPU(String[] resultData){
-        CPU cpu = CPU.builder().cpu_generation(resultData[1]).max_ddr_freq(resultData[9]).ddr_channels(Integer.valueOf(resultData[8])).l3_cache(Integer.valueOf(resultData[7])).peak_freq(resultData[6]).base_freq(resultData[5]).cores(Integer.valueOf(resultData[4])).tdp(resultData[3]).cpu_sku(resultData[2].toUpperCase()).cpu_manufacturer(resultData[0]).build();
+        CPU cpu = CPU.builder().cpuGeneration(resultData[1]).maxDdrFreq(resultData[9]).ddrChannels(Integer.valueOf(resultData[8])).l3Cache(Integer.valueOf(resultData[7])).peakFreq(resultData[6]).baseFreq(resultData[5]).cores(Integer.valueOf(resultData[4])).tdp(resultData[3]).cpuSku(resultData[2].toUpperCase()).cpuManufacturer(resultData[0]).build();
         cpuRepo.save(cpu);
     }
 
     public List<CPU> getAllCPUData(){
-        return cpuRepo.findAll();
+        Iterable<CPU> cpus = cpuRepo.findAll();
+        List<CPU> list = null;
+        list = StreamSupport
+                .stream(cpus.spliterator(), false)
+                .collect(Collectors.toList());
+
+        if(list ==null){
+            return Collections.emptyList();
+        }
+
+        return list;
     }
 
     public List<CPUDto> getAllCPUsCores(){

@@ -14,15 +14,12 @@ margin-top: 1px;
 }
 
      .col-custom-1{
-       flex: 0 0 4%;
-       max-width: 4%;
+       flex: 0 0 2.5%;
+       max-width: 2.5%;
      }
      .col-custom-2{
        flex: 0 0 10%;
        max-width: 10%;
-       padding-right: 15px;
-       padding-left: 15px;
-       margin-top: 5px;
      }
       .col-custom-3{
             flex: 0 0 13%;

@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -52,6 +53,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard <span class="sr-only">(current)</span></a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
@@ -64,50 +70,55 @@
     </div>
 </nav>
 
-<br>
 
-
-<div class="container-fluid" style="max-width:1225px">
+<div class="container-fluid" style="margin-top:15px">
     <div class="row">
 
-        <div id="app" class="col-sm-2">
-            <select class="form-control form-control-sm" id="appDrop" name="appDrop">
-                <option value="">--App--</option>
-                <option th:each="app : ${apps}"
-                        th:value="${app}"
-                        th:text="${app}"></option>
-            </select>
+        <div class="col-custom-1">
+
+        </div>
+        <div class="col-custom-2" style="margin-top:68px">
+
+            <div id="app" class="dropdown">
+                <select class="form-control form-control-sm" id="appDrop" name="appDrop">
+                    <option  selected="true" disabled="disabled">--App--</option>
+                    <option th:each="app : ${apps}"
+                            th:value="${app}"
+                            th:text="${app}"></option>
+                </select>
+            </div>
+            <br>
+
+            <div id="bm">
+                <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
+                    <option selected="true" disabled="disabled">--Benchmark--</option>
+                </select>
+            </div>
+            <br>
+            <div id="node" >
+                <select class="form-control form-control-sm" id="nodeDrop" name="nodeDrop">
+                    <option selected="true" disabled="disabled">--Node count--</option>
+                    <option th:each="node : ${nodes}"
+                            th:value="${node}"
+                            th:text="${node}"></option>
+                </select>
+            </div>
+            <br>
+
+            <div id="cpu" >
+                <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">--CPU--</option>
+                    <option th:each="cpu : ${cpus}"
+                            th:value="${cpu}"
+                            th:text="${cpu}"></option>
+                </select>
+            </div>
         </div>
 
-
-        <div id="bm" class="col-sm-2" style='display:none;'>
-            <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
-                <option value="">--Benchmark--</option>
-            </select>
-        </div>
-
-        <div id="node" class="col-sm-2">
-            <select class="form-control form-control-sm" id="nodeDrop" name="nodeDrop">
-                <option value="">--Node count--</option>
-                <option th:each="node : ${nodes}"
-                        th:value="${node}"
-                        th:text="${node}"></option>
-            </select>
-        </div>
-
-
-        <div id="cpu" class="col-sm-2">
-            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
-                <option value="">--CPU--</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
-            </select>
-        </div>
-
+        <div class="col-sm-10">
         <div class="col-lg-12 mt-4 mb-4 table-responsive">
             <table id="ajax" class="table table-bordered" style="width: 100%">
-                <thead>
+                <thead bgcolor="#D3D3D3">
                 <tr>
                     <th>Job Id</th>
                     <th>Application</th>
@@ -123,6 +134,7 @@
         </div>
     </div>
 </div>
+</div>
 
 
 <script type="text/javascript"
@@ -131,7 +143,7 @@
 <script type="text/javascript"
         th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.spring-friendly.js}"></script>
 <script type="text/javascript" th:src="@{assets/custom/dashboard.js}"></script>
-
 </body>
 </html>

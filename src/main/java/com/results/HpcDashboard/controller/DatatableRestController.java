@@ -6,52 +6,63 @@ import com.results.HpcDashboard.models.CPU;
 import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.paging.Page;
 import com.results.HpcDashboard.paging.PagingRequest;
-import com.results.HpcDashboard.services.ApplicationDataTableService;
+import com.results.HpcDashboard.repo.ApplicationRepo;
+import com.results.HpcDashboard.repo.CPURepo;
+import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.services.BenchmarkDataTableService;
-import com.results.HpcDashboard.services.CPUDataTableService;
-import com.results.HpcDashboard.services.ResultDataTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @RestController
+@RequestMapping(value = "/datatable")
 public class DatatableRestController {
-
-    private final ResultDataTableService resultDataTableService;
-
-    private final ApplicationDataTableService applicationDataTableService;
 
     private final BenchmarkDataTableService benchmarkDataTableService;
 
-    private final CPUDataTableService cpuDataTableService;
 
     @Autowired
-    public DatatableRestController(ResultDataTableService resultDataTableService, ApplicationDataTableService applicationDataTableService, BenchmarkDataTableService benchmarkDataTableService, CPUDataTableService cpuDataTableService) {
-        this.resultDataTableService = resultDataTableService;
-        this.applicationDataTableService = applicationDataTableService;
+    ResultRepo resultRepo;
+
+    @Autowired
+    ApplicationRepo applicationRepo;
+
+    @Autowired
+    CPURepo cpuRepo;
+
+
+    @Autowired
+    public DatatableRestController(BenchmarkDataTableService benchmarkDataTableService) {
         this.benchmarkDataTableService = benchmarkDataTableService;
-        this.cpuDataTableService = cpuDataTableService;
-    }
 
-    @PostMapping("resultAjax")
-    public Page<Result> getResults(@RequestBody PagingRequest pagingRequest) {
-        return resultDataTableService.getData(pagingRequest);
-    }
-
-
-    @PostMapping("cpuAjax")
-    public Page<CPU> getCPUs(@RequestBody PagingRequest pagingRequest) {
-        return cpuDataTableService.getData(pagingRequest);
-    }
-
-    @PostMapping("applicationAjax")
-    public Page<Application> getApplications(@RequestBody PagingRequest pagingRequest) {
-        return applicationDataTableService.getData(pagingRequest);
     }
 
     @PostMapping("benchmarkAjax")
     public Page<BenchmarkDto> getBenchmarks(@RequestBody PagingRequest pagingRequest) {
         return benchmarkDataTableService.getData(pagingRequest);
+    }
+
+    @GetMapping(value = "dashboard")
+    public DataTablesOutput<Result> listResults(@Valid DataTablesInput input) {
+        DataTablesOutput<Result> result = resultRepo.findAll(input);
+        return result;
+    }
+
+
+    @GetMapping(value = "apps")
+    public DataTablesOutput<Application> listApplications(@Valid DataTablesInput input) {
+        DataTablesOutput<Application> applications = applicationRepo.findAll(input);
+        return applications;
+    }
+
+    @GetMapping(value = "cpu")
+    public DataTablesOutput<CPU> listCPU(@Valid DataTablesInput input) {
+        DataTablesOutput<CPU> cpu = cpuRepo.findAll(input);
+        return cpu;
     }
 
 }

@@ -12,9 +12,9 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class AverageResultId implements Serializable {
 
-    String cpu_sku;
+    String cpuSku;
 
     int nodes;
 
-    String bm_name;
+    String bmName;
 }

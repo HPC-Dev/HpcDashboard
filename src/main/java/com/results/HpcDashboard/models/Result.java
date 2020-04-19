@@ -21,17 +21,17 @@ import java.math.BigDecimal;
 @Builder
 public class Result implements Serializable {
     @Id
-    private String job_id;
+    private String jobId;
 
-    private String app_name;
+    private String appName;
 
-    private String bm_name;
+    private String bmName;
 
     private int nodes;
 
     private int cores;
 
-    private String node_name;
+    private String nodeName;
 
     private double result;
 

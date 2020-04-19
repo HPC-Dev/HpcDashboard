@@ -56,7 +56,7 @@ public class ResultDashboardController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model) {
+    public String showDashboard1(Model model) {
 
         List<String> cpu_list = resultService.getCpu();
         List<String> app_list = resultService.getApp();

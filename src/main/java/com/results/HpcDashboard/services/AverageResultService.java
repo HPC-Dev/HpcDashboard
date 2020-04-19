@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class AverageResultService {
@@ -32,16 +34,19 @@ public class AverageResultService {
 
     @Transactional
     public void insertAverageResult(AverageResult averageResult) {
-        if (averageResult== null || averageResult.getCpu_sku() == "" || averageResult.getCpu_sku().equals(null) || averageResult.getBm_name() == "" || averageResult.getBm_name().equals(null) )
+        if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert variance below
-        AverageResult avg = AverageResult.builder().app_name(averageResult.getApp_name()).avg_result(averageResult.getAvg_result()).bm_name(averageResult.getBm_name()).cores(averageResult.getCores()).cpu_sku(averageResult.getCpu_sku()).nodes(averageResult.getNodes()).build();
+        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku()).nodes(averageResult.getNodes()).build();
         averageResultRepo.save(averageResult);
     }
 
     public List<AverageResult> getAverageResult() {
+        Iterable<AverageResult> results = averageResultRepo.findAll();
         List<AverageResult> list = null;
-        list = averageResultRepo.findAll();
+        list = StreamSupport
+                .stream(results.spliterator(), false)
+                .collect(Collectors.toList());
         if(list ==null){
             return Collections.emptyList();
         }

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
@@ -54,6 +54,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
 
@@ -69,7 +73,7 @@
     <div class="row">
         <div class="col-lg-12 mt-5 mb-5 table-responsive">
             <table id="ajax" class="table table-bordered" style="width: 100%">
-                <thead>
+                <thead bgcolor="#D3D3D3">
                 <tr>
                     <th>Manufacturer</th>
                     <th>Generation</th>
@@ -97,38 +101,53 @@
 <script type="text/javascript"
         th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.spring-friendly.js}"></script>
 
 <script>
-    $('#ajax').removeAttr('width').DataTable({
-        scrollY: "500px",
-        scrollX: true,
-        scrollCollapse: true,
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "/cpuAjax",
-            "type": "POST",
-            "dataType": "json",
-            "contentType": "application/json",
-            "data": function (d) {
-                return JSON.stringify(d);
-            }
-        },
-       "columns": [
-            {"data": "cpu_manufacturer", width: 110, targets: 0},
-            {"data": "cpu_generation",width: 80, targets: 1},
-            {"data": "cpu_sku", width: 60, targets: 2},
-            {"data": "tdp", width: 50, targets: 3},
-            {"data": "cores", width: 40, targets: 4},
-            {"data": "base_freq", width: 120, targets: 5},
-            {"data": "peak_freq", width: 120, targets: 6},
-            {"data": "l3_cache", width: 120, targets: 7},
-            {"data": "ddr_channels", width: 160, targets: 8},
-            {"data": "max_ddr_freq", width: 120, targets: 9}
 
-        ]
-        ,fixedColumns: true
-    });
+    var table = $('table#ajax').DataTable({
+		'ajax' : '/datatable/cpu',
+		'scrollY': "430px",
+        'scrollX': true,
+        'scrollCollapse': true,
+        'processing': true,
+        'serverSide': true,
+        'paging' : false,
+
+		columns : [
+		{
+                data: 'cpuManufacturer'
+            },
+            {
+                data: 'cpuGeneration'
+            },
+            {
+                data: 'cpuSku'
+            },
+            {
+                data: 'tdp'
+            },
+            {
+                data: 'cores'
+            },
+            {
+                data: 'baseFreq'
+            },
+            {
+                data: 'peakFreq'
+            },
+            {
+                data: 'l3Cache'
+            },
+            {
+                data: 'ddrChannels'
+            },
+            {
+                data: 'maxDdrFreq'
+            }
+		]
+	});
+
 </script>
 
 </body>

@@ -12,14 +12,14 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @ToString
 public class CPUDto implements Serializable {
-    @JsonProperty("cpu_sku")
-    private String cpu_sku;
+    @JsonProperty("cpuSku")
+    private String cpuSku;
 
     @JsonProperty("cores")
     private int cores;
 
     public CPUDto(Object[] columns) {
-        this.cpu_sku = (String) columns[0];
+        this.cpuSku = (String) columns[0];
         this.cores = (int) columns[1];
 
     }

@@ -22,48 +22,45 @@ public final class BenchmarkComparators {
     static Map<Key, Comparator<BenchmarkDto>> map = new HashMap<>();
 
     static {
-        map.put(new Key("bm_id", Direction.asc), Comparator.comparing(BenchmarkDto::getApp_name));
-        map.put(new Key("bm_id", Direction.desc), Comparator.comparing(BenchmarkDto::getApp_name)
+
+        map.put(new Key("bmName", Direction.asc), Comparator.comparing(BenchmarkDto::getBmName));
+        map.put(new Key("bmName", Direction.desc), Comparator.comparing(BenchmarkDto::getBmName)
                 .reversed());
 
-        map.put(new Key("bm_name", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_name));
-        map.put(new Key("bm_name", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_name)
+        map.put(new Key("bmFullName", Direction.asc), Comparator.comparing(BenchmarkDto::getBmFullName));
+        map.put(new Key("bmFullName", Direction.desc), Comparator.comparing(BenchmarkDto::getBmFullName)
                 .reversed());
 
-        map.put(new Key("bm_full_name", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_full_name));
-        map.put(new Key("bm_full_name", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_full_name)
+        map.put(new Key("appName", Direction.asc), Comparator.comparing(BenchmarkDto::getAppName));
+        map.put(new Key("appName", Direction.desc), Comparator.comparing(BenchmarkDto::getAppName)
                 .reversed());
 
-        map.put(new Key("app_name", Direction.asc), Comparator.comparing(BenchmarkDto::getApp_name));
-        map.put(new Key("app_name", Direction.desc), Comparator.comparing(BenchmarkDto::getApp_name)
+        map.put(new Key("bmSize", Direction.asc), Comparator.comparing(BenchmarkDto::getBmSize));
+        map.put(new Key("bmSize", Direction.desc), Comparator.comparing(BenchmarkDto::getBmSize)
                 .reversed());
 
-        map.put(new Key("bm_size", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_size));
-        map.put(new Key("bm_size", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_size)
+        map.put(new Key("bmSizeUnits", Direction.asc), Comparator.comparing(BenchmarkDto::getBmSizeUnits));
+        map.put(new Key("bmSizeUnits", Direction.desc), Comparator.comparing(BenchmarkDto::getBmSizeUnits)
                 .reversed());
 
-        map.put(new Key("bm_size_units", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_size_units));
-        map.put(new Key("bm_size_units", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_size_units)
+        map.put(new Key("bmDur", Direction.asc), Comparator.comparing(BenchmarkDto::getBmDur));
+        map.put(new Key("bmDur", Direction.desc), Comparator.comparing(BenchmarkDto::getBmDur)
                 .reversed());
 
-        map.put(new Key("bm_dur", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_dur));
-        map.put(new Key("bm_dur", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_dur)
+        map.put(new Key("bmDurUnits", Direction.asc), Comparator.comparing(BenchmarkDto::getBmDurUnits));
+        map.put(new Key("bmDurUnits", Direction.desc), Comparator.comparing(BenchmarkDto::getBmDurUnits)
                 .reversed());
 
-        map.put(new Key("bm_dur_units", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_dur_units));
-        map.put(new Key("bm_dur_units", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_dur_units)
+        map.put(new Key("estRuntime", Direction.asc), Comparator.comparing(BenchmarkDto::getEstRuntime));
+        map.put(new Key("estRuntime", Direction.desc), Comparator.comparing(BenchmarkDto::getEstRuntime)
                 .reversed());
 
-        map.put(new Key("est_runtime", Direction.asc), Comparator.comparing(BenchmarkDto::getEst_runtime));
-        map.put(new Key("est_runtime", Direction.desc), Comparator.comparing(BenchmarkDto::getEst_runtime)
+        map.put(new Key("bmUnits", Direction.asc), Comparator.comparing(BenchmarkDto::getBmUnits));
+        map.put(new Key("bmUnits", Direction.desc), Comparator.comparing(BenchmarkDto::getBmUnits)
                 .reversed());
 
-        map.put(new Key("bm_units", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_units));
-        map.put(new Key("bm_units", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_units)
-                .reversed());
-
-        map.put(new Key("bm_metric", Direction.asc), Comparator.comparing(BenchmarkDto::getBm_metric));
-        map.put(new Key("bm_metric", Direction.desc), Comparator.comparing(BenchmarkDto::getBm_metric)
+        map.put(new Key("bmMetric", Direction.asc), Comparator.comparing(BenchmarkDto::getBmMetric));
+        map.put(new Key("bmMetric", Direction.desc), Comparator.comparing(BenchmarkDto::getBmMetric)
                 .reversed());
     }
 

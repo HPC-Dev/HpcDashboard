@@ -22,26 +22,26 @@ public class CPU implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    String cpu_manufacturer;
+    String cpuManufacturer;
 
-    String cpu_generation;
+    String cpuGeneration;
 
-    String cpu_sku;
+    String cpuSku;
 
     String tdp;
 
     int cores;
 
-    String base_freq;
+    String baseFreq;
 
-    String all_core_freq;
+    String allCoreFreq;
 
-    String peak_freq;
+    String peakFreq;
 
-    int l3_cache;
+    int l3Cache;
 
-    int ddr_channels;
+    int ddrChannels;
 
-    String max_ddr_freq;
+    String maxDdrFreq;
 
 }

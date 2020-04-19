@@ -1,8 +1,6 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.BenchmarkDto;
-import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

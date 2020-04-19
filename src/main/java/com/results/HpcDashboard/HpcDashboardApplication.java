@@ -12,6 +12,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,6 +27,7 @@ import java.util.*;
 
 @SpringBootApplication
 @EnableSwagger2
+@EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class)
 public class HpcDashboardApplication implements CommandLineRunner {
 
 	@Autowired
@@ -42,46 +45,7 @@ public class HpcDashboardApplication implements CommandLineRunner {
 		@Override
 	public void run(String... args) throws Exception {
 
-//			Set<Benchmark> benchmarks = new HashSet<>();
-//			benchmarks.add(new Benchmark("ls-3cars","3-Cars","","cells",0,"ms","Elapsed Time","sec",1800));
-//			benchmarks.add(new Benchmark("ls-car2car","Car-2-Car","ls-dyna","2.4m","cells",120,"ms","Elapsed Time","sec",900));
-//			benchmarks.add(new Benchmark("ls-neon","Neon_Refined_Revised","535k","cells",150,"ms","Elapsed Time","sec",300));
-//			benchmarks.add(new Benchmark("ls-odb-10m","ODB-10M","10m","cells",80,"ms","Elapsed Time","sec",86400));
-//
-//			Application applications = new Application("ls-dyna-9.1.3","ls-dyna","ISV","9.1.3","","","ifortran","","","mkl","","",false ,false, LocalDate.now(),false,false,false,"",benchmarks);
-//			applicationRepo.save(applications);
-
-//			List<AverageResult> list = averageResultService.getAvgResultCPUApp("7F52", "acusolve");
-//
-//
-//			List<List<AverageResult>> l = new ArrayList<>();
-//
-//			for(AverageResult a:list){
-//				List<AverageResult> b;
-//				boolean bool = false;
-//				for(List<AverageResult> c : l){
-//
-//					if(c.size() >0 && c.get(0).getNodes()==a.getNodes())
-//						{
-//							c.add(a);
-//							bool = true;
-//							break;
-//						}
-//
-//					}
-//
-//				if(bool == false){
-//					b = new ArrayList<>();
-//					b.add(a);
-//					l.add(b);
-//				}
-//
-//			}
-//			System.out.println(l);
-
 		}
-
-
 
 	public static void main(String[] args) {
 		SpringApplication.run(HpcDashboardApplication.class, args);

@@ -1,14 +1,13 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.models.Application;
-import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.repo.ApplicationRepo;
-import com.results.HpcDashboard.repo.ResultRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ApplicationService {
@@ -20,8 +19,20 @@ public class ApplicationService {
         applicationRepo.save(app);
     }
 
+
+
     public List<Application> getAllApplications(){
-        return applicationRepo.findAll();
+        Iterable<Application> apps = applicationRepo.findAll();
+        List<Application> list = null;
+        list = StreamSupport
+                .stream(apps.spliterator(), false)
+                .collect(Collectors.toList());
+
+        if(list ==null){
+            return Collections.emptyList();
+        }
+
+        return list;
     }
 
 

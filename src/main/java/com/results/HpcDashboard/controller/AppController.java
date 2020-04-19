@@ -1,20 +1,13 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.FormCommand;
-import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.models.User;
 import com.results.HpcDashboard.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,6 +41,10 @@ public class AppController {
 
     @GetMapping("/charts")
     public String showCharts(Model model) {
+        List<String> cpu_list = averageResultService.getCpu();
+        List<String> app_list = averageResultService.getApp();
+        model.addAttribute("cpus", cpu_list );
+        model.addAttribute("apps", app_list );
         return "charts";
     }
 

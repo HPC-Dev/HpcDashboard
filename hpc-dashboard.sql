@@ -12,11 +12,13 @@ select * from benchmarks;
 
 select * from applications;
 
+select * from results;
+
 select * from results where bm_name="ls-3cars" and cpu="7F72" and nodes=1;
 
 select * from results where app_name='fluent' and bm_name='fluent-sed4';
 
-select bm_name from results where app_name='fluent' and bm_name='fluent-sed4';
+select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
 
 
 select * from average_result where bm_name="ls-3cars" and cpu_sku = "7F72" and nodes =1;
@@ -53,8 +55,8 @@ select app_name from benchmarks;
 
 
 #delete from my_user_details where id=1;
-#ALTER TABLE my_user_details auto_increment=1;
-#
+#ALTER TABLE benchmarks auto_increment=1;
+
 
 drop table average_result;
 
@@ -63,4 +65,6 @@ drop table benchmarks;
 drop table applications;
 #
 drop table results;
+
+drop table cpu_info;
 

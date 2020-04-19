@@ -44,7 +44,7 @@ public class Util {
             List<CPUDto> list = new ArrayList<>();
             for (Object[] row : objectList) {
                 CPUDto c = new CPUDto(row);
-                list.add(new CPUDto(c.getCpu_sku(),c.getCores()));
+                list.add(new CPUDto(c.getCpuSku(),c.getCores()));
             }
             return list;
         } catch (Exception e) {

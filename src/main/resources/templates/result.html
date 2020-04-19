@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
     <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
     <link rel="icon"
           th:href="@{assets/favicon.ico}"/>
 
@@ -56,6 +56,10 @@
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
 
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data <span class="sr-only">(current)</span></a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
@@ -76,7 +80,7 @@
     <div class="row" >
         <div class="col-sm-1 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
-                <option value="">CPU</option>
+                <option value="" selected="true" disabled="disabled">CPU</option>
                 <option th:each="cpu : ${cpus}"
                         th:value="${cpu}"
                         th:text="${cpu}"></option>
@@ -90,7 +94,7 @@
     <div class="row" style="margin-top: 5px;">
         <div id="app" class="col-sm-2 dropdown" style='display:none;'>
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
-                <option value="">App</option>
+                <option value="" selected="true" disabled="disabled">App</option>
                 <option th:each="app : ${apps}"
                         th:value="${app}"
                         th:text="${app}"></option>
@@ -100,6 +104,7 @@
     </div>
 
 </div>
+<br>
 
 <div class="container-fluid" style="max-width:1225px; overflow-x:auto;">
 

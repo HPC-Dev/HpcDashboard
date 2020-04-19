@@ -1,11 +1,6 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.dto.FormCommand;
-import com.results.HpcDashboard.models.CPU;
-import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.repo.CPURepo;
 import com.results.HpcDashboard.services.CPUService;
-import com.results.HpcDashboard.services.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

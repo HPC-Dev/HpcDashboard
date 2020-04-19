@@ -22,19 +22,19 @@ import java.io.Serializable;
 public class AverageResult implements Serializable {
 
     @Id
-    String cpu_sku;
+    String cpuSku;
 
     @Id
     int nodes;
 
     @Id
-    String bm_name;
+    String bmName;
 
     int cores;
 
-    String app_name;
+    String appName;
 
-    double avg_result;
+    double avgResult;
 
     double variance;
 

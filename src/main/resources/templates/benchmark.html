@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/datatable/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
 
@@ -56,6 +56,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
                 </li>
 
@@ -67,23 +71,22 @@
     </div>
 </nav>
 
-<div class="container-fluid" style="max-width:1225px">
+<div class="container-fluid" style="max-width:1280px">
     <div class="row">
-        <div class="col-xl-12 mt-5 mb-5">
-            <table id="ajax" class="table table-bordered table-responsive" style="width: 100%">
-                <thead>
+        <div class="col-xl-12 mt-5 mb-5 table-responsive">
+            <table id="ajax" class="table table-bordered " style="width: 100%">
+                <thead bgcolor="#D3D3D3">
                 <tr>
                     <th>Application</th>
                     <th>Benchmark</th>
                     <th>Name</th>
-                    <th>duration</th>
-                    <th>metric</th>
-                    <th>size</th>
-                    <th>size units</th>
-                    <th>dur units</th>
-                    <th>units</th>
-                    <th>est runtime</th>
-
+                    <th>Metric</th>
+                    <th>Size</th>
+                    <th>Size units</th>
+                    <th>Duration</th>
+                    <th>Dur units</th>
+                    <th>Runtime</th>
+                    <th>Units</th>
                 </tr>
                 </thead>
             </table>
@@ -103,8 +106,11 @@
     $('#ajax').removeAttr('width').DataTable({
         "processing": true,
         "serverSide": true,
+        'scrollY': "430px",
+        'scrollX': true,
+        'scrollCollapse': true,
         "ajax": {
-            "url": "/benchmarkAjax",
+            "url": "/datatable/benchmarkAjax",
             "type": "POST",
             "dataType": "json",
             "contentType": "application/json",
@@ -113,16 +119,16 @@
             }
         },
         "columns": [
-            {"data": "app_name", width: 80, targets: 0},
-            {"data": "bm_name",width: 80, targets: 1},
-            {"data": "bm_full_name", width: 120, targets: 2},
-            {"data": "bm_dur", width: 60, targets: 3},
-            {"data": "bm_metric", width: 200, targets: 4},
-            {"data": "bm_size", width: 60, targets: 5},
-            {"data": "bm_size_units", width: 140, targets: 6},
-            {"data": "bm_dur_units", width: 60, targets: 7},
-            {"data": "bm_units", width: 40, targets: 8},
-            {"data": "est_runtime", width: 100, targets: 9}
+            {"data": "appName", width: 80, targets: 0},
+            {"data": "bmName",width: 80, targets: 1},
+            {"data": "bmFullName", width: 120, targets: 2},
+            {"data": "bmMetric", width: 200, targets: 3},
+            {"data": "bmSize", width: 60, targets: 4},
+            {"data": "bmSizeUnits", width: 140, targets: 5},
+            {"data": "bmDur", width: 60, targets: 6},
+            {"data": "bmDurUnits", width: 60, targets: 7},
+            {"data": "estRuntime", width: 80, targets: 8},
+            {"data": "bmUnits", width: 40, targets: 9}
         ]
         ,fixedColumns: true
     });

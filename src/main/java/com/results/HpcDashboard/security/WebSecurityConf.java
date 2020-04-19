@@ -52,9 +52,6 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                // .antMatchers("/dashboard").hasAuthority("ROLE_USER")
                 .antMatchers("/user").hasAnyAuthority("ADMIN", "ROLE_USER")
                 .antMatchers(
-                        "/result",
-                        "/resultAjax",
-                        "/app/**",
                         "/avg/**",
                         "/register**",
                         "/js/**",

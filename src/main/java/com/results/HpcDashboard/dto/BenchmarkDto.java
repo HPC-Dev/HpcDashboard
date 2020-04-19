@@ -11,47 +11,50 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BenchmarkDto implements Serializable {
-    @JsonProperty("app_name")
-    private String app_name;
+    @JsonProperty("appName")
+    private String appName;
 
-    @JsonProperty("bm_name")
-    private String bm_name;
+    @JsonProperty("bmName")
+    private String bmName;
 
-    @JsonProperty("bm_full_name")
-    private String bm_full_name;
+    @JsonProperty("bmFullName")
+    private String bmFullName;
 
-    @JsonProperty("bm_dur")
-    private BigInteger bm_dur;
+    @JsonProperty("bmDur")
+    private BigInteger bmDur;
 
-    @JsonProperty("bm_metric")
-    private String bm_metric;
+    @JsonProperty("bmMetric")
+    private String bmMetric;
 
-    @JsonProperty("bm_size")
-    private String bm_size;
+    @JsonProperty("bmSize")
+    private String bmSize;
 
-    @JsonProperty("bm_size_units")
-    private String bm_size_units;
+    @JsonProperty("bmSizeUnits")
+    private String bmSizeUnits;
 
-    @JsonProperty("bm_dur_units")
-    private String bm_dur_units;
+    @JsonProperty("bmDurUnits")
+    private String bmDurUnits;
 
-    @JsonProperty("bm_units")
-    private String bm_units;
+    @JsonProperty("bmUnits")
+    private String bmUnits;
 
-    @JsonProperty("est_runtime")
-    private BigInteger est_runtime;
+    @JsonProperty("estRuntime")
+    private BigInteger estRuntime;
 
 
     public BenchmarkDto(Object[] columns) {
-        this.app_name = (String) columns[0];
-        this.bm_name = (String) columns[1];
-        this.bm_full_name = (String) columns[2];
-        this.bm_dur = (BigInteger) columns[3];
-        this.bm_metric = (String) columns[4];
-        this.bm_size = (String) columns[5];
-        this.bm_size_units = (String) columns[6];
-        this.bm_dur_units = (String) columns[7];
-        this.bm_units = (String) columns[8];
-        this.est_runtime = (BigInteger) columns[9];
+        this.appName = (String) columns[0];
+        this.bmName = (String) columns[1];
+        this.bmFullName = (String) columns[2];
+        this.bmDur = (BigInteger) columns[3];
+        this.bmMetric = (String) columns[4];
+        this.bmSize = (String) columns[5];
+        this.bmSizeUnits = (String) columns[6];
+        this.bmDurUnits = (String) columns[7];
+        this.bmUnits = (String) columns[8];
+        this.estRuntime = (BigInteger) columns[9];
     }
+
+
+
 }

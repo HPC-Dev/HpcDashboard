@@ -57,33 +57,32 @@ public class BenchmarkDataTableService implements DataTableService<BenchmarkDto>
         }
 
         String value = pagingRequest.getSearch()
-                .getValue();
+                .getValue().toLowerCase();
 
-        return benchmark -> benchmark.getApp_name()
+        return benchmark -> benchmark.getAppName()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_name()
+                || benchmark.getBmName()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_full_name()
+                || benchmark.getBmFullName()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_metric()
+                || benchmark.getBmMetric()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_size()
+                || benchmark.getBmSize()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_size_units()
+                || benchmark.getBmSizeUnits()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_dur_units()
+                || benchmark.getBmDurUnits()
                 .toLowerCase()
                 .contains(value)
-                || benchmark.getBm_units()
+                || benchmark.getBmUnits()
                 .toLowerCase()
                 .contains(value);
-
     }
 
     public Comparator<BenchmarkDto> sortData(PagingRequest pagingRequest) {

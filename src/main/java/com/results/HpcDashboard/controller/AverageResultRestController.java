@@ -58,14 +58,5 @@ public class AverageResultRestController {
         return list;
     }
 
-//    @GetMapping("/cpus")
-//    public List<CPUDto> getAllCPUsCores(){
-//        List<CPUDto> list = null;
-//        list = cpuService.getAllCPUsCores();
-//        if(list ==null){
-//            return Collections.emptyList();
-//        }
-//        return list;
-//    }
 
 }

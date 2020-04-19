@@ -26,7 +26,7 @@ function getCpuCores() {
 }
 
 function findCpuCore(cpu) {
-    return cpus.find(function(eachCpu) { return eachCpu.cpu_sku === cpu})['cores'];
+    return cpus.find(function(eachCpu) { return eachCpu.cpuSku === cpu})['cores'];
 }
 
 function getData() {
@@ -46,10 +46,10 @@ function getData() {
                 transformedData.push(row);
             }
 
-            row[item.bm_name] = item.avg_result;
+            row[item.bmName] = item.avgResult;
 
-            if(columnNames.indexOf(item.bm_name) === -1 ) {
-                columnNames.push(item.bm_name);
+            if(columnNames.indexOf(item.bmName) === -1 ) {
+                columnNames.push(item.bmName);
             }
         });
 
@@ -75,7 +75,7 @@ function updateTable(columns, data) {
 function getHeaders(columns) {
     var headers = ['<thead><tr>'];
 
-    columns.forEach(function(column) { headers.push('<th bgcolor="#99ccff">' + column + '</th>')});
+    columns.forEach(function(column) { headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')});
     headers.push('</tr></thead>');
 
     return headers.join('');

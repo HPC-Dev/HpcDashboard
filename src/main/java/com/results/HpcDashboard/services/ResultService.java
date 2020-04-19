@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ResultService {
@@ -31,7 +33,7 @@ public class ResultService {
         String app_name = resultData[1];
         int cores = Integer.valueOf(resultData[4]);
 
-        Result result = Result.builder().job_id(resultData[0]).app_name(app_name).bm_name(bm_name).nodes(nodes).cores(cores).node_name(resultData[5].replaceAll("\\\\,",",")).result(util.round(Double.valueOf(resultData[6]),4)).cpu(cpu).build();
+        Result result = Result.builder().jobId(resultData[0]).appName(app_name).bmName(bm_name).nodes(nodes).cores(cores).nodeName(resultData[5].replaceAll("\\\\,",",")).result(util.round(Double.valueOf(resultData[6]),4)).cpu(cpu).build();
         resultRepo.save(result);
 
         List<Double> list = getResultsForAverage(bm_name,cpu,nodes);
@@ -41,7 +43,7 @@ public class ResultService {
 
         if(averageResult == null){
             //insert variance
-         AverageResult aResult = AverageResult.builder().app_name(app_name).bm_name(bm_name).cores(cores).cpu_sku(cpu).avg_result(avgResult).nodes(nodes).build();
+         AverageResult aResult = AverageResult.builder().appName(app_name).bmName(bm_name).cores(cores).cpuSku(cpu).avgResult(avgResult).nodes(nodes).build();
          averageResultService.insertAverageResult(aResult);
         }
         else{
@@ -55,7 +57,16 @@ public class ResultService {
 
 
     public List<Result> getAllResults(){
-        return resultRepo.findAll();
+        Iterable<Result> results = resultRepo.findAll();
+        List<Result> list = null;
+        list = StreamSupport
+                .stream(results.spliterator(), false)
+                .collect(Collectors.toList());
+
+        if(list ==null){
+            return Collections.emptyList();
+        }
+    return list;
     }
 
 
