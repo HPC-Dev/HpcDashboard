@@ -76,6 +76,17 @@ public class AverageResultService {
         return list;
     }
 
+    public List<AverageResult> getAvgResultCPUApp(String cpu_sku,String app_name, String bm_name) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.getAverageResultCPUAppBm(cpu_sku,app_name,bm_name);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
     public List<String> getApp() {
 
         List<String> app_list = null;

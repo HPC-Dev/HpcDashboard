@@ -1,6 +1,6 @@
 var table = $('table#ajax').DataTable({
 		'ajax' : '/datatable/dashboard',
-		'scrollY': "450px",
+		'scrollY': "490px",
         'scrollX': true,
         'scrollCollapse': true,
         'processing': true,
@@ -36,7 +36,6 @@ var table = $('table#ajax').DataTable({
 
 $('#appDrop').change(
         function() {
-        var value =
         $.getJSON( "/bms", {
             appName : $(this).val(),
             ajax : 'true'

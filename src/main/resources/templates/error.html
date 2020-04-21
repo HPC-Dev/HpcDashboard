@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link rel="icon"
+          th:href="@{assets/favicon.ico}" />
+    <title>Index</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container-fluid" style="max-width:1225px">
+        <a class="navbar-brand" href="/">HPC Dashboard</a>
+
+    </div>
+</nav>
+
+<br>
+<br>
+<!--<div class="container-fluid" style="max-width:1225px">-->
+<!--    <div style="text-align: center">-->
+<!--    <h4 class="alert">Something went wrong</h4>-->
+<!--        <a class="nav-link" href="#" th:href="@{/index}">Go Home!</a>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<div class="container">
+    <div style="text-align: center">
+        <div id="notfound">
+            <div class="notfound">
+                <br>
+                <h2>Oops..Something went wrong!</h2>
+                <p class="alert alert-secondary">The page you are looking for
+                    might have been removed had its name changed or is temporarily
+                    unavailable.</p>
+                <a class="btn btn-sm btn-secondary" href="#" th:href="@{/index}">Go Home</a> <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+
+
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

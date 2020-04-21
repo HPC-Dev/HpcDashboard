@@ -14,6 +14,7 @@
     <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
     <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
     <link rel="icon" th:href="@{assets/favicon.ico}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
 
     <title>Charts</title>
     <style>
@@ -24,7 +25,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container-fluid" style="max-width:1225px">
-        <a class="navbar-brand" href="/">HPC Dashboard</a>
+        <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +34,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>
-                </li>
+<!--                <li class="nav-item ">-->
+<!--                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>-->
+<!--                </li>-->
 
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
@@ -73,8 +74,6 @@
 
 <br>
 <br>
-
-
 <div class="container-fluid" style="max-width:1225px">
     <div class="row" >
         <div class="col-sm-1 dropdown">
@@ -85,10 +84,9 @@
                         th:text="${cpu}"></option>
             </select>
         </div>
-        <div id="coreCount" style='display:none;' class="col-sm-3 ">
-            <input style="font-size:15px;" type="text" class="no-outline" id="coreValue" size="6" readonly></input>
-        </div>
+
     </div>
+
 
     <div class="row" style="margin-top: 5px;">
         <div id="app" class="col-sm-2 dropdown" style='display:none;'>
@@ -102,20 +100,39 @@
 
     </div>
 
+    <div class="row" style="margin-top: 5px;">
+        <div id="bm" class="col-sm-2 dropdown" style='display:none;'>
+            <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
+                <option selected="true" disabled="disabled">Benchmark</option>
+            </select>
+        </div>
+    </div>
+
 </div>
 
 <div class="container-fluid" style="max-width:1225px; overflow-x:auto;">
 
+    <div class="row">
 
-
+        <div class="col-md-7 mt-2 mb-2 ">
+            <canvas id="barChart" width="450" height="300" role="img"></canvas>
+        </div>
+    </div>
 </div>
 
 
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
-<script type="text/javascript" th:src="@{assets/custom/data.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/customCharts.js}"></script>
+
+<script>
+
+
+
+</script>
 
 </body>
 </html>

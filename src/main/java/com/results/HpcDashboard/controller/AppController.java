@@ -53,8 +53,10 @@ public class AppController {
 
         List<String> cpu_list = averageResultService.getCpu();
         List<String> app_list = averageResultService.getApp();
+        List<String> bm_list = null;
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
+        model.addAttribute("bms", bm_list);
         return "result";
     }
 

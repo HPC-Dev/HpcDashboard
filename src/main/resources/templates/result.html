@@ -15,6 +15,7 @@
     <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
     <link rel="icon"
           th:href="@{assets/favicon.ico}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
 
     <title>Data</title>
     <style>
@@ -25,7 +26,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container-fluid" style="max-width:1225px">
-        <a class="navbar-brand" href="/">HPC Dashboard</a>
+        <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +35,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
 
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>
-                </li>
+<!--                <li class="nav-item ">-->
+<!--                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>-->
+<!--                </li>-->
 
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/application}">Applications</a>

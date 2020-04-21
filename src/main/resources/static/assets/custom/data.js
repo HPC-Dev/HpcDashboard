@@ -51,6 +51,7 @@ function getData() {
             if(columnNames.indexOf(item.bmName) === -1 ) {
                 columnNames.push(item.bmName);
             }
+//            console.log(transformedData);
         });
 
         updateTable(columnNames, transformedData);

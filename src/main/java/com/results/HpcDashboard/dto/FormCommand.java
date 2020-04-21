@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class FormCommand {
     private String textareaField;
+    private String radioButtonSelectedValue;
 }
