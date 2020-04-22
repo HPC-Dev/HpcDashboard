@@ -20,8 +20,9 @@ select * from results where app_name='fluent' and bm_name='fluent-sed4';
 
 select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
 
+select * from average_result;
 
-select * from average_result where bm_name="ls-3cars" and cpu_sku = "7F72" and nodes =1;
+select * from average_result where app_name="lsdyna" and cpu_sku = "7F52" and nodes =1;
 
 select DISTINCT app_name from average_result;
 

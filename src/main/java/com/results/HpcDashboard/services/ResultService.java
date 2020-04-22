@@ -51,6 +51,27 @@ public class ResultService {
         }
 
     }
+
+
+    @Transactional
+    public void insertResultCsv(List<Result> results){
+        for(Result result: results) {
+            resultRepo.save(result);
+            List<Double> list = getResultsForAverage(result.getBmName(),result.getCpu(),result.getNodes());
+            double avgResult = util.calculateAverageResult(list);
+            AverageResult averageResult = averageResultService.getSingleAvgResult(result.getBmName(),result.getCpu(),result.getNodes());
+            if(averageResult == null){
+                //insert variance
+                AverageResult aResult = AverageResult.builder().appName(result.getAppName()).bmName(result.getBmName()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).build();
+                averageResultService.insertAverageResult(aResult);
+            }
+            else{
+                averageResultService.updateAverageResult(result.getCpu(),result.getNodes(),result.getBmName(),avgResult);
+            }
+
+        }
+    }
+
     public List<Double> getResultsForAverage(String bm_name, String cpu, int nodes){
         return resultRepo.findresultsByAppCPUNode(bm_name,cpu,nodes);
     }

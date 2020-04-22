@@ -1,6 +1,6 @@
 var table = $('table#ajax').DataTable({
 		'ajax' : '/datatable/dashboard',
-		'scrollY': "490px",
+		'scrollY': "480px",
         'scrollX': true,
         'scrollCollapse': true,
         'processing': true,

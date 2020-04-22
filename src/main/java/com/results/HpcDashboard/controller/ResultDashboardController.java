@@ -1,5 +1,7 @@
 package com.results.HpcDashboard.controller;
 
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.results.HpcDashboard.dto.FormCommand;
 import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.services.ResultService;
@@ -13,12 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -45,22 +48,51 @@ public class ResultDashboardController {
     @PostMapping("/result")
     public String insertResult(
             @ModelAttribute("command") @Valid FormCommand command,
-            Model model) {
+            Model model, @RequestParam("file") MultipartFile file) {
 
-        String[] resultReturned = command.getTextareaField().split("!");
-        for (String individualResult : resultReturned) {
+        if(command.getRadioButtonSelectedValue().equals("paste")) {
+            String[] resultReturned = command.getTextareaField().split("!");
+            for (String individualResult : resultReturned) {
 
-            String[] resultData = individualResult.split(",");
+                String[] resultData = individualResult.split(",");
 
-            if (resultData.length > 8 && individualResult.contains("[")) {
-                resultData = util.performRegex(individualResult);
+                if (resultData.length > 8 && individualResult.contains("[")) {
+                    resultData = util.performRegex(individualResult);
+                }
+
+                if (resultData.length != 8) {
+                    return "redirect:/result?failure";
+                }
+                resultService.insertResult(resultData);
             }
-
-            if (resultData.length != 8) {
-                return "redirect:/result?failure";
-            }
-            resultService.insertResult(resultData);
         }
+        else if(command.getRadioButtonSelectedValue().equals("upload")){
+            if (file.isEmpty()) {
+                 return "redirect:/result?uploadFailure";
+            }
+
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+
+                CsvToBean<Result> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Result.class)
+                        .withIgnoreLeadingWhiteSpace(true)
+                        .build();
+
+                try {
+                    List<Result> results = csvToBean.parse();
+                    resultService.insertResultCsv(results);
+                }
+                catch (RuntimeException exception){
+                    return "redirect:/result?fileIncorrect";
+                }
+
+            } catch (Exception ex) {
+                System.out.println(ex.getStackTrace());
+            }
+
+        }
+
+
         return "redirect:/result?success";
     }
 
