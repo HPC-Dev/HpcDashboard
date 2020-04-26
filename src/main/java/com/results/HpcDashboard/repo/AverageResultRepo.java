@@ -17,6 +17,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_AVG_RESULT = "SELECT * from average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String GET_AVG_RESULT_CPU_APP = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name";
     public static final String GET_AVG_RESULT_CPU_APP_BM = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and bm_name =:bm_name";
+    public static final String GET_AVG_RESULT_CPU_APP_NODE = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and nodes =:nodes";
     public static final String GET_CPU = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
     public static final String GET_APP = "select DISTINCT app_name from average_result ORDER BY app_name ASC";
 
@@ -36,6 +37,9 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
 
     @Query(value = GET_AVG_RESULT_CPU_APP_BM, nativeQuery = true)
     List<AverageResult> getAverageResultCPUAppBm(String cpu_sku, String app_name, String bm_name);
+
+    @Query(value = GET_AVG_RESULT_CPU_APP_NODE, nativeQuery = true)
+    List<AverageResult> getAverageResultCPUAppNode(String cpu_sku, String app_name, int nodes);
 
     @Query(value = GET_APP, nativeQuery = true)
     List<String> getAPP();

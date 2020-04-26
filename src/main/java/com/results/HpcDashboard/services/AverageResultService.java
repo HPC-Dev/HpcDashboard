@@ -76,10 +76,21 @@ public class AverageResultService {
         return list;
     }
 
-    public List<AverageResult> getAvgResultCPUApp(String cpu_sku,String app_name, String bm_name) {
+    public List<AverageResult> getAvgResultCPUAppBm(String cpu_sku,String app_name, String bm_name) {
 
         List<AverageResult> list = null;
         list = averageResultRepo.getAverageResultCPUAppBm(cpu_sku,app_name,bm_name);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+    public List<AverageResult> getAvgResultCPUAppNode(String cpu_sku,String app_name, int node) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.getAverageResultCPUAppNode(cpu_sku,app_name,node);
 
         if(list ==null){
             return Collections.EMPTY_LIST;

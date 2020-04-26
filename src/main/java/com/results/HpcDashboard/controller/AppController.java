@@ -60,4 +60,9 @@ public class AppController {
         return "result";
     }
 
+    @GetMapping("/spack")
+    public String showSpack(Model model) {
+        return "spack";
+    }
+
 }

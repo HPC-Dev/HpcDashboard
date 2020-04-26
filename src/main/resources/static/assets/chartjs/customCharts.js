@@ -1,5 +1,5 @@
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#000000';
+//Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+//Chart.defaults.global.defaultFontColor = '#000000';
 
 $('#appDrop').change(appChange);
 
@@ -8,162 +8,275 @@ $('#cpuDrop').change(cpuChange);
 function cpuChange(){
 var value = $(this).val();
       var text = $(this).find('option:selected').text();
+      var bm = $('#bmDrop')[0].value;
       if(value != ''){
         $("#app").show();
        }
       else if(value == ''){
           $("#app").hide();
        }
-      getData();
+       if( $("#option1").is(":checked") ){
+            getNodeChartData();
+        }
+       if( $("#option2").is(":checked") && bm ){
+             getBmChartData();
+        }
+
 }
 
 function appChange(){
 var app = $('#appDrop')[0].value;
     if(app != ''){
-        $("#bm").show();
-        $("#bm").on("change", getData);
+        $("#radio").show();
+
     }
     else if(app == ''){
-        $("#bm").show();
+        $("#radio").hide();
     }
+
     $.getJSON( "/bms", {
-             appName : app,
-             ajax : 'true'
-             }, function(data) {
-                 var html = '<option value="" selected="true" disabled="disabled">Benchmark</option>';
-                 var len = data.length;
-                 for ( var i = 0; i < len; i++) {
-                     html += '<option value="' + data[i] + '">'
-                             + data[i] + '</option>';
-                 }
-                 html += '</option>';
-                 $('#bmDrop').html(html);
-             });
+                       appName : app,
+                       ajax : 'true'
+                       }, function(data) {
+                           var html = '<option value="" selected="true" disabled="disabled">Benchmark</option>';
+                           var len = data.length;
+                           for ( var i = 0; i < len; i++) {
+                               html += '<option value="' + data[i] + '">'
+                                       + data[i] + '</option>';
+                           }
+                           html += '</option>';
+                           $('#bmDrop').html(html);
+                       });
+
+    if( $("#option1").is(":checked") ){
+                getNodeChartData();
+            }
+
+     if( $("#option2").is(":checked")  ){
+                  $("#bmChart").hide();
+                }
   }
 
-function getData() {
-    var cpu = $('#cpuDrop')[0].value;
-    var app = $('#appDrop')[0].value;
-    var bm = $('#bmDrop')[0].value;
-
-    if(app && cpu && bm) {
-    var transformedData = [];
-        $.getJSON( "/avg/result/" + cpu + "/" + app + "/" + bm, function( data ) {
-           var columnNames = ['Nodes', 'Cores'];
-           data.forEach((item, index) => {
-           var row = transformedData.find(function(tr) { return tr.Nodes === item.nodes; });
-           var rowIndex = transformedData.findIndex(function(tr) { return tr.Nodes === item.nodes; })
-            if(!row) {
-                row = {Nodes: item.nodes, Cores: item.cores * item.nodes};
-                transformedData.push(row);
-            }
-            row[item.bmName] = item.avgResult;
-
-            if(columnNames.indexOf(item.bmName) === -1 ) {
-                columnNames.push(item.bmName);
-            }
-        });
-//        updateTable(columnNames, transformedData);
-    });
-//    console.log(transformedData);
-    } else {
-        //$('#barChart').hide();
-    }
-}
-
-var ctx = document.getElementById('barChart').getContext('2d');
-var barGroupedChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ["acus_impinging"],
-      datasets: [
-        {
-          label: "1 Node",
-          backgroundColor: [getRandomColorHex()],
-//          borderColor: ['rgba(255, 99, 132, 1)'],
-          data: [17474.45],
-          borderWidth: 1
-        }, {
-          label: "2 Node",
-          backgroundColor: [getRandomColorHex()],
-//          borderColor: ['rgba(54, 162, 235, 1)'],
-          data: [8351.06],
-          borderWidth: 1
-        },
-        {
-          label: "4 Node",
-          backgroundColor: [getRandomColorHex()],
-//          borderColor: ['rgba(255, 206, 86, 1)'],
-          data: [4098.96],
-          borderWidth: 1
-        }, {
-          label: "8 Node",
-          backgroundColor: [getRandomColorHex()],
-//          borderColor: ['rgba(75, 192, 192, 1)'],
-          data: [3440],
-          borderWidth: 1
-        },
-        {
-          label: "16 Node",
-          backgroundColor: [getRandomColorHex()],
-//          borderColor: ['rgba(255, 159, 64, 1)'],
-          data: [936.33],
-          borderWidth: 1
-        },
-        {
-          label: "32 Node",
-          backgroundColor: ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: ['rgba(153, 102, 255, 1)', 'rgba(153, 102, 255, 1)'],
-          data: [],
-          borderWidth: 1
-        },
-
-      ]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'AcuSolve'
-      },
-      scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                },
-                gridLines: {
-                          color: "rgb(234, 236, 244)",
-                          zeroLineColor: "rgb(234, 236, 244)",
-                          drawBorder: false,
-                          borderDash: [2],
-                          zeroLineBorderDash: [2]
-                        }
-            }],
-
-        },
-        layout: {
-              padding: {
-                left: 10,
-                right: 25,
-                top: 25,
-                bottom: 0
-              }
-           },
-           tooltips: {
-                 titleMarginBottom: 10,
-                 titleFontColor: '#6e707e',
-                 titleFontSize: 14,
-                 backgroundColor: "rgb(255,255,255)",
-                 bodyFontColor: "#858796",
-                 borderColor: '#dddfeb',
-                 borderWidth: 1,
-                 xPadding: 15,
-                 yPadding: 15,
-                 displayColors: false,
-                 caretPadding: 10,
+  $("#option1")
+      .change(function(){
+          if( $(this).is(":checked") ){
+              var val = $(this).val();
+              if(val === "node"){
+                 $("#bm").hide();
+                 $("#bmChart").hide();
+                 $("#nodeChart").show();
+                 getNodeChartData();
                }
+          }
+      });
 
-    }
-});
+
+  $("#option2")
+      .change(function(){
+      var app = $('#appDrop')[0].value;
+          if( $(this).is(":checked") ){
+              var val = $(this).val();
+              if(val === "bench"){
+               $("#nodeChart").hide();
+               $("#bm").show();
+               $("#bmChart").show();
+               $("#bm").on("change",  getBmChartData);
+                }
+          }
+          $.getJSON( "/bms", {
+                       appName : app,
+                       ajax : 'true'
+                       }, function(data) {
+                           var html = '<option value="" selected="true" disabled="disabled">Benchmark</option>';
+                           var len = data.length;
+                           for ( var i = 0; i < len; i++) {
+                               html += '<option value="' + data[i] + '">'
+                                       + data[i] + '</option>';
+                           }
+                           html += '</option>';
+                           $('#bmDrop').html(html);
+                       });
+
+      });
+
+
+function getNodeChartData() {
+		var cpu = $('#cpuDrop')[0].value;
+		var app = $('#appDrop')[0].value;
+		var node = 1;
+		if(app && cpu && node){
+               $.getJSON( "/chart/resultApp/" + cpu + "/" + app + "/" + node, function( data ) {
+                     var label = data[0].labels;
+					 var result = data[0].dataset;
+                     var chartdata = {
+                        labels: label,
+                        datasets: [
+                            {
+                                //backgroundColor: getRandomColorHex(),
+                                backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)','rgba(192, 0, 0, 0.2)' ],
+                                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
+                                borderWidth: 1,
+                                data: result
+                            }
+                        ]
+                    };
+                var chartOptions = {
+                    legend: {
+                        display: false,
+                    },
+                    title: {
+                            display: true,
+                            text: data[0].appCPUName
+                             },
+                         scales: {
+                             yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                               },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: data[0].metric
+                               },
+                                gridLines: {
+                                    color: "rgb(234, 236, 244)",
+                                    zeroLineColor: "rgb(234, 236, 244)",
+                                    drawBorder: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                             }
+                          }]
+                        },
+                            tooltips: {
+                                callbacks: {
+                                 label: function(tooltipItem) {
+                                    return tooltipItem.yLabel;
+                                    }
+                                 },
+                                titleMarginBottom: 10,
+                                titleFontColor: '#6e707e',
+                                titleFontSize: 14,
+                                backgroundColor: "rgb(255,255,255)",
+                                bodyFontColor: "#858796",
+                                borderColor: '#dddfeb',
+                                borderWidth: 1,
+                                xPadding: 15,
+                                yPadding: 15,
+                                displayColors: false,
+                                caretPadding: 10,
+                            },
+                         layout: {
+                            padding: {
+                                left: 10,
+                                right: 25,
+                                top: 25,
+                                bottom: 0
+                                }
+                            }
+                         };
+
+                     $('#nodeBarChart').remove();
+                     $('#nodeChart').append('<canvas id="nodeBarChart" width="450" height="300" role="img"></canvas>');
+                    var graphTarget = $("#nodeBarChart");
+                    var barGraph = new Chart(graphTarget, {
+                        type: 'bar',
+                        data: chartdata,
+                        options: chartOptions
+                    });
+                });
+            }
+        }
+
+
+function getBmChartData() {
+    $("#bmChart").show();
+        var cpu = $('#cpuDrop')[0].value;
+        var app = $('#appDrop')[0].value;
+        var bm = $('#bmDrop')[0].value;
+
+		if(app && cpu && bm){
+               $.getJSON( "/chart/resultBm/" + cpu + "/" + app + "/" + bm, function( data ) {
+                     var label = data[0].labels;
+					 var result = data[0].dataset;
+                     var chartdata = {
+                        labels: label,
+                        datasets: [
+                            {
+                                //backgroundColor: getRandomColorHex(),
+                                backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)','rgba(192, 0, 0, 0.2)' ],
+                                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
+                                borderWidth: 1,
+                                data: result
+                            }
+                        ]
+                    };
+
+                    var chartOptions = {
+                    legend: {
+                        display: false,
+                    },
+                    title: {
+                         display: true,
+                         text: data[0].appCPUName
+                        },
+                         scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: data[0].metric
+                                },
+                                gridLines: {
+                                    color: "rgb(234, 236, 244)",
+                                    zeroLineColor: "rgb(234, 236, 244)",
+                                    drawBorder: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                }
+                            }]
+                         },
+                            tooltips: {
+                               callbacks: {
+                                  	label: function(tooltipItem) {
+                                    return tooltipItem.yLabel;
+                                    }
+                                  },
+                                  titleMarginBottom: 10,
+                                  titleFontColor: '#6e707e',
+                                  titleFontSize: 14,
+                                  backgroundColor: "rgb(255,255,255)",
+                                  bodyFontColor: "#858796",
+                                  borderColor: '#dddfeb',
+                                  borderWidth: 1,
+                                  xPadding: 15,
+                                  yPadding: 15,
+                                  displayColors: false,
+                                  caretPadding: 10,
+                               },
+                               layout: {
+                                  padding: {
+                                    left: 10,
+                                    right: 25,
+                                    top: 25,
+                                    bottom: 0
+                                    }
+                               }
+                         };
+
+                    $('#bmBarChart').remove();
+                    $('#bmChart').append('<canvas id="bmBarChart" width="450" height="300" role="img"></canvas>');
+
+                    var graphTarget = $("#bmBarChart");
+                    var barGraph = new Chart(graphTarget, {
+                        type: 'bar',
+                        data: chartdata,
+                        options: chartOptions
+                    });
+                });
+            }
+        }
+
 
 function getRandomColorHex() {
     var hex = "0123456789ABCDEF",

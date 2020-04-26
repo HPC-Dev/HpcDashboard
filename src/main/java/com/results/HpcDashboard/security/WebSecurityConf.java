@@ -53,6 +53,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").hasAnyAuthority("ADMIN", "ROLE_USER")
                 .antMatchers(
                         "/avg/**",
+                        "/chart/**",
                         "/register**",
                         "/js/**",
                         "/css/**",

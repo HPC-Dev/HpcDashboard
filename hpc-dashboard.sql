@@ -8,9 +8,11 @@ select cores,cpu_sku from cpu_info;
 
 select * from cpu_info;
 
-select * from benchmarks;
+select precision_info from applications where app_name="openfoam";
 
 select * from applications;
+
+select * from benchmarks;
 
 select * from results;
 
@@ -23,6 +25,8 @@ select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
 select * from average_result;
 
 select * from average_result where app_name="lsdyna" and cpu_sku = "7F52" and nodes =1;
+
+#update applications set precision_info="Elapsed Time" where app_id="openfoam_v1906";
 
 select DISTINCT app_name from average_result;
 

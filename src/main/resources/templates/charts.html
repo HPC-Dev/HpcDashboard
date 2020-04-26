@@ -24,7 +24,7 @@
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container-fluid" style="max-width:1225px">
+    <div class="container-fluid" style="max-width:1300px">
         <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -74,7 +74,7 @@
 
 <br>
 <br>
-<div class="container-fluid" style="max-width:1225px">
+<div class="container-fluid" style="max-width:1300px">
     <div class="row" >
         <div class="col-sm-1 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
@@ -88,7 +88,7 @@
     </div>
 
 
-    <div class="row" style="margin-top: 5px;">
+    <div class="row" style="margin-top: 16px;">
         <div id="app" class="col-sm-2 dropdown" style='display:none;'>
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="" selected="true" disabled="disabled">App</option>
@@ -100,7 +100,18 @@
 
     </div>
 
-    <div class="row" style="margin-top: 5px;">
+    <div id="radio" class="form-group" style="margin-top: 16px; display:none;" >
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="option1" name="option" class="custom-control-input" value="node">
+            <label class="custom-control-label" for="option1">Single Node</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="option2" name="option" class="custom-control-input" value="bench">
+            <label class="custom-control-label" for="option2">Benchmark</label>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 0px;">
         <div id="bm" class="col-sm-2 dropdown" style='display:none;'>
             <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
                 <option selected="true" disabled="disabled">Benchmark</option>
@@ -110,12 +121,15 @@
 
 </div>
 
-<div class="container-fluid" style="max-width:1225px; overflow-x:auto;">
+<div class="container-fluid" style="max-width:1300px; overflow-x:auto;">
 
     <div class="row">
 
-        <div class="col-md-7 mt-2 mb-2 ">
-            <canvas id="barChart" width="450" height="300" role="img"></canvas>
+        <div id="nodeChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
+            <canvas id="nodeBarChart" width="450" height="300" role="img"></canvas>
+        </div>
+        <div id="bmChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
+            <canvas id="bmBarChart" width="450" height="300" role="img"></canvas>
         </div>
     </div>
 </div>
@@ -126,6 +140,7 @@
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
 <script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
+<!--<script type="text/javascript" th:src="@{assets/chartjs/Chart.min.js}"></script>-->
 <script type="text/javascript" th:src="@{assets/chartjs/customCharts.js}"></script>
 
 <script>

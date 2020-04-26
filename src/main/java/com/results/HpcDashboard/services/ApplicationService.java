@@ -39,4 +39,13 @@ public class ApplicationService {
     public List<String>  getAllAppNames(){
         return applicationRepo.findAllApps();
     }
+
+    public String getMetric(String appName){
+        String metric = "";
+        metric = applicationRepo.getAppMetric(appName);
+        if(metric == null){
+            return "";
+        }
+        return metric;
+    }
 }

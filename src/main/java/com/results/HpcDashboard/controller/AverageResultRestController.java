@@ -51,12 +51,13 @@ public class AverageResultRestController {
     @GetMapping("/result/{cpu}/{app_name}/{bm_name}")
     public List<AverageResult> getAvgResultCPUBM(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("bm_name") String bm_name){
         List<AverageResult> list = null;
-        list = averageResultService.getAvgResultCPUApp(cpu,app_name,bm_name);
+        list = averageResultService.getAvgResultCPUAppBm(cpu,app_name,bm_name);
         if(list ==null){
             return Collections.emptyList();
         }
         return list;
     }
+
 
     @GetMapping("/cpus")
     public List<CPUDto> getAllCPUsCores(){
@@ -67,6 +68,8 @@ public class AverageResultRestController {
         }
         return list;
     }
+
+
 
 
 }

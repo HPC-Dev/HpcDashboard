@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link rel="icon" th:href="@{assets/favicon.ico}" />
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+    <title>Index</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container-fluid" style="max-width:1300px">
+        <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+<!--                <li class="nav-item active">-->
+<!--                    <a class="nav-link" href="#" th:href="@{/index}">Home  <span class="sr-only">(current)</span></a>-->
+<!--                </li>-->
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+<div class="container-fluid" style="max-width:1225px">
+    <p>
+
+        Spack is a package manger which supports multiple versions, configurations, platforms, and compilers.<br>
+        Installation:<br>
+        git clone https://github.com/spack/spack.git<br>
+
+        Add below lines to bashrc or bash_profile<br>
+
+        •	export SPACK_ROOT=/path/to/spack<br>
+
+        •	export PATH=$SPACK_ROOT/bin:$PATH<br>
+        or<br>
+
+        •	export SPACK_ROOT=/path/to/spack<br>
+
+        •	source $SPACK_ROOT/share/spack/setup-env.sh<br>
+
+
+        Compilers:<br>
+
+        Below command shows available compilers in the system.<br>
+
+        $ spack compilers <br>
+
+
+
+
+        $ spack compiler add<br>
+        Above command will add if there are any new compilers which need to be added to spack. If the above compiler doesn’t add the compiler, we can add by providing link to the binary using below command.<br>
+        $ spack compiler find /usr/local/bin<br>
+        ==> Added 1 new compiler to ~/.spack/linux/compilers.yaml<br>
+        gcc@4.9.0<br>
+        Check compiler info using below command<br>
+
+
+        Compiler config is present in ~/.spack/linux/compilers.yaml, we can also add compilers manually in this file.<br>
+
+        Basic usage:<br>
+        Below command gives list of all packages provided by spack<br>
+        $ spack list<br>
+        To get more info on a specific package use below command<br>
+        $ spack info openmpi<br>
+
+        Installing packages:<br>
+        Below command installs default version of package<br>
+        $ spack install zlib<br>
+
+        For a specific version use below command<br>
+
+        $ spack install zlib@1.2.8<br>
+
+        To install with a compiler version of your choice, use below command<br>
+
+        $ spack install zlib@1.2.8 %gcc@9.2.0<br>
+
+        To install with a dependency version of your choice, use below command. In the below command hwloc needs zlib. ‘spack install hwloc’ will install a default zlib version, with below command we can mention the version of dependency.<br>
+
+        $ spack install hwloc@2.1.0 %gcc@9.2.0 ^zlib@1.2.8<br>
+
+
+        Below are all the options you can add with spack install command.<br>
+
+
+        Variants: Variants are named options associated with a package. Every package as default variants set.<br>
+        For example:<br>
+        spack install hdf5+mpi command installs hdf5 package with mpi. If mpi variant is default, we can skip it by either spack install hdf5-mpi or spack install hdf5~mpi.<br>
+        We can also mention what variant we would like to use. For example, we can build openmpi with either ucx or libfabric as a variant for fabric. spack install openmpi fabric=ucx will install with ucx and spack install openmpi fabric=libfabric. There are other variants which we can check in the openmpi package file. We can also mention compiler flags like   spack install fftw cflags="-O3".<br>
+        We can also provide target’s CPU architecture. Based on the target we select spack will inject appropriate optimization flags at compile time. Spack will automatically detect and optimize package installation for most microarchitectures. Below are the available targets<br>
+
+        $ spack arch command show our current architecture of the machine we are running. platform+os+cpu architecture<br>
+
+        We should only mention these if we are targeting to run these binaries on a different platform or machine.<br>
+
+        $ spack uninstall hwloc will help us uninstall a package. spack uninstall –dependents hwloc will uninstall all the dependencies installed along with that package.<br>
+
+        Useful commands:<br>
+
+        spack spec hwloc shows everything about that package and show what would be installed.<br>
+
+        spack gc will uninstall and remove entries for any unwanted packages.<br>
+
+        spack find | less -R will show all the packages we have installed. module avail also shows this.<br>
+
+        spack load hwloc or module load hwloc will load a package (spack will create a module for every package we install)<br>
+        spack unload hwloc or module unload hwloc will load a package.<br>
+
+        Below command helps us to locate where the package is installed.<br>
+
+
+
+
+
+
+    </p>
+</div>
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
