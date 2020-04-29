@@ -119,4 +119,15 @@ public class AverageResultService {
         }
         return cpu_list;
     }
+
+    public List<AverageResult> getBySelectedCPU(String app_name,List<String> cpus) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.findBySelectedCPU(app_name,cpus);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
 }

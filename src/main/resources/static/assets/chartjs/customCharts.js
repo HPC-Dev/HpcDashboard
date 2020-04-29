@@ -113,16 +113,13 @@ function getNodeChartData() {
                         datasets: [
                             {
                                 backgroundColor: ['#ff6666','#ff9933','#3399ff','#9933ff','#99004c','#3333ff','#808080','#660000','#006666','#6666ff','#003366','#660066','#ff9999','#66b2ff','#b266ff','#660043','#a0a0a0','#666600','#000066','#ccoocc','#ffcccc','#ffcc99','#99ccff','#9999ff','#cc99ff','#ff99cc'],
-                                //backgroundColor: getRandomColorHex(),
-                                //backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)','rgba(192, 0, 0, 0.2)' ],
-                                //borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
                                 borderWidth: 1,
                                 data: result
                             }
                         ]
                     };
                 var chartOptions = {
-                    legend: {
+                  legend: {
                         display: false,
                     },
                     title: {
@@ -200,10 +197,8 @@ function getBmChartData() {
                         labels: label,
                         datasets: [
                             {
-                                backgroundColor: ['#ff6666','#ff9933','#3399ff','#9933ff','#99004c','#3333ff','#808080','#660000','#006666','#6666ff','#003366','#660066','#ff9999','#66b2ff','#b266ff','#660043','#a0a0a0','#666600','#000066','#ccoocc','#ffcccc','#ffcc99','#99ccff','#9999ff','#cc99ff','#ff99cc'],
-                                //backgroundColor: getRandomColorHex(),
-                                //backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)','rgba(192, 0, 0, 0.2)' ],
-                                //borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
+                                backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)','rgba(192, 0, 0, 0.2)' ],
+                                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
                                 borderWidth: 1,
                                 data: result
                             }

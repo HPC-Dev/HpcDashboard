@@ -24,7 +24,9 @@ select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
 
 select * from average_result;
 
-select * from average_result where app_name="lsdyna" and cpu_sku = "7F52" and nodes =1;
+select * from average_result where app_name="openfoam" and cpu_sku in( "7F52", "7F32","7F72") and nodes =1 ORDER BY bm_name;
+
+select * from average_result where app_name="openfoam" and bm_name="ofoam-1305252" and cpu_sku in( "7F52", "7F32","7F72") and nodes =1 ORDER BY bm_name;
 
 #update applications set precision_info="Elapsed Time" where app_id="openfoam_v1906";
 
@@ -40,14 +42,9 @@ select DISTINCT nodes from results ORDER BY nodes ASC;
 select DISTINCT cpu from results ORDER BY cpu ASC;
 
 
-
-
-
 select * from user;
 select * from role;	
 select * from users_roles;
-
-
 
 
 select app_name from benchmarks;
@@ -68,8 +65,13 @@ drop table average_result;
 drop table benchmarks;
 
 drop table applications;
-#
+
 drop table results;
 
 drop table cpu_info;
 
+-- Indexes
+
+show indexes from results_dashboard.results;
+
+CREATE INDEX cpu_index ON results_dashboard.results (cpu);

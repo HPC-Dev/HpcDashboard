@@ -13,11 +13,10 @@
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
     <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
     <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
-    <link rel="icon"
-          th:href="@{assets/favicon.ico}"/>
+    <link rel="icon" th:href="@{assets/favicon.ico}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
 
-    <title>Data</title>
+    <title>Multi Charts</title>
     <style>
 
     </style>
@@ -53,11 +52,11 @@
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" th:href="@{/data}">Data <span class="sr-only">(current)</span></a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
                 </li>
 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>
                     <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                         <a class="dropdown-item" href="#" th:href="@{/charts}" >Single CPU Charts </a>
@@ -76,24 +75,10 @@
 <br>
 <br>
 
-
 <div class="container-fluid" style="max-width:1300px">
-    <div class="row" >
-        <div class="col-sm-1 dropdown">
-            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
-                <option value="" selected="true" disabled="disabled">CPU</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
-            </select>
-        </div>
-        <div id="coreCount" style='display:none;' class="col-sm-3 ">
-            <input style="font-size:15px;" type="text" class="no-outline" id="coreValue" size="6" readonly></input>
-        </div>
-    </div>
 
-    <div class="row" style="margin-top: 5px;">
-        <div id="app" class="col-sm-2 dropdown" style='display:none;'>
+ <div class="row" style="margin-top: 16px;">
+        <div id="app" class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="" selected="true" disabled="disabled">App</option>
                 <option th:each="app : ${apps}"
@@ -101,24 +86,38 @@
                         th:text="${app}"></option>
             </select>
         </div>
+ </div>
 
+    <div id="current-menus-for-role-checkbox" style="margin-top: 12px;">
+        <div th:each="cpu : ${cpus}" class="custom-control custom-checkbox custom-control-inline">
+            <input class="custom-control-input" type="checkbox" th:id="${cpu}" name="type"  th:value="${cpu}"/>
+                <label class="custom-control-label"  th:text="${cpu}" th:for="${cpu}"></label>
+        </div>
+    </div>
+
+    <div  style="margin-top:12px; ">
+        <button  class="btn btn-success">Submit</button>
     </div>
 
 </div>
-<br>
-
 <div class="container-fluid" style="max-width:1300px; overflow-x:auto;">
 
-    <div class="table-responsive" id="table"></div>
+    <div class="row">
 
+        <div id="multiChart" class="col-md-6 mt-2 mb-2">
+            <canvas id="multiBarChart" width="450" height="300" role="img"></canvas>
+        </div>
+
+    </div>
 </div>
 
 
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
-<script type="text/javascript" th:src="@{assets/custom/data.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/customMultiChart.js}"></script>
 
 </body>
 </html>

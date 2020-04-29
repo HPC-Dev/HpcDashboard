@@ -2,3 +2,16 @@ th, td { white-space: nowrap; }
     div.dataTables_wrapper {
         margin: 0 auto;
     }
+
+   .dropdown-content  {
+       padding: 0;margin:0;
+       }
+       .dropdown-content a {
+       padding-left: 0.8rem;text-align: left; float: none;color: #B5B3B2;display: block;padding-right: 0.1rem;
+       }
+       .dropdown-content a:hover {
+        background-color: #E7E5E3;
+         }
+       .dropdown:hover .dropdown-content {
+        display: block;
+        }

@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
-    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
     <link rel="icon"
           th:href="@{assets/favicon.ico}" />
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
     <link rel="stylesheet" href="/webjars/font-awesome/css/all.css">
     <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
     <title>HPC Results Dashboard</title>
@@ -23,7 +23,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container-fluid" style="max-width:1225px">
+    <div class="container-fluid" style="max-width:1300px">
         <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -32,10 +32,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-
-<!--                <li class="nav-item ">-->
-<!--                    <a class="nav-link" href="#" th:href="@{/index}">Home</a>-->
-<!--                </li>-->
 
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
@@ -60,8 +56,12 @@
                     <a class="nav-link" href="#" th:href="@{/data}">Data</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/charts}">Charts</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>
+                    <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
+                        <a class="dropdown-item" href="#" th:href="@{/charts}" >Single CPU Charts </a>
+                        <a class="dropdown-item" href="#" th:href="@{/mChart}" >Multi CPU Charts</a>
+                    </div>
                 </li>
 
                 <li class="nav-item">

@@ -1,6 +1,8 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.ChartsResponse;
+import com.results.HpcDashboard.dto.multichart.Dataset;
+import com.results.HpcDashboard.dto.multichart.MultiChartResponse;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.services.ApplicationService;
 import com.results.HpcDashboard.services.AverageResultService;
@@ -65,7 +67,10 @@ public class ChartRestController {
         list = averageResultService.getAvgResultCPUAppBm(cpu,app_name,bm_name);
 
         String appBmCpu = getAppName(app_name)+" - "+bm_name+" - "+cpu;
-        String metric = WordUtils.capitalize(applicationService.getMetric(app_name));
+        String metric = "";
+        if(applicationService.getMetric(app_name).length() > 0 ) {
+            metric = WordUtils.capitalize(applicationService.getMetric(app_name));
+        }
         List<String> label = new ArrayList<>();
         List<Double> data = new ArrayList<>();
 
@@ -78,4 +83,53 @@ public class ChartRestController {
         return listResponse;
 
     }
+
+
+    @GetMapping("/result/{app_name}")
+    public List<MultiChartResponse> getAvgBySelectedCPU(@PathVariable("app_name") String app_name, String[] cpuList ){
+        List<String> cpus = Arrays.asList(cpuList);
+        List<MultiChartResponse> resultList =new ArrayList<>();
+        MultiChartResponse mlr = new MultiChartResponse();
+        List<AverageResult> list = null;
+        list = averageResultService.getBySelectedCPU(app_name,cpus);
+
+        Set<String> cpu = new LinkedHashSet<>();
+        Set<String> bms = new LinkedHashSet<>();
+
+        for(AverageResult avg : list){
+            cpu.add(avg.getCpuSku());
+            bms.add(avg.getBmName());
+        }
+        String metric = "";
+        if(applicationService.getMetric(app_name).length() > 0 ) {
+            metric = WordUtils.capitalize(applicationService.getMetric(app_name));
+        }
+        List<String> label = new ArrayList<>(bms);
+        mlr.setLabels(label);
+        mlr.setMetric(metric);
+        mlr.setAppName(getAppName(list.get(0).getAppName()));
+        List<Dataset> d = new ArrayList<>();
+        for(String c : cpu){
+
+            Dataset data = new Dataset();
+            List<Double> res = new ArrayList<>();
+            for(AverageResult avg : list)
+            {
+                if(avg.getCpuSku().equals(c)){
+
+                    res.add(avg.getAvgResult());
+                }
+            }
+            data.setCpuName(c);
+            data.setValue(res);
+            d.add(data);
+        }
+        mlr.setDatasets(d);
+        resultList.add(mlr);
+        if(resultList ==null){
+            return Collections.emptyList();
+        }
+        return resultList;
+    }
+
 }

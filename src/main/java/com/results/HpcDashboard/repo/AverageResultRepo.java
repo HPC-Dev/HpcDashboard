@@ -20,6 +20,8 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_AVG_RESULT_CPU_APP_NODE = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and nodes =:nodes";
     public static final String GET_CPU = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
     public static final String GET_APP = "select DISTINCT app_name from average_result ORDER BY app_name ASC";
+    public static final String GET_SELECTED_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name";
+
 
     @Modifying
     @Query(value = UPDATE_AVG_RESULT, nativeQuery = true)
@@ -46,4 +48,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
 
     @Query(value = GET_CPU, nativeQuery = true)
     List<String> getCPU();
+
+    @Query(nativeQuery =true,value = GET_SELECTED_CPU_RES)
+    List<AverageResult> findBySelectedCPU(String app_name, List<String> cpus);
 }
