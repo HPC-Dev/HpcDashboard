@@ -1,8 +1,23 @@
 $('#appDrop').on("change", function() {
 var value = $(this).val();
-console.log(value);
-$("#checkbox").show();
-$("#button").show();
+           $('#checkbox').empty();
+            $.getJSON("/cpus", {
+                    appName: value,
+                    ajax: 'true'
+                }, function(data) {
+                    var len = data.length;
+					var html='';
+                    for (var i = 0; i < len; i++) {
+                        html +=' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+                        html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '"/>' +
+                            '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' +  data[i] + '</label>';
+                      html += '</div>';
+                    }
+
+                $('#checkbox').append(html);
+                $("#checkbox").show();
+                $("#button").show();
+    });
 });
 
 $('button').on('click', function() {
@@ -17,7 +32,6 @@ $('button').on('click', function() {
     if ($("#appDrop").val() === null) {
         console.log("empty");
     }
-    console.log($("#appDrop").val());
 
     getMultiChartData();
     var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(192, 0, 0, 0.2)', 'rgba(255, 206, 86, 0.2)'];

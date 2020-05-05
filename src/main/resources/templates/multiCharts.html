@@ -92,10 +92,7 @@
  </div>
 
     <div id="checkbox" style="margin-top: 12px;display:none; ">
-        <div th:each="cpu : ${cpus}" class="custom-control custom-checkbox custom-control-inline">
-            <input class="custom-control-input" type="checkbox" th:id="${cpu}" name="type"  th:value="${cpu}"/>
-                <label class="custom-control-label"  th:text="${cpu}" th:for="${cpu}"></label>
-        </div>
+<!--    contents from js-->
     </div>
 
     <div id= "button" style="margin-top:12px; display:none;">
@@ -106,7 +103,6 @@
 <div class="container-fluid" style="max-width:1300px; overflow-x:auto;">
 
     <div class="row">
-
         <div id="multiChart" class="col-md-6 mt-2 mb-2">
             <canvas id="multiBarChart" width="450" height="300" role="img"></canvas>
         </div>
