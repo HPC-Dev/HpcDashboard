@@ -53,9 +53,15 @@
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" th:href="@{/data}">Data <span class="sr-only">(current)</span></a>
+
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data</a>
+                    <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
+                        <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
+                        <a class="dropdown-item" href="#" th:href="@{/part-comparision}" >2 Part Comparision</a>
+                    </div>
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>
@@ -79,7 +85,7 @@
 
 <div class="container-fluid" style="max-width:1300px">
     <div class="row" >
-        <div class="col-sm-1 dropdown">
+        <div class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
                 <option value="" selected="true" disabled="disabled">CPU</option>
                 <option th:each="cpu : ${cpus}"
@@ -92,13 +98,10 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 5px;">
+    <div class="row" style="margin-top: 8px;">
         <div id="app" class="col-sm-2 dropdown" style='display:none;'>
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="" selected="true" disabled="disabled">App</option>
-                <option th:each="app : ${apps}"
-                        th:value="${app}"
-                        th:text="${app}"></option>
             </select>
         </div>
 

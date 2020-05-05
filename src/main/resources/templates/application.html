@@ -47,8 +47,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/data}">Data</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data</a>
+                    <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
+                        <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
+                        <a class="dropdown-item" href="#" th:href="@{/part-comparision}" >2 Part Comparision</a>
+                    </div>
                 </li>
 
                 <li class="nav-item dropdown">

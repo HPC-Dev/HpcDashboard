@@ -29,7 +29,7 @@ public class CPUService {
     private EntityManager entityManager;
 
     public void insertCPU(String[] resultData){
-        CPU cpu = CPU.builder().cpuGeneration(resultData[1]).maxDdrFreq(resultData[9]).ddrChannels(Integer.valueOf(resultData[8])).l3Cache(Integer.valueOf(resultData[7])).peakFreq(resultData[6]).baseFreq(resultData[5]).cores(Integer.valueOf(resultData[4])).tdp(resultData[3]).cpuSku(resultData[2].toUpperCase()).cpuManufacturer(resultData[0]).build();
+        CPU cpu = CPU.builder().cpuGeneration(resultData[1]).maxDdrFreq(resultData[9]).ddrChannels(Integer.valueOf(resultData[8])).l3Cache(Integer.valueOf(resultData[7])).peakFreq(resultData[6]).baseFreq(resultData[5]).cores(Integer.valueOf(resultData[4])).tdp(resultData[3]).cpuSku(resultData[2].trim()).cpuManufacturer(resultData[0].trim()).build();
         cpuRepo.save(cpu);
     }
 

@@ -37,7 +37,7 @@ public class AverageResultService {
         if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert variance below
-        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku()).nodes(averageResult.getNodes()).build();
+        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).build();
         averageResultRepo.save(averageResult);
     }
 
@@ -109,6 +109,39 @@ public class AverageResultService {
         return app_list;
     }
 
+    public List<String> getApp(String cpu) {
+
+        List<String> app_list = null;
+        app_list = averageResultRepo.getAPP(cpu);
+
+        if(app_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return app_list;
+    }
+
+    public List<String> getSelectBm(String app_name, String cpu) {
+
+        List<String> bm_list = null;
+        bm_list = averageResultRepo.getSelectedBm(app_name,cpu);
+
+        if(bm_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return bm_list;
+    }
+
+    public List<String> getCpu(String appName) {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getCPU(appName);
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
     public List<String> getCpu() {
 
         List<String> cpu_list = null;
@@ -124,6 +157,17 @@ public class AverageResultService {
 
         List<AverageResult> list = null;
         list = averageResultRepo.findBySelectedCPU(app_name,cpus);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+    public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.findCompDataBySelectedCPU(app_name,cpu);
 
         if(list ==null){
             return Collections.EMPTY_LIST;

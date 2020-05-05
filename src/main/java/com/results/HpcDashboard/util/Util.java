@@ -37,7 +37,7 @@ public class Util {
     }
 
     public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
-        String queryStr = "select cpu_sku,cores from cpu_info";
+        String queryStr = "select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
             List<Object[]> objectList = query.getResultList();

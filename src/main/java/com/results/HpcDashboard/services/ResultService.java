@@ -27,10 +27,10 @@ public class ResultService {
 
     @Transactional
     public void insertResult(String[] resultData){
-        String bm_name = resultData[2];
-        String cpu = resultData[7].toUpperCase();
+        String bm_name = resultData[2].trim();
+        String cpu = resultData[7].trim();
         int nodes = Integer.valueOf(resultData[3]);
-        String app_name = resultData[1];
+        String app_name = resultData[1].trim();
         int cores = Integer.valueOf(resultData[4]);
 
         Result result = Result.builder().jobId(resultData[0]).appName(app_name).bmName(bm_name).nodes(nodes).cores(cores).nodeName(resultData[5].replaceAll("\\\\,",",")).result(util.round(Double.valueOf(resultData[6]),4)).cpu(cpu).build();
@@ -124,16 +124,6 @@ public class ResultService {
         return bm_list;
     }
 
-    public List<String> getSelectBm(String app_name) {
-
-        List<String> bm_list = null;
-        bm_list = resultRepo.getSelectedBm(app_name);
-
-        if(bm_list ==null){
-            return Collections.EMPTY_LIST;
-        }
-        return bm_list;
-    }
 
     public List<Integer> getNodes() {
 

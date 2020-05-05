@@ -13,7 +13,7 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     public static final String GET_APP = "select DISTINCT app_name from results ORDER BY app_name ASC";
     public static final String GET_BM = "select DISTINCT bm_name from results ORDER BY bm_name ASC";
     public static final String GET_Nodes = "select DISTINCT nodes from results ORDER BY nodes ASC";
-    public static final String GET_SELECTED_BM = "select DISTINCT bm_name from results where app_name=:app_name ORDER BY nodes ASC";
+
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
     public List<Double> findresultsByAppCPUNode(String bm_name, String cpu, int nodes);
@@ -29,9 +29,5 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
 
     @Query(value = GET_Nodes, nativeQuery = true)
     List<Integer> getNodes();
-
-    @Query(value = GET_SELECTED_BM, nativeQuery = true)
-    List<String> getSelectedBm(String app_name);
-
 
 }

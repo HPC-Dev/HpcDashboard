@@ -41,8 +41,8 @@ public class AppController {
 
     @GetMapping("/mChart")
     public String showMultiCharts(Model model) {
-        List<String> cpu_list = averageResultService.getCpu();
         List<String> app_list = averageResultService.getApp();
+        List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
         return "multiCharts";
@@ -51,21 +51,49 @@ public class AppController {
     @GetMapping("/charts")
     public String showCharts(Model model) {
         List<String> cpu_list = averageResultService.getCpu();
-        List<String> app_list = averageResultService.getApp();
         model.addAttribute("cpus", cpu_list );
-        model.addAttribute("apps", app_list );
         return "charts";
+    }
+
+    @RequestMapping(value = "/bms", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllBMs(
+            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
+
+        return averageResultService.getSelectBm(appName,cpu);
     }
 
     @GetMapping("/data")
     public String showData(Model model) {
 
-        List<String> cpu_list = averageResultService.getCpu();
         List<String> app_list = averageResultService.getApp();
+        List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
         return "result";
     }
 
+    @GetMapping("/part-comparision")
+    public String showDataComparision(Model model) {
 
+        List<String> app_list = averageResultService.getApp();
+        model.addAttribute("apps", app_list );
+        return "partComparision";
+    }
+
+    @RequestMapping(value = "/cpus", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllCPUs(
+            @RequestParam(value = "appName", required = true) String appName) {
+
+        return averageResultService.getCpu(appName);
+    }
+
+    @RequestMapping(value = "/apps", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllApps(
+            @RequestParam(value = "cpu", required = true) String cpu) {
+
+        return averageResultService.getApp(cpu);
+    }
 }

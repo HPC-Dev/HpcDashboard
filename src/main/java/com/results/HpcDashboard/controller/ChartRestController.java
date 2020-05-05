@@ -86,7 +86,7 @@ public class ChartRestController {
 
 
     @GetMapping("/result/{app_name}")
-    public List<MultiChartResponse> getAvgBySelectedCPU(@PathVariable("app_name") String app_name, String[] cpuList ){
+    public List<MultiChartResponse> getAvgBySelectedCPUChart(@PathVariable("app_name") String app_name, String[] cpuList ){
         List<String> cpus = Arrays.asList(cpuList);
         List<MultiChartResponse> resultList =new ArrayList<>();
         MultiChartResponse mlr = new MultiChartResponse();

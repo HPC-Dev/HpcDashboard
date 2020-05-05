@@ -1,18 +1,18 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.CPUDto;
+import com.results.HpcDashboard.dto.partComparision.CompareResult;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.repo.AverageResultRepo;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.CPUService;
+import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/avg")
@@ -26,6 +26,9 @@ public class AverageResultRestController {
 
     @Autowired
     CPUService cpuService;
+
+    @Autowired
+    Util util;
 
 
     @GetMapping("/result")
@@ -68,6 +71,76 @@ public class AverageResultRestController {
             return Collections.emptyList();
         }
         return list;
+    }
+
+    @GetMapping("/resultComparision/{app_name}/{cpu1}/{cpu2}")
+    public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {
+
+        List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name,cpu1);
+        List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name,cpu2);
+
+        Set<String> bms = new LinkedHashSet<>();
+        bms.add("");
+        for(AverageResult avg : list1){
+            bms.add(avg.getBmName());
+        }
+
+        Map<String,Double> result1 = new LinkedHashMap<>();
+        Map<String,Double> result2 = new LinkedHashMap<>();
+
+        Map<String,String> perfDifference = new LinkedHashMap<>();
+
+        for(AverageResult a : list1){
+            result1.put(a.getBmName(),a.getAvgResult());
+        }
+        for(AverageResult a : list2){
+            result2.put(a.getBmName(),a.getAvgResult());
+        }
+
+        perfDifference.put("","Perf diff(%)");
+
+        Set<String> keys = result1.keySet();
+
+        for(String k : keys){
+
+            double val1 = result1.get(k);
+            double val2 = result2.get(k);
+
+            if(Double.compare(val1,val2) > 0) {
+                double d = (val1-val2)/Math.abs(val2);
+                double percentage = util.round(d * 100, 2);
+                perfDifference.put(k,"+"+percentage + "%");
+            }
+            else if(Double.compare(val1,val2) < 0){
+                double d = (val2 - val1)/Math.abs(val1);
+                double percentage = util.round(d * 100, 2);
+                perfDifference.put(k,"-"+percentage + "%");
+             }
+            else{
+                perfDifference.put(k,0+"%");
+            }
+        }
+
+        Map<String,String> res1 = new LinkedHashMap<>();
+        Map<String,String> res2 = new LinkedHashMap<>();
+
+        res1.put("",cpu1);
+        res2.put("",cpu2);
+
+        for(String k : keys){
+            res1.put(k,result1.get(k).toString());
+            res2.put(k,result2.get(k).toString());
+        }
+
+        List<Map<String,String>> dataSets = new ArrayList<>();
+        dataSets.add(res1);
+        dataSets.add(res2);
+        dataSets.add(perfDifference);
+
+        CompareResult compareResult = CompareResult.builder().appName(app_name).bmName(bms).resultData(dataSets).build();
+
+        return compareResult;
+
     }
 
 }

@@ -55,6 +55,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/avg/**",
                         "/chart/**",
                         "/register**",
+                        "/res/**",
                         "/js/**",
                         "/css/**",
                         "/img/**",

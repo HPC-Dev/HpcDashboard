@@ -2,19 +2,33 @@ create database results_dashboard;
 
 use results_dashboard;
 
+select DISTINCT bm_name from average_result where app_name="openfoam" ORDER BY nodes ASC;
+
+select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER BY cpu_sku ASC;
+
+select DISTINCT bm_name from results where app_name="openfoam" ORDER BY nodes ASC;
+
+select cpu_sku,cores from cpu_info;
+
+select cpu_sku,cores from average_result group by cpu_sku;
+
+select DISTINCT bm_name from average_result where app_name="openfoam" ORDER BY nodes ASC
+
 show tables;
 
-select cores,cpu_sku from cpu_info;
+select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;
 
 select * from cpu_info;
 
 select precision_info from applications where app_name="openfoam";
 
-select * from applications;
+select * from average_result where app_name="openfoam" and cpu_sku in ("7F52","7F72") and nodes=1;
 
 select * from benchmarks;
 
-select * from results;
+select *  from results;
+
+select DISTINCT app_name from average_result;
 
 select * from results where bm_name="ls-3cars" and cpu="7F72" and nodes=1;
 
@@ -22,9 +36,16 @@ select * from results where app_name='fluent' and bm_name='fluent-sed4';
 
 select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
 
-select * from average_result;
+select bm_name,app_name,avg_result from average_result where cpu_sku="7F72" and nodes=1;
 
-select * from average_result where app_name="openfoam" and cpu_sku in( "7F52", "7F32","7F72") and nodes =1 ORDER BY bm_name;
+
+
+select * from average_result where app_name="openfoam" and cpu_sku in( "7F52", "7F32") and nodes =1 ORDER BY cpu_sku;
+
+
+select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;
+
+
 
 select * from average_result where app_name="openfoam" and bm_name="ofoam-1305252" and cpu_sku in( "7F52", "7F32","7F72") and nodes =1 ORDER BY bm_name;
 
@@ -69,6 +90,12 @@ drop table applications;
 drop table results;
 
 drop table cpu_info;
+
+ALTER TABLE results
+ADD COLUMN inserted_at 
+  TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+  ON UPDATE CURRENT_TIMESTAMP;
+
 
 -- Indexes
 

@@ -110,13 +110,6 @@ public class ResultDashboardController {
         return "resultDashboard";
     }
 
-    @RequestMapping(value = "/bms", method = RequestMethod.GET)
-    public @ResponseBody
-    List<String> findAllBMs(
-            @RequestParam(value = "appName", required = true) String appName) {
-
-        return resultService.getSelectBm(appName);
-    }
 
     @GetMapping(value = "/resultsExcel")
     public ResponseEntity<InputStreamResource> excelResults() throws IOException {
