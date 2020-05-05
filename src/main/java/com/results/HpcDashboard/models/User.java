@@ -12,6 +12,7 @@ import java.util.Collection;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Builder
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 

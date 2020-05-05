@@ -29,8 +29,27 @@ public class ChartRestController {
 
     public static String getAppName(String app){
         appMap = new HashMap<>();
-        appMap.put("openfoam","OpenFOAM");
-        appMap.put("namd","NAMD");
+        appMap.put("abaqus", "Abaqus");
+        appMap.put("acusolve", "AcuSolve");
+        appMap.put("cfx","CFX");
+        appMap.put("fluent","Fluent");
+        appMap.put("gromacs","GROMACS");
+        appMap.put("hpcg","HPCG");
+        appMap.put("hpl","HPL");
+        appMap.put("hycom","HYCOM");
+        appMap.put("lammps","LAMMPS");
+        appMap.put("liggghts","LIGGGHTS");
+        appMap.put("lsdyna", "LS-DYNA");
+        appMap.put("namd", "NAMD");
+        appMap.put("openfoam", "OpenFOAM");
+        appMap.put("pamcrash", "Pam-Crash");
+        appMap.put("quantum-espresso", "Quantum ESPRESSO");
+        appMap.put("radioss", "Radioss");
+        appMap.put("starccm", "STAR-CCM+");
+        appMap.put("stream", "STREAM");
+        appMap.put("wrf", "WRK");
+        appMap.put("cp2k","CP2K");
+
         return appMap.getOrDefault(app,app);
     }
 
@@ -43,7 +62,7 @@ public class ChartRestController {
         String appCpu = getAppName(app_name)+" - "+cpu;
         String metric = "";
         if(applicationService.getMetric(app_name).length() > 0 ) {
-            metric = WordUtils.capitalize(applicationService.getMetric(app_name));
+            metric = WordUtils.capitalize(applicationService.getMetric(app_name.trim().toLowerCase()));
         }
         List<String> label = new ArrayList<>();
         List<Double> data = new ArrayList<>();

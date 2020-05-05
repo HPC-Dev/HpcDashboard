@@ -12,7 +12,7 @@ select cpu_sku,cores from cpu_info;
 
 select cpu_sku,cores from average_result group by cpu_sku;
 
-select DISTINCT bm_name from average_result where app_name="openfoam" ORDER BY nodes ASC
+select DISTINCT bm_name from average_result where app_name="openfoam" and cpu_sku="n1-highcpu-96" ORDER BY nodes ASC;
 
 show tables;
 

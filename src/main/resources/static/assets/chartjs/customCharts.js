@@ -1,3 +1,5 @@
+Chart.defaults.global.defaultFontStyle = 'bold'
+
 $('#appDrop').change(appChange);
 $('#cpuDrop').change(cpuChange);
 
@@ -160,7 +162,8 @@ function getNodeChartData() {
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: data[0].metric
+                            labelString: data[0].metric,
+                            fontStyle: "bold"
                         },
                         gridLines: {
                             color: "rgb(234, 236, 244)",
@@ -246,7 +249,8 @@ function getBmChartData() {
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: data[0].metric
+                            labelString: data[0].metric,
+                            fontStyle: "bold"
                         },
                         gridLines: {
                             color: "rgb(234, 236, 244)",

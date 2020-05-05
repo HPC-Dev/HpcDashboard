@@ -31,6 +31,35 @@ public class AverageResultRestController {
     Util util;
 
 
+    static Map<String,String> appMap;
+
+    public static String getLowerHigher(String app){
+        appMap = new HashMap<>();
+        appMap.put("abaqus", "LOWER");
+        appMap.put("acusolve", "HIGHER");
+        appMap.put("cfx","LOWER");
+        appMap.put("fluent","HIGHER");
+        appMap.put("gromacs","HIGHER");
+        appMap.put("hpcg","LOWER");
+        appMap.put("hpl","HIGHER");
+        appMap.put("hycom","HIGHER");
+        appMap.put("lammps","HIGHER");
+        appMap.put("liggghts","LOWER");
+        appMap.put("lsdyna", "LOWER");
+        appMap.put("namd", "HIGHER");
+        appMap.put("openfoam", "LOWER");
+        appMap.put("pamcrash", "LOWER");
+        appMap.put("quantum-espresso", "HIGHER");
+        appMap.put("radioss", "LOWER");
+        appMap.put("starccm", "LOWER");
+        appMap.put("stream", "HIGHER");
+        appMap.put("wrf", "LOWER");
+        appMap.put("cp2k","LOWER");
+
+        return appMap.getOrDefault(app,app);
+    }
+
+
     @GetMapping("/result")
     public List<AverageResult> getAvgResult(){
         List<AverageResult> list = null;
@@ -76,6 +105,8 @@ public class AverageResultRestController {
     @GetMapping("/resultComparision/{app_name}/{cpu1}/{cpu2}")
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {
 
+        CompareResult compareResult;
+        String metric=null;
         List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name,cpu1);
         List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name,cpu2);
 
@@ -106,18 +137,33 @@ public class AverageResultRestController {
             double val1 = result1.get(k);
             double val2 = result2.get(k);
 
-            if(Double.compare(val1,val2) > 0) {
-                double d = (val1-val2)/Math.abs(val2);
-                double percentage = util.round(d * 100, 2);
-                perfDifference.put(k,"+"+percentage + "%");
+            if(getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                if (Double.compare(val1, val2) < 0) {
+                    double d = (val2 - val1) / Math.abs(val1);
+                    double percentage = util.round(d * 100, 2);
+                    perfDifference.put(k, "+" + percentage + "%");
+                } else if (Double.compare(val1, val2) > 0) {
+                    double d = (val1 - val2) / Math.abs(val2);
+                    double percentage = util.round(d * 100, 2);
+                    perfDifference.put(k, "-" + percentage + "%");
+                } else {
+                    perfDifference.put(k, 0 + "%");
+                }
+                metric = "Higher is better";
             }
-            else if(Double.compare(val1,val2) < 0){
-                double d = (val2 - val1)/Math.abs(val1);
-                double percentage = util.round(d * 100, 2);
-                perfDifference.put(k,"-"+percentage + "%");
-             }
             else{
-                perfDifference.put(k,0+"%");
+                if (Double.compare(val1, val2) > 0) {
+                    double d = (val1 - val2) / Math.abs(val2);
+                    double percentage = util.round(d * 100, 2);
+                    perfDifference.put(k, "+" + percentage + "%");
+                } else if (Double.compare(val1, val2) < 0) {
+                    double d = (val2 - val1) / Math.abs(val1);
+                    double percentage = util.round(d * 100, 2);
+                    perfDifference.put(k, "-" + percentage + "%");
+                } else {
+                    perfDifference.put(k, 0 + "%");
+                }
+                metric = "Lower is better";
             }
         }
 
@@ -137,7 +183,7 @@ public class AverageResultRestController {
         dataSets.add(res2);
         dataSets.add(perfDifference);
 
-        CompareResult compareResult = CompareResult.builder().appName(app_name).bmName(bms).resultData(dataSets).build();
+         compareResult = CompareResult.builder().appName(app_name).bmName(bms).resultData(dataSets).metric(metric).build();
 
         return compareResult;
 

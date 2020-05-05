@@ -1,3 +1,4 @@
+Chart.defaults.global.defaultFontStyle = 'bold'
 $('#appDrop').on("change", function() {
     var value = $(this).val();
     $('#checkbox').empty();

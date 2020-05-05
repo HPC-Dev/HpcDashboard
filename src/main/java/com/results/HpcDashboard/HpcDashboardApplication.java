@@ -1,8 +1,6 @@
 package com.results.HpcDashboard;
 
-import com.results.HpcDashboard.models.Application;
-import com.results.HpcDashboard.models.AverageResult;
-import com.results.HpcDashboard.models.Benchmark;
+
 import com.results.HpcDashboard.repo.ApplicationRepo;
 import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.repo.CPURepo;
@@ -22,9 +20,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.time.LocalDate;
-import java.util.*;
-
 @SpringBootApplication
 @EnableSwagger2
 @EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class)
@@ -42,13 +37,14 @@ public class HpcDashboardApplication implements CommandLineRunner {
 	@Autowired
 	AverageResultService averageResultService;
 
-		@Override
-	public void run(String... args) throws Exception {
-
-		}
 
 	public static void main(String[] args) {
 		SpringApplication.run(HpcDashboardApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
 	}
 
 	@Bean
