@@ -33,12 +33,18 @@ $('#appDrop').on("change", function() {
         });
         $('#cpuDrop1').val('');
         $('#cpuDrop2').val('');
+        clearChart();
         getData();
     }
 });
 
 $("#cpu1").on("change", getData);
 $("#cpu2").on("change", getData);
+
+function clearChart() {
+    $('#multiBarChart').remove();
+    $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+}
 
 function getData() {
     var cpu1 = $('#cpuDrop1')[0].value;
@@ -131,8 +137,7 @@ function getMultiChartData(app, cpu1, cpu2) {
                 }
             };
 
-            $('#multiBarChart').remove();
-            $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+            clearChart();
             var graphTarget = $("#multiBarChart");
             var barGraph = new Chart(graphTarget, {
                 type: 'bar',
@@ -141,8 +146,7 @@ function getMultiChartData(app, cpu1, cpu2) {
             });
         });
     } else {
-        $('#multiBarChart').remove();
-        $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+        clearChart();
     }
 
 }
@@ -163,10 +167,10 @@ function getHeaders(columns) {
     var headers = ['<thead><tr>'];
 
 
-//    headers.push('<th bgcolor="#D3D3D3">' + '</th>')
-        columns.forEach(function(column) {
-            headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')
-        });
+    //    headers.push('<th bgcolor="#D3D3D3">' + '</th>')
+    columns.forEach(function(column) {
+        headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')
+    });
     headers.push('</tr></thead>');
 
     return headers.join('');

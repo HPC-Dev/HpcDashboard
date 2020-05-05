@@ -9,19 +9,19 @@ $('#cpuDrop').on("change", function() {
         $("#coreCount").show();
         $("#coreValue")[0].value = 'Cores: ' + findCpuCore(text);
         $("#app").show();
-                $.getJSON("/apps", {
-                    cpu: value,
-                    ajax: 'true'
-                }, function(data) {
-                    var html = '<option value="" selected="true" disabled="disabled">App</option>';
-                    var len = data.length;
-                    for (var i = 0; i < len; i++) {
-                        html += '<option value="' + data[i] + '">' +
-                            data[i] + '</option>';
-                    }
-                    html += '</option>';
-                    $('#appDrop').html(html);
-                });
+        $.getJSON("/apps", {
+            cpu: value,
+            ajax: 'true'
+        }, function(data) {
+            var html = '<option value="" selected="true" disabled="disabled">App</option>';
+            var len = data.length;
+            for (var i = 0; i < len; i++) {
+                html += '<option value="' + data[i] + '">' +
+                    data[i] + '</option>';
+            }
+            html += '</option>';
+            $('#appDrop').html(html);
+        });
         $("#app").on("change", getData);
     } else if (value == '') {
         $("#core").hide();
@@ -34,7 +34,7 @@ $('#cpuDrop').on("change", function() {
 });
 
 function getCpuCores() {
-    return $.getJSON( "/avg/cpus", function( data ) {
+    return $.getJSON("/avg/cpus", function(data) {
         cpus = data;
     });
 }

@@ -283,9 +283,7 @@ function getBmChartData() {
                 }
             };
 
-            $('#bmBarChart').remove();
-            $('#bmChart').append('<canvas id="bmBarChart" width="450" height="300" role="img"></canvas>');
-
+            clearChart();
             var graphTarget = $("#bmBarChart");
             var barGraph = new Chart(graphTarget, {
                 type: 'bar',

@@ -1,24 +1,31 @@
 $('#appDrop').on("change", function() {
-var value = $(this).val();
-           $('#checkbox').empty();
-            $.getJSON("/cpus", {
-                    appName: value,
-                    ajax: 'true'
-                }, function(data) {
-                    var len = data.length;
-					var html='';
-                    for (var i = 0; i < len; i++) {
-                        html +=' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
-                        html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '"/>' +
-                            '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' +  data[i] + '</label>';
-                      html += '</div>';
-                    }
+    var value = $(this).val();
+    $('#checkbox').empty();
+    $.getJSON("/cpus", {
+        appName: value,
+        ajax: 'true'
+    }, function(data) {
+        var len = data.length;
+        var html = '';
+        for (var i = 0; i < len; i++) {
+            html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '"/>' +
+                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+            html += '</div>';
+        }
 
-                $('#checkbox').append(html);
-                $("#checkbox").show();
-                $("#button").show();
+        $('#checkbox').append(html);
+        $("#checkbox").show();
+        $("#button").show();
     });
+    clearChart();
+
 });
+
+function clearChart() {
+    $('#multiBarChart').remove();
+    $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+}
 
 $('button').on('click', function() {
     var cpuList = [];
@@ -104,8 +111,7 @@ $('button').on('click', function() {
                     }
                 };
 
-                $('#multiBarChart').remove();
-                $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+                clearChart();
                 var graphTarget = $("#multiBarChart");
                 var barGraph = new Chart(graphTarget, {
                     type: 'bar',
