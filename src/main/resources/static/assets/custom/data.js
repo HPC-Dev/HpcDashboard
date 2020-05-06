@@ -13,7 +13,7 @@ $('#cpuDrop').on("change", function() {
             cpu: value,
             ajax: 'true'
         }, function(data) {
-            var html = '<option value="" selected="true" disabled="disabled">App</option>';
+            var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
             var len = data.length;
             for (var i = 0; i < len; i++) {
                 html += '<option value="' + data[i] + '">' +

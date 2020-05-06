@@ -20,6 +20,6 @@ public class CompareResult {
 
     private List<Map<String,String>> resultData;
 
-    private String metric;
+    private String comment;
 
 }

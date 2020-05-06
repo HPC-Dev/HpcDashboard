@@ -35,7 +35,7 @@ var table = $('table#ajax').DataTable({
 
 $('#appDrop').change(
     function() {
-        $.getJSON("/bms", {
+        $.getJSON("/bmsDashboard", {
             appName: $(this).val(),
             ajax: 'true'
         }, function(data) {

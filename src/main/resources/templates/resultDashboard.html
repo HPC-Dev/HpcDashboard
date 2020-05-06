@@ -88,7 +88,7 @@
 
             <div id="app" class="dropdown">
                 <select class="form-control form-control-sm" id="appDrop" name="appDrop">
-                    <option  selected="true" disabled="disabled">--App--</option>
+                    <option  selected="true" disabled="disabled">-- App --</option>
                     <option th:each="app : ${apps}"
                             th:value="${app}"
                             th:text="${app}"></option>
@@ -98,13 +98,13 @@
 
             <div id="bm">
                 <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
-                    <option selected="true" disabled="disabled">--Benchmark--</option>
+                    <option selected="true" disabled="disabled">-- Benchmark --</option>
                 </select>
             </div>
             <br>
             <div id="node" >
                 <select class="form-control form-control-sm" id="nodeDrop" name="nodeDrop">
-                    <option selected="true" disabled="disabled">--Node count--</option>
+                    <option selected="true" disabled="disabled">-- Node count --</option>
                     <option th:each="node : ${nodes}"
                             th:value="${node}"
                             th:text="${node}"></option>
@@ -114,7 +114,7 @@
 
             <div id="cpu" >
                 <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
-                    <option selected="true" disabled="disabled">--CPU--</option>
+                    <option selected="true" disabled="disabled">-- CPU --</option>
                     <option th:each="cpu : ${cpus}"
                             th:value="${cpu}"
                             th:text="${cpu}"></option>

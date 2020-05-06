@@ -82,7 +82,7 @@
 
      <div id="app" class="custom-control col-sm-2 dropdown custom-control-inline">
                 <select class="form-control form-control-sm" id="appDrop" name="appDrop">
-                    <option value="" selected="true" disabled="disabled">App</option>
+                    <option value="" selected="true" disabled="disabled">-- App --</option>
                     <option th:each="app : ${apps}"
                             th:value="${app}"
                             th:text="${app}"></option>

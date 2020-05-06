@@ -11,4 +11,5 @@ public class MultiChartResponse {
     private String metric;
     private List<String> labels;
     private List<Dataset> datasets;
+    private String comment;
 }

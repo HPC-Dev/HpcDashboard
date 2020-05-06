@@ -1,6 +1,8 @@
-var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(192, 0, 0, 0.2)', 'rgba(255, 206, 86, 0.2)'];
-var BORDER_COLORS = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)', 'rgba(255, 206, 86, 1)'];
-Chart.defaults.global.defaultFontStyle = 'bold'
+var BACKGROUND_COLORS = ['rgba(54, 162, 235, 0.2)',  'rgba(192, 0, 0, 0.2)','rgba(75, 192, 192, 0.2)',  'rgba(255, 206, 86, 0.2)' ,  'rgba(255, 159, 64, 0.2)', 'rgba(255, 206, 86, 0.2)',   'rgba(255, 206, 86, 0.2)' ];
+var BORDER_COLORS = ['rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)',  'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)',  'rgba(255, 159, 64, 1)', 'rgba(255, 206, 86, 1)' ,'rgba(255, 206, 86, 1)'  ];
+
+Chart.defaults.global.defaultFontStyle = 'bold';
+Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 $('#appDrop').on("change", function() {
     var value = $(this).val();
@@ -59,7 +61,7 @@ function getData() {
             var transformedData = [];
             data.bmName.forEach(element => columnNames.push(element));
             data.resultData.forEach(element => transformedData.push(element));
-            updateTable(columnNames, transformedData, data.metric);
+            updateTable(columnNames, transformedData, data.comment);
         });
     } else {
         $('#tableNew').html('');
@@ -153,11 +155,11 @@ function getMultiChartData(app, cpu1, cpu2) {
 }
 
 
-function updateTable(columns, data, metric) {
+function updateTable(columns, data, comment) {
     var table;
     if (Object.keys(data).length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
-        table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + metric + "</p>"
+        table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + comment + "</p>"
     } else {
         table = "<p>No data available</p>";
     }

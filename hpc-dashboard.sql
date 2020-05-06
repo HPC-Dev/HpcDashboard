@@ -46,8 +46,7 @@ select * from average_result where app_name="openfoam" and cpu_sku in( "7F52", "
 select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;
 
 
-
-select * from average_result where app_name="openfoam" and bm_name="ofoam-1305252" and cpu_sku in( "7F52", "7F32","7F72") and nodes =1 ORDER BY bm_name;
+select * from average_result where app_name="openfoam"  and cpu_sku in( "7F52", "7F32") and nodes =1 ORDER BY avg_result;
 
 #update applications set precision_info="Elapsed Time" where app_id="openfoam_v1906";
 

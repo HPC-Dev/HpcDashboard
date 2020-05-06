@@ -1,4 +1,5 @@
-Chart.defaults.global.defaultFontStyle = 'bold'
+Chart.defaults.global.defaultFontStyle = 'bold';
+Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 $('#appDrop').change(appChange);
 $('#cpuDrop').change(cpuChange);
@@ -13,7 +14,7 @@ function cpuChange() {
             cpu: value,
             ajax: 'true'
         }, function(data) {
-            var html = '<option value="" selected="true" disabled="disabled">App</option>';
+            var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
             var len = data.length;
             for (var i = 0; i < len; i++) {
                 html += '<option value="' + data[i] + '">' +
@@ -36,12 +37,14 @@ function cpuChange() {
 }
 
 function clearForm() {
+     $('#comment').empty();
     $('#appDrop').val('');
     $('#bmDrop').val('');
     $("#bm").hide();
     $("#radio").hide();
     $("#option1").prop("checked", false);
     $("#option2").prop("checked", false);
+    $("#noChart").hide();
 }
 
 function clearChart() {
@@ -68,7 +71,7 @@ function appChange() {
         cpu: cpu,
         ajax: 'true'
     }, function(data) {
-        var html = '<option value="" selected="true" disabled="disabled">Benchmark</option>';
+        var html = '<option value="" selected="true" disabled="disabled">-- Benchmark --</option>';
         var len = data.length;
         for (var i = 0; i < len; i++) {
             html += '<option value="' + data[i] + '">' +
@@ -85,6 +88,9 @@ function appChange() {
     if ($("#option2").is(":checked")) {
         $("#bmChart").hide();
     }
+
+    $("#noChart").hide();
+    $('#comment').empty();
 }
 
 $("#option1")
@@ -95,6 +101,8 @@ $("#option1")
                 $("#bm").hide();
                 $("#bmChart").hide();
                 $("#nodeChart").show();
+                $("#noChart").hide();
+                $('#comment').empty();
                 getNodeChartData();
             }
         }
@@ -109,13 +117,14 @@ $("#option2")
             var val = $(this).val();
             if (val === "bench") {
                 $("#nodeChart").hide();
+                $('#comment').empty();
                 $("#bm").show();
                 $.getJSON("/bms", {
                     appName: app,
                     cpu: cpu,
                     ajax: 'true'
                 }, function(data) {
-                    var html = '<option value="" selected="true" disabled="disabled">Benchmark</option>';
+                    var html = '<option value="" selected="true" disabled="disabled">-- Benchmark --</option>';
                     var len = data.length;
                     for (var i = 0; i < len; i++) {
                         html += '<option value="' + data[i] + '">' +
@@ -139,15 +148,29 @@ function getNodeChartData() {
         $.getJSON("/chart/resultApp/" + cpu + "/" + app + "/" + node, function(data) {
             var label = data[0].labels;
             var result = data[0].dataset;
-            var chartdata = {
-                labels: label,
-                datasets: [{
-                    backgroundColor: ['#ff6666', '#ff9933', '#3399ff', '#9933ff', '#99004c', '#3333ff', '#808080', '#660000', '#006666', '#6666ff', '#003366', '#660066', '#ff9999', '#66b2ff', '#b266ff', '#660043', '#a0a0a0', '#666600', '#000066', '#ccoocc', '#ffcccc', '#ffcc99', '#99ccff', '#9999ff', '#cc99ff', '#ff99cc'],
-                    borderWidth: 1,
-                    data: result
-                }]
-            };
+
+            if (result.length > 3) {
+                var chartdata = {
+                    labels: label,
+                    datasets: [{
+                        backgroundColor: ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'],
+                        borderWidth: 1,
+                        data: result
+                    }]
+                };
+            } else {
+                var chartdata = {
+                    labels: label,
+                    datasets: [{
+                        backgroundColor: ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'],
+                        borderWidth: 1,
+                        data: result,
+                        barPercentage: 0.2,
+                    }]
+                };
+            }
             var chartOptions = {
+
                 legend: {
                     display: false,
                 },
@@ -207,8 +230,14 @@ function getNodeChartData() {
                 data: chartdata,
                 options: chartOptions
             });
+
+            $('#comment').empty();
+            var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" +"*" + data[0].comment + "</p>"
+            $('#comment').append(comment);
+            $('#comment').show();
         });
     } else {
+        $('#comment').empty();
         clearChart();
     }
 }
@@ -230,7 +259,8 @@ function getBmChartData() {
                     backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(192, 0, 0, 0.2)'],
                     borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
                     borderWidth: 1,
-                    data: result
+                    data: result,
+                    fill: false
                 }]
             };
 
@@ -289,11 +319,24 @@ function getBmChartData() {
 
             clearChart();
             var graphTarget = $("#bmBarChart");
-            var barGraph = new Chart(graphTarget, {
-                type: 'bar',
-                data: chartdata,
-                options: chartOptions
-            });
+
+            if (result.length > 1) {
+                var barGraph = new Chart(graphTarget, {
+                    type: 'line',
+                    data: chartdata,
+                    options: chartOptions
+                });
+
+                $('#comment').empty();
+                var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" +"*" + data[0].comment + "</p>"
+                $('#comment').append(comment);
+                $('#comment').show();
+            } else {
+                $('#comment').empty();
+                $('#bmChart').hide();
+                $('#nodeChart').hide();
+                $("#noChart").show();
+            }
         });
     }
 }

@@ -31,31 +31,8 @@ public class AverageResultRestController {
     Util util;
 
 
-    static Map<String,String> appMap;
-
-    public static String getLowerHigher(String app){
-        appMap = new HashMap<>();
-        appMap.put("abaqus", "LOWER");
-        appMap.put("acusolve", "HIGHER");
-        appMap.put("cfx","LOWER");
-        appMap.put("fluent","HIGHER");
-        appMap.put("gromacs","HIGHER");
-        appMap.put("hpcg","LOWER");
-        appMap.put("hpl","HIGHER");
-        appMap.put("hycom","HIGHER");
-        appMap.put("lammps","HIGHER");
-        appMap.put("liggghts","LOWER");
-        appMap.put("lsdyna", "LOWER");
-        appMap.put("namd", "HIGHER");
-        appMap.put("openfoam", "LOWER");
-        appMap.put("pamcrash", "LOWER");
-        appMap.put("quantum-espresso", "HIGHER");
-        appMap.put("radioss", "LOWER");
-        appMap.put("starccm", "LOWER");
-        appMap.put("stream", "HIGHER");
-        appMap.put("wrf", "LOWER");
-        appMap.put("cp2k","LOWER");
-
+    public String getLowerHigher(String app){
+        HashMap<String,String> appMap = util.getAppMap();
         return appMap.getOrDefault(app,app);
     }
 
@@ -106,7 +83,7 @@ public class AverageResultRestController {
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {
 
         CompareResult compareResult;
-        String metric=null;
+        String comment=null;
         List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name,cpu1);
         List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name,cpu2);
 
@@ -149,7 +126,7 @@ public class AverageResultRestController {
                 } else {
                     perfDifference.put(k, 0 + "%");
                 }
-                metric = "Higher is better";
+                comment = "Higher is better";
             }
             else{
                 if (Double.compare(val1, val2) > 0) {
@@ -163,7 +140,7 @@ public class AverageResultRestController {
                 } else {
                     perfDifference.put(k, 0 + "%");
                 }
-                metric = "Lower is better";
+                comment = "Lower is better";
             }
         }
 
@@ -183,7 +160,7 @@ public class AverageResultRestController {
         dataSets.add(res2);
         dataSets.add(perfDifference);
 
-         compareResult = CompareResult.builder().appName(app_name).bmName(bms).resultData(dataSets).metric(metric).build();
+         compareResult = CompareResult.builder().appName(app_name).bmName(bms).resultData(dataSets).comment(comment).build();
 
         return compareResult;
 

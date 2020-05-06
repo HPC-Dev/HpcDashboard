@@ -12,5 +12,5 @@ public class ChartsResponse {
     private String metric;
     private List<String> labels;
     private List<Double> dataset;
-
+    private String comment;
 }

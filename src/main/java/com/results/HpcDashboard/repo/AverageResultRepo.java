@@ -21,10 +21,12 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_CPU = "select DISTINCT cpu_sku from average_result where app_name=:appName ORDER BY cpu_sku ASC";
     public static final String GET_CPU_RES = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
     public static final String GET_APP = "select DISTINCT app_name from average_result ORDER BY app_name ASC";
-    public static final String GET_APPCPU = "select DISTINCT app_name from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
-    public static final String GET_SELECTED_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name";
-    public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 ORDER BY cpu_sku;";
-    public static final String GET_SELECTED_BM = "select DISTINCT bm_name from average_result where app_name=:app_name and cpu_sku=:cpu ORDER BY nodes ASC";
+    public static final String GET_APP_CPU = "select DISTINCT app_name from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
+    //public static final String GET_SELECTED_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name";
+    public static final String GET_SELECTED_CPU_RES_BY_AVG = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY avg_result";
+    public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 ORDER BY avg_result;";
+    public static final String GET_SELECTED_BM_CPU = "select DISTINCT bm_name from average_result where app_name=:app_name and cpu_sku=:cpu ORDER BY bm_name ASC";
+    public static final String GET_SELECTED_BM = "select DISTINCT bm_name from average_result where app_name=:app_name ORDER BY bm_name ASC";
 
 
     @Modifying
@@ -50,7 +52,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(value = GET_APP, nativeQuery = true)
     List<String> getAPP();
 
-    @Query(value = GET_APPCPU, nativeQuery = true)
+    @Query(value = GET_APP_CPU, nativeQuery = true)
     List<String> getAPP(String cpu);
 
     @Query(value = GET_CPU, nativeQuery = true)
@@ -59,13 +61,19 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(value = GET_CPU_RES, nativeQuery = true)
     List<String> getCPU();
 
-    @Query(nativeQuery =true,value = GET_SELECTED_CPU_RES)
-    List<AverageResult> findBySelectedCPU(String app_name, List<String> cpus);
+//    @Query(nativeQuery =true,value = GET_SELECTED_CPU_RES)
+//    List<AverageResult> findBySelectedCPU(String app_name, List<String> cpus);
+
+    @Query(nativeQuery =true,value = GET_SELECTED_CPU_RES_BY_AVG)
+    List<AverageResult> findBySelectedCPUApp(String app_name, List<String> cpus);
 
     @Query(nativeQuery =true,value = GET_COMP_CPU_RES)
     List<AverageResult> findCompDataBySelectedCPU(String app_name, String cpu);
 
-    @Query(value = GET_SELECTED_BM, nativeQuery = true)
+    @Query(value = GET_SELECTED_BM_CPU, nativeQuery = true)
     List<String> getSelectedBm(String app_name, String cpu);
+
+    @Query(value = GET_SELECTED_BM, nativeQuery = true)
+    List<String> getSelectedBm(String app_name);
 
 }

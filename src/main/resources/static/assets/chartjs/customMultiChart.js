@@ -1,4 +1,5 @@
-Chart.defaults.global.defaultFontStyle = 'bold'
+Chart.defaults.global.defaultFontStyle = 'bold';
+Chart.defaults.global.defaultFontFamily = 'Verdana';
 $('#appDrop').on("change", function() {
     var value = $(this).val();
     $('#checkbox').empty();
@@ -24,6 +25,7 @@ $('#appDrop').on("change", function() {
 });
 
 function clearChart() {
+    $('#comment').hide();
     $('#multiBarChart').remove();
     $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
 }
@@ -42,15 +44,14 @@ $('button').on('click', function() {
     }
 
     getMultiChartData();
-    var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(192, 0, 0, 0.2)', 'rgba(255, 206, 86, 0.2)'];
-    var BORDER_COLORS = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)', 'rgba(255, 206, 86, 1)'];
+    var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)' , 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)',  'rgba(192, 0, 0, 0.2)'];
+    var BORDER_COLORS = ['rgba(255, 99, 132, 1)',  'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',  'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'    ];
 
     function getMultiChartData() {
         var app = $('#appDrop')[0].value;
-        if (app) {
+        if (app && cpuList.length >0 ) {
             $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
                 var label = data[0].labels;
-
                 var chartdata = {
                     labels: label,
                     datasets: data[0].datasets.map(function(dataset, index) {
@@ -59,7 +60,8 @@ $('button').on('click', function() {
                             backgroundColor: BACKGROUND_COLORS[index],
                             borderColor: BORDER_COLORS[index],
                             borderWidth: 1,
-                            data: dataset.value
+                            data: dataset.value,
+                            fill: false,
                         };
                     })
                 };
@@ -71,7 +73,7 @@ $('button').on('click', function() {
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero: true,
                             },
                             scaleLabel: {
                                 display: true,
@@ -84,8 +86,13 @@ $('button').on('click', function() {
                                 borderDash: [2],
                                 zeroLineBorderDash: [2]
                             }
-                        }]
+                        }],
+                        xAxes: [{
+                                                        offset: true
+                                                    }]
+
                     },
+
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItem) {
@@ -115,10 +122,14 @@ $('button').on('click', function() {
                 clearChart();
                 var graphTarget = $("#multiBarChart");
                 var barGraph = new Chart(graphTarget, {
-                    type: 'bar',
+                    type: 'line',
                     data: chartdata,
                     options: chartOptions
                 });
+                $('#comment').empty();
+                var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" +"*" + data[0].comment + "</p>"
+                $('#comment').append(comment);
+                $('#comment').show();
             });
         }
     }

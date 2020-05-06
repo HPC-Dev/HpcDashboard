@@ -131,6 +131,17 @@ public class AverageResultService {
         return bm_list;
     }
 
+    public List<String> getSelectBm(String app_name) {
+
+        List<String> bm_list = null;
+        bm_list = averageResultRepo.getSelectedBm(app_name);
+
+        if(bm_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return bm_list;
+    }
+
     public List<String> getCpu(String appName) {
 
         List<String> cpu_list = null;
@@ -153,16 +164,18 @@ public class AverageResultService {
         return cpu_list;
     }
 
-    public List<AverageResult> getBySelectedCPU(String app_name,List<String> cpus) {
+
+    public List<AverageResult> getBySelectedCPUApp(String app_name,List<String> cpus) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.findBySelectedCPU(app_name,cpus);
+        list = averageResultRepo.findBySelectedCPUApp(app_name,cpus);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
         }
         return list;
     }
+
 
     public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu) {
 

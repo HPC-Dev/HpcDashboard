@@ -63,6 +63,15 @@ public class AppController {
         return averageResultService.getSelectBm(appName,cpu);
     }
 
+
+    @RequestMapping(value = "/bmsDashboard", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllBMs(
+            @RequestParam(value = "appName", required = true) String appName) {
+
+        return averageResultService.getSelectBm(appName);
+    }
+
     @GetMapping("/data")
     public String showData(Model model) {
 

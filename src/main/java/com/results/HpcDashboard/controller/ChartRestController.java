@@ -6,6 +6,7 @@ import com.results.HpcDashboard.dto.multichart.MultiChartResponse;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.services.ApplicationService;
 import com.results.HpcDashboard.services.AverageResultService;
+import com.results.HpcDashboard.util.Util;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,53 +26,76 @@ public class ChartRestController {
     @Autowired
     ApplicationService applicationService;
 
-    static Map<String,String> appMap;
+    @Autowired
+    Util util;
+
+    static Map<String,String> appMapCamelCase;
+
+
+    public String getMetric(String app){
+        HashMap<String,String> metricMap = util.getMetricMap();
+        return metricMap.getOrDefault(app,"");
+    }
+
+
+    public String getLowerHigher(String app){
+        HashMap<String,String> appMap = util.getAppMap();
+        return appMap.getOrDefault(app,"");
+    }
+
 
     public static String getAppName(String app){
-        appMap = new HashMap<>();
-        appMap.put("abaqus", "Abaqus");
-        appMap.put("acusolve", "AcuSolve");
-        appMap.put("cfx","CFX");
-        appMap.put("fluent","Fluent");
-        appMap.put("gromacs","GROMACS");
-        appMap.put("hpcg","HPCG");
-        appMap.put("hpl","HPL");
-        appMap.put("hycom","HYCOM");
-        appMap.put("lammps","LAMMPS");
-        appMap.put("liggghts","LIGGGHTS");
-        appMap.put("lsdyna", "LS-DYNA");
-        appMap.put("namd", "NAMD");
-        appMap.put("openfoam", "OpenFOAM");
-        appMap.put("pamcrash", "Pam-Crash");
-        appMap.put("quantum-espresso", "Quantum ESPRESSO");
-        appMap.put("radioss", "Radioss");
-        appMap.put("starccm", "STAR-CCM+");
-        appMap.put("stream", "STREAM");
-        appMap.put("wrf", "WRK");
-        appMap.put("cp2k","CP2K");
+        appMapCamelCase = new HashMap<>();
+        appMapCamelCase.put("abaqus", "Abaqus");
+        appMapCamelCase.put("acusolve", "AcuSolve");
+        appMapCamelCase.put("cfx","CFX");
+        appMapCamelCase.put("fluent","Fluent");
+        appMapCamelCase.put("gromacs","GROMACS");
+        appMapCamelCase.put("hpcg","HPCG");
+        appMapCamelCase.put("hpl","HPL");
+        appMapCamelCase.put("hycom","HYCOM");
+        appMapCamelCase.put("lammps","LAMMPS");
+        appMapCamelCase.put("liggghts","LIGGGHTS");
+        appMapCamelCase.put("lsdyna", "LS-DYNA");
+        appMapCamelCase.put("namd", "NAMD");
+        appMapCamelCase.put("openfoam", "OpenFOAM");
+        appMapCamelCase.put("pamcrash", "Pam-Crash");
+        appMapCamelCase.put("quantum-espresso", "Quantum ESPRESSO");
+        appMapCamelCase.put("radioss", "Radioss");
+        appMapCamelCase.put("starccm", "STAR-CCM+");
+        appMapCamelCase.put("stream", "STREAM");
+        appMapCamelCase.put("wrf", "WRF");
+        appMapCamelCase.put("cp2k","CP2K");
 
-        return appMap.getOrDefault(app,app);
+        return appMapCamelCase.getOrDefault(app,app);
     }
 
     @GetMapping("/resultApp/{cpu}/{app_name}/{node}")
     public List<ChartsResponse> getChartResult(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("node") int node){
         List<ChartsResponse> listResponse = new ArrayList<>();
         ChartsResponse chartsResponse = null;
+        String comment=null;
         List<AverageResult> list = null;
         list = averageResultService.getAvgResultCPUAppNode(cpu,app_name,node);
         String appCpu = getAppName(app_name)+" - "+cpu;
-        String metric = "";
-        if(applicationService.getMetric(app_name).length() > 0 ) {
-            metric = WordUtils.capitalize(applicationService.getMetric(app_name.trim().toLowerCase()));
-        }
+        String metric = getMetric(app_name.toLowerCase().trim());
+
         List<String> label = new ArrayList<>();
         List<Double> data = new ArrayList<>();
+
+        if(getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
+        }
+        else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")){
+            comment = "Lower is better";
+        }
+
 
         for(AverageResult avgRes : list){
             label.add(avgRes.getBmName());
             data.add(avgRes.getAvgResult());
         }
-        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appCpu).dataset(data).labels(label).build();
+        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appCpu).dataset(data).labels(label).comment(comment).build();
         listResponse.add(chartsResponse);
         return listResponse;
     }
@@ -83,13 +107,11 @@ public class ChartRestController {
         List<ChartsResponse> listResponse = new ArrayList<>();
         ChartsResponse chartsResponse = null;
         List<AverageResult> list = null;
+        String comment=null;
         list = averageResultService.getAvgResultCPUAppBm(cpu,app_name,bm_name);
-
         String appBmCpu = getAppName(app_name)+" - "+bm_name+" - "+cpu;
-        String metric = "";
-        if(applicationService.getMetric(app_name).length() > 0 ) {
-            metric = WordUtils.capitalize(applicationService.getMetric(app_name));
-        }
+        String metric = getMetric(app_name.toLowerCase().trim());
+
         List<String> label = new ArrayList<>();
         List<Double> data = new ArrayList<>();
 
@@ -97,7 +119,14 @@ public class ChartRestController {
             label.add(avgRes.getNodes()+" Node");
             data.add(avgRes.getAvgResult());
         }
-        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appBmCpu).dataset(data).labels(label).build();
+        if(getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
+        }
+        else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")){
+            comment = "Lower is better";
+        }
+
+        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appBmCpu).dataset(data).labels(label).comment(comment).build();
         listResponse.add(chartsResponse);
         return listResponse;
 
@@ -107,10 +136,12 @@ public class ChartRestController {
     @GetMapping("/result/{app_name}")
     public List<MultiChartResponse> getAvgBySelectedCPUChart(@PathVariable("app_name") String app_name, String[] cpuList ){
         List<String> cpus = Arrays.asList(cpuList);
+        String metric = getMetric(app_name.toLowerCase().trim());
+        String comment = "";
         List<MultiChartResponse> resultList =new ArrayList<>();
         MultiChartResponse mlr = new MultiChartResponse();
         List<AverageResult> list = null;
-        list = averageResultService.getBySelectedCPU(app_name,cpus);
+        list = averageResultService.getBySelectedCPUApp(app_name,cpus);
 
         Set<String> cpu = new LinkedHashSet<>();
         Set<String> bms = new LinkedHashSet<>();
@@ -119,14 +150,18 @@ public class ChartRestController {
             cpu.add(avg.getCpuSku());
             bms.add(avg.getBmName());
         }
-        String metric = "";
-        if(applicationService.getMetric(app_name).length() > 0 ) {
-            metric = WordUtils.capitalize(applicationService.getMetric(app_name));
+        if(getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
         }
+        else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")){
+            comment = "Lower is better";
+        }
+
         List<String> label = new ArrayList<>(bms);
         mlr.setLabels(label);
         mlr.setMetric(metric);
         mlr.setAppName(getAppName(list.get(0).getAppName()));
+        mlr.setComment(comment);
         List<Dataset> d = new ArrayList<>();
         for(String c : cpu){
 
