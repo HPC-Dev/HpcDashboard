@@ -39,8 +39,17 @@ public class AppController {
      return "login";
     }
 
-    @GetMapping("/mChart")
+    @GetMapping("/mChartOld")
     public String showMultiCharts(Model model) {
+        List<String> app_list = averageResultService.getApp();
+        List<String> cpu_list = averageResultService.getCpu();
+        model.addAttribute("cpus", cpu_list );
+        model.addAttribute("apps", app_list );
+        return "multiChartsOld";
+    }
+
+    @GetMapping("/mChart")
+    public String showMultiChartsNew(Model model) {
         List<String> app_list = averageResultService.getApp();
         List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );

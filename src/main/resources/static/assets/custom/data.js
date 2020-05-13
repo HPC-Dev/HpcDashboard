@@ -79,8 +79,14 @@ function getData() {
 
             updateTable(columnNames, transformedData);
         });
+
+        $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+                    updateTableScaling(data.label, data.resultData);
+                });
+
     } else {
         $('#table').html('');
+        $('#tableScaling').html('');
     }
 }
 
@@ -94,6 +100,15 @@ function updateTable(columns, data) {
     }
 
     $('#table').html(table);
+}
+
+function updateTableScaling(columns, data) {
+    var table;
+
+    if (data.length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+    }
+    $('#tableScaling').html(table);
 }
 
 function getHeaders(columns) {

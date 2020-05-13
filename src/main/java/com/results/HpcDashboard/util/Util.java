@@ -78,7 +78,7 @@ public class Util {
         for(double d : resultList){
             total+=d;
         }
-        double average = round(total/len,2);
+        double average = round(total/len,4);
         return average;
     }
 

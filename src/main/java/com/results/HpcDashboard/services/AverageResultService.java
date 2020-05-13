@@ -177,6 +177,32 @@ public class AverageResultService {
     }
 
 
+
+    public List<AverageResult> getBySelectedCPUAppAsc(String app_name,List<String> cpus) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.findBySelectedCPUAppAsc(app_name,cpus);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+
+
+    public List<AverageResult> getBySelectedCPUAppDesc(String app_name,List<String> cpus) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.findBySelectedCPUAppDesc(app_name,cpus);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+
     public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu) {
 
         List<AverageResult> list = null;

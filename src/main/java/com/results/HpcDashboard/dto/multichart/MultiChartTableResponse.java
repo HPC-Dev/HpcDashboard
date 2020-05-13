@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-@Data
 @Builder
-public class MultiChartResponse {
+@Data
+public class MultiChartTableResponse {
+
     private String appName;
-    private Set<String> cpus;
-    private List<Dataset> dataset;
+    private List<String> label;
+    private List<Map<String,String>> resultData;
 }

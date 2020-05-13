@@ -24,6 +24,7 @@ select precision_info from applications where app_name="openfoam";
 
 select * from average_result where app_name="openfoam" and cpu_sku in ("7F52","7F72") and nodes=1;
 
+
 select * from benchmarks;
 
 select *  from results;
@@ -46,7 +47,15 @@ select * from average_result where app_name="openfoam" and cpu_sku in( "7F52", "
 select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;
 
 
-select * from average_result where app_name="openfoam"  and cpu_sku in( "7F52", "7F32") and nodes =1 ORDER BY avg_result;
+select * from average_result where app_name="openfoam"  and cpu_sku in( "7F52", "7F32", "7F72") and nodes =1 ORDER BY avg_result DESC;
+
+
+select * from average_result where app_name="openfoam" and cpu_sku IN ("7F52", "7F32", "7F72") and nodes =1 ORDER BY bm_name,avg_result DESC;
+
+select * from average_result where app_name="namd" and cpu_sku IN ("7F52", "7F32", "7F72") and nodes =1 ORDER BY bm_name,avg_result;
+
+select * from average_result where app_name="namd" and cpu_sku IN ("n1-standard-96", "n2d-standard-224", "n2d-highcpu-224","n1-highcpu-96") and nodes =1 ORDER BY bm_name;
+
 
 #update applications set precision_info="Elapsed Time" where app_id="openfoam_v1906";
 
@@ -74,7 +83,7 @@ select app_name from benchmarks;
 #delete from user where id=3;
 
 
-
+SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDER BY bm_name;
 
 #delete from my_user_details where id=1;
 #ALTER TABLE benchmarks auto_increment=1;

@@ -1,13 +1,14 @@
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
 
+var BACKGROUND_COLORS = ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
+
 $('#appDrop').change(appChange);
 $('#cpuDrop').change(cpuChange);
 
 function cpuChange() {
     var value = $(this).val();
     var text = $(this).find('option:selected').text();
-    var bm = $('#bmDrop')[0].value;
     if (value != '') {
         $("#app").show();
         $.getJSON("/apps", {
@@ -31,20 +32,19 @@ function cpuChange() {
     if ($("#option1").is(":checked")) {
         getNodeChartData();
     }
-    if ($("#option2").is(":checked") && bm) {
+    if ($("#option2").is(":checked")) {
         getBmChartData();
     }
 }
 
 function clearForm() {
-     $('#comment').empty();
+    $('#comment').empty();
     $('#appDrop').val('');
-    $('#bmDrop').val('');
-    $("#bm").hide();
     $("#radio").hide();
     $("#option1").prop("checked", false);
     $("#option2").prop("checked", false);
     $("#noChart").hide();
+    $('#tableNew').html('');
 }
 
 function clearChart() {
@@ -54,9 +54,15 @@ function clearChart() {
     $('#nodeBarChart').remove();
     $('#nodeChart').append('<canvas id="nodeBarChart" width="450" height="300" role="img"></canvas>');
 
+    $('#ctx').remove();
+    $('#multiChart').append('<canvas id="ctx" width="450" height="300" role="img"></canvas>');
+
+
 }
 
 function appChange() {
+    clearChart();
+
     var app = $('#appDrop')[0].value;
     var cpu = $('#cpuDrop')[0].value;
     if (app != '') {
@@ -66,31 +72,18 @@ function appChange() {
         $("#radio").hide();
     }
 
-    $.getJSON("/bms", {
-        appName: app,
-        cpu: cpu,
-        ajax: 'true'
-    }, function(data) {
-        var html = '<option value="" selected="true" disabled="disabled">-- Benchmark --</option>';
-        var len = data.length;
-        for (var i = 0; i < len; i++) {
-            html += '<option value="' + data[i] + '">' +
-                data[i] + '</option>';
-        }
-        html += '</option>';
-        $('#bmDrop').html(html);
-    });
-
     if ($("#option1").is(":checked")) {
+        $('#tableNew').html('');
         getNodeChartData();
     }
 
     if ($("#option2").is(":checked")) {
-        $("#bmChart").hide();
+        getBmChartData();
     }
 
     $("#noChart").hide();
     $('#comment').empty();
+    $('#tableNew').html('');
 }
 
 $("#option1")
@@ -98,11 +91,11 @@ $("#option1")
         if ($(this).is(":checked")) {
             var val = $(this).val();
             if (val === "node") {
-                $("#bm").hide();
-                $("#bmChart").hide();
+                $("#multiChart").hide();
                 $("#nodeChart").show();
                 $("#noChart").hide();
                 $('#comment').empty();
+                $('#tableNew').html('');
                 getNodeChartData();
             }
         }
@@ -118,23 +111,8 @@ $("#option2")
             if (val === "bench") {
                 $("#nodeChart").hide();
                 $('#comment').empty();
-                $("#bm").show();
-                $.getJSON("/bms", {
-                    appName: app,
-                    cpu: cpu,
-                    ajax: 'true'
-                }, function(data) {
-                    var html = '<option value="" selected="true" disabled="disabled">-- Benchmark --</option>';
-                    var len = data.length;
-                    for (var i = 0; i < len; i++) {
-                        html += '<option value="' + data[i] + '">' +
-                            data[i] + '</option>';
-                    }
-                    html += '</option>';
-                    $('#bmDrop').html(html);
-                });
-                $("#bmChart").show();
-                $("#bm").on("change", getBmChartData);
+                $("#multiChart").show();
+                getBmChartData();
             }
         }
     });
@@ -232,7 +210,7 @@ function getNodeChartData() {
             });
 
             $('#comment').empty();
-            var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" +"*" + data[0].comment + "</p>"
+            var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" + "*" + data[0].comment + "</p>"
             $('#comment').append(comment);
             $('#comment').show();
         });
@@ -242,106 +220,6 @@ function getNodeChartData() {
     }
 }
 
-
-function getBmChartData() {
-    $("#bmChart").show();
-    var cpu = $('#cpuDrop')[0].value;
-    var app = $('#appDrop')[0].value;
-    var bm = $('#bmDrop')[0].value;
-
-    if (app && cpu && bm) {
-        $.getJSON("/chart/resultBm/" + cpu + "/" + app + "/" + bm, function(data) {
-            var label = data[0].labels;
-            var result = data[0].dataset;
-            var chartdata = {
-                labels: label,
-                datasets: [{
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(192, 0, 0, 0.2)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)', 'rgba(153, 102, 255, 1)', 'rgba(192, 0, 0, 1)'],
-                    borderWidth: 1,
-                    data: result,
-                    fill: false
-                }]
-            };
-
-            var chartOptions = {
-                legend: {
-                    display: false,
-                },
-                title: {
-                    display: true,
-                    text: data[0].appCPUName
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: data[0].metric,
-                            fontStyle: "bold"
-                        },
-                        gridLines: {
-                            color: "rgb(234, 236, 244)",
-                            zeroLineColor: "rgb(234, 236, 244)",
-                            drawBorder: false,
-                            borderDash: [2],
-                            zeroLineBorderDash: [2]
-                        }
-                    }]
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.yLabel;
-                        }
-                    },
-                    titleMarginBottom: 10,
-                    titleFontColor: '#6e707e',
-                    titleFontSize: 14,
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    caretPadding: 10,
-                },
-                layout: {
-                    padding: {
-                        top: 25,
-                        bottom: 20
-                    }
-                }
-            };
-
-            clearChart();
-            var graphTarget = $("#bmBarChart");
-
-            if (result.length > 1) {
-                var barGraph = new Chart(graphTarget, {
-                    type: 'line',
-                    data: chartdata,
-                    options: chartOptions
-                });
-
-                $('#comment').empty();
-                var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" +"*" + data[0].comment + "</p>"
-                $('#comment').append(comment);
-                $('#comment').show();
-            } else {
-                $('#comment').empty();
-                $('#bmChart').hide();
-                $('#nodeChart').hide();
-                $("#noChart").show();
-            }
-        });
-    }
-}
-
-
 function getRandomColorHex() {
     var hex = "0123456789ABCDEF",
         color = "#";
@@ -349,4 +227,168 @@ function getRandomColorHex() {
         color += hex[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+function getData() {
+    var cpu = $('#cpuDrop')[0].value;
+    var app = $('#appDrop')[0].value;
+
+    if (app && cpu) {
+
+        $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+            updateTable(data.label, data.resultData);
+        });
+    } else {
+        $('#tableNew').html('');
+    }
+}
+
+function updateTable(columns, data) {
+
+    var table;
+    if (Object.keys(data).length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+    }
+
+    $('#tableNew').html(table);
+}
+
+function getHeaders(columns) {
+    var headers = ['<thead><tr>'];
+
+    columns.forEach(function(column) {
+        headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')
+    });
+    headers.push('</tr></thead>');
+
+    return headers.join('');
+}
+
+function getBody(columns, data) {
+    var body = ['<tbody>'];
+    data.forEach(function(row) {
+        body.push(generateRow(columns, row))
+    });
+    body.push('</tbody>');
+
+    return body.join('');
+}
+
+function generateRow(columns, rowData) {
+    var row = ['<tr>'];
+    var val;
+
+    columns.forEach(function(column) {
+        if (rowData[column] != undefined) {
+            val = rowData[column];
+        } else {
+            val = '';
+        }
+        row.push("<td>" + val + "</td>")
+    });
+
+    row.push('</tr>');
+
+    return row.join('');
+}
+
+
+function getBmChartData() {
+
+    var cpu = $('#cpuDrop')[0].value;
+    var app = $('#appDrop')[0].value;
+    getData();
+    if (app && cpu) {
+        $.getJSON("/chart/resultBm/" + cpu + "/" + app, function(data) {
+            var dataPoints = [];
+            var point = [];
+            $.each(data.dataset, function(key, val) {
+                point = [];
+                $.each(val, function(key, value) {
+                    point.push({
+                        x: key,
+                        y: value
+                    });
+
+                });
+                dataPoints.push(point);
+
+            });
+
+            var label = data.labels;
+            var result = dataPoints;
+
+            if (result.length > 0) {
+                var chart = new Chart(ctx, {
+
+                    type: 'scatter',
+                    data: {
+                        datasets: result.map(function(dataset, index) {
+                            return {
+                                label: label[index],
+                                data: result[index],
+                                borderWidth: 1,
+                                pointBackgroundColor: [BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index]],
+                                borderColor: BACKGROUND_COLORS[index],
+                                pointRadius: 5,
+                                pointHoverRadius: 5,
+                                fill: false,
+                                tension: 0,
+                                showLine: true
+                            };
+                        })
+                    },
+                    options: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: data.appCPUName,
+                            fontStyle: "bold"
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 20
+                                },
+                                gridLines: {
+                                    drawOnChartArea: false
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Nodes',
+                                    fontStyle: "bold"
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 25,
+                                    padding: 10
+                                },
+                                gridLines: {
+                                    drawOnChartArea: true,
+                                    color: "rgb(234, 236, 244)",
+                                    zeroLineColor: "rgb(234, 236, 244)",
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Node Scaling',
+                                    fontStyle: "bold"
+                                }
+                            }]
+
+                        }
+                    }
+                });
+            } else {
+                $("#noChart").show();
+            }
+        });
+    }
 }

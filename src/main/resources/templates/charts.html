@@ -78,8 +78,8 @@
 </nav>
 
 <br>
-<br>
-<div class="container-fluid" style="max-width:1300px">
+
+<div class="container-fluid" style="max-width:1300px; padding:0;">
     <div class="row" >
         <div class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
@@ -113,14 +113,6 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 0px;">
-        <div id="bm" class="col-sm-2 dropdown" style='display:none;'>
-            <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
-                <option selected="true" disabled="disabled">-- Benchmark --</option>
-            </select>
-        </div>
-    </div>
-
 </div>
 
 <div class="container-fluid" style="max-width:1300px; overflow-x:auto;">
@@ -129,13 +121,6 @@
 
         <div id="nodeChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
             <canvas id="nodeBarChart" width="450" height="300" role="img"></canvas>
-        </div>
-        <div id="bmChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
-            <canvas id="bmBarChart" width="450" height="300" role="img"></canvas>
-        </div>
-
-        <div id="noChart"  style="display:none;margin-top: 50px;margin-left: 12px">
-            <h5>No scaling data available!</h5>
         </div>
 
     </div>
@@ -146,6 +131,29 @@
             <p style="font-weight: bold;font-size:12px;text-align:left;font-family:verdana;">*Lower is better</p>
         </div>
     </div>
+
+
+    <div class="row">
+
+        <div id="noChart"  style="display:none;margin-top: 50px;margin-left: 12px">
+            <h5>No scaling data available!</h5>
+        </div>
+
+         <div id="multiChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
+             <canvas id="ctx" width="450" height="300" role="img"></canvas>
+         </div>
+
+
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 mt-5 mb-5">
+            <div class="table-responsive" id="tableNew"></div>
+        </div>
+    </div>
+
 </div>
 
 

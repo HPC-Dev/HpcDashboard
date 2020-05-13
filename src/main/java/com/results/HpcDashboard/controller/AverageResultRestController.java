@@ -82,10 +82,15 @@ public class AverageResultRestController {
     @GetMapping("/resultComparision/{app_name}/{cpu1}/{cpu2}")
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {
 
-        CompareResult compareResult;
+        CompareResult compareResult = null;
         String comment=null;
         List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name,cpu1);
         List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name,cpu2);
+
+
+        if (list1 == null || list1.size()==0 || list2 == null || list2.size()==0)
+            return compareResult;
+
 
         Set<String> bms = new LinkedHashSet<>();
         bms.add("");

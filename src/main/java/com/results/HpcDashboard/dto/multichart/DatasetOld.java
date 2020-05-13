@@ -9,8 +9,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
-@Builder
-public class Dataset {
-    private String bmName;
+public class DatasetOld {
+    private String cpuName;
     private List<Double> value;
 }

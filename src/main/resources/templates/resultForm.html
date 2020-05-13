@@ -116,11 +116,11 @@
 
                 <div class="form-group">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="option1" name="option" class="custom-control-input" value="paste" th:field="*{radioButtonSelectedValue}">
+                        <input type="radio" id="option1" class="custom-control-input" value="paste" checked="checked" th:field="*{radioButtonSelectedValue}">
                         <label class="custom-control-label" for="option1">Paste results</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="option2" name="option" class="custom-control-input" value="upload" th:field="*{radioButtonSelectedValue}">
+                        <input type="radio" id="option2" class="custom-control-input" value="upload" th:field="*{radioButtonSelectedValue}">
                         <label class="custom-control-label" for="option2">Upload file</label>
                     </div>
                 </div>
@@ -162,6 +162,20 @@
 
 <script>
 
+radiobtn = document.getElementById("option1");
+radiobtn.checked = true;
+
+
+ if( radiobtn.checked == true ){
+            if(radiobtn.value === "paste"){
+             $("#fileUpload").hide();
+             $("#textArea").show();
+             $("#submit").show();
+             $("#note").show();
+            }
+        }
+
+
 $("#option1")
     .change(function(){
         if( $(this).is(":checked") ){
@@ -188,8 +202,6 @@ $("#option2")
             }
         }
     });
-
-
 
 
 </script>

@@ -21,11 +21,11 @@ $('#appDrop').on("change", function() {
         $("#button").show();
     });
     clearChart();
-    $('#tableNew').html('');
 
 });
 
 function clearChart() {
+    $('#comment').hide();
     $('#multiBarChart').remove();
     $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
 }
@@ -44,20 +44,19 @@ $('button').on('click', function() {
     }
 
     getMultiChartData();
-    var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
+    var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)'];
     var BORDER_COLORS = ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
     function getMultiChartData() {
-        getData();
         var app = $('#appDrop')[0].value;
-        if (app && cpuList.length > 1) {
-            $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
-                var label = data.cpus;
+        if (app && cpuList.length > 0) {
+            $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
+                var label = data[0].labels;
                 var chartdata = {
                     labels: label,
-                    datasets: data.dataset.map(function(dataset, index) {
+                    datasets: data[0].datasets.map(function(dataset, index) {
                         return {
-                            label: dataset.bmName,
+                            label: dataset.cpuName,
                             backgroundColor: BACKGROUND_COLORS[index],
                             borderColor: BORDER_COLORS[index],
                             borderWidth: 1,
@@ -69,7 +68,7 @@ $('button').on('click', function() {
                 var chartOptions = {
                     title: {
                         display: true,
-                        text: data.appName
+                        text: data[0].appName
                     },
                     scales: {
                         yAxes: [{
@@ -78,7 +77,7 @@ $('button').on('click', function() {
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Relative Performance'
+                                labelString: data[0].metric
                             },
                             gridLines: {
                                 color: "rgb(234, 236, 244)",
@@ -120,7 +119,6 @@ $('button').on('click', function() {
                     }
                 };
 
-
                 clearChart();
                 var graphTarget = $("#multiBarChart");
                 var barGraph = new Chart(graphTarget, {
@@ -128,86 +126,12 @@ $('button').on('click', function() {
                     data: chartdata,
                     options: chartOptions
                 });
-
+                $('#comment').empty();
+                var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" + "*" + data[0].comment + "</p>"
+                $('#comment').append(comment);
+                $('#comment').show();
             });
         }
-        else{
-           clearChart();
-           $('#tableNew').html('');
-        }
     }
-
-    function getData() {
-        var app = $('#appDrop')[0].value;
-
-        var cpuList = [];
-            $("input:checked").each(function() {
-                cpuList.push($(this).val());
-            });
-
-            var params = {};
-            params.cpuList = cpuList;
-
-        if (app && cpuList.length > 1) {
-
-            $.getJSON("/chart/multiCPUTable/" + app, $.param(params, true), function(data) {
-                updateTable(data.label, data.resultData);
-
-            });
-        } else {
-            $('#tableNew').html('');
-        }
-    }
-
-    function updateTable(columns, data) {
-
-        var table;
-        if (Object.keys(data).length > 0) {
-            table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
-        }
-
-        $('#tableNew').html(table);
-    }
-
-    function getHeaders(columns) {
-        var headers = ['<thead><tr>'];
-
-        columns.forEach(function(column) {
-            headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')
-        });
-        headers.push('</tr></thead>');
-
-        return headers.join('');
-    }
-
-    function getBody(columns, data) {
-        var body = ['<tbody>'];
-        data.forEach(function(row) {
-            body.push(generateRow(columns, row))
-        });
-        body.push('</tbody>');
-
-        return body.join('');
-    }
-
-    function generateRow(columns, rowData) {
-        var row = ['<tr>'];
-        var val;
-
-        columns.forEach(function(column) {
-            if (rowData[column] != undefined) {
-                val = rowData[column];
-            } else {
-                val = '';
-            }
-            row.push("<td>" + val + "</td>")
-        });
-
-        row.push('</tr>');
-
-        return row.join('');
-    }
-
-
 
 });
