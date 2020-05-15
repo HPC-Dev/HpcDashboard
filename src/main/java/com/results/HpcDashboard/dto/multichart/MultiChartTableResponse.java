@@ -14,4 +14,5 @@ public class MultiChartTableResponse {
     private String appName;
     private List<String> label;
     private List<Map<String,String>> resultData;
+    private String comment;
 }

@@ -18,8 +18,12 @@
 
     <title>Charts</title>
     <style>
+#ctx{
 
+  width:420px !important;
+  height:500px !important;
 
+}
     </style>
 
 </head>
@@ -124,14 +128,13 @@
         </div>
 
     </div>
-
     <div class="row">
-
-        <div id="comment" class="row" style="margin-left: 500px; margin-top:20px; display:none;">
+        <div id="comment" class="row" style="margin-left: 500px; display:none;">
             <p style="font-weight: bold;font-size:12px;text-align:left;font-family:verdana;">*Lower is better</p>
         </div>
-    </div>
+        <div class="table-responsive col-md-12 mt-3 mb-3" id="tableNode"></div>
 
+    </div>
 
     <div class="row">
 
@@ -139,11 +142,13 @@
             <h5>No scaling data available!</h5>
         </div>
 
-         <div id="multiChart" class="col-md-6 mt-2 mb-2" style='display:none;'>
-             <canvas id="ctx" width="450" height="300" role="img"></canvas>
+<!--        <div  class="col-md-3 mt-2 mb-2" >-->
+
+<!--        </div>-->
+
+         <div id="multiChart" class="col-md-5 mt-2 mb-2" style='display:none;padding:0;'>
+             <canvas id="ctx" role="img"></canvas>
          </div>
-
-
 
     </div>
 

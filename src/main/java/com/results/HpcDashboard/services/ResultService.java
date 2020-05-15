@@ -27,10 +27,10 @@ public class ResultService {
 
     @Transactional
     public void insertResult(String[] resultData){
-        String bm_name = resultData[2].trim();
+        String bm_name = resultData[2].trim().toLowerCase();
         String cpu = resultData[7].trim();
         int nodes = Integer.valueOf(resultData[3]);
-        String app_name = resultData[1].trim();
+        String app_name = resultData[1].trim().toLowerCase();
         int cores = Integer.valueOf(resultData[4]);
 
         Result result = Result.builder().jobId(resultData[0]).appName(app_name).bmName(bm_name).nodes(nodes).cores(cores).nodeName(resultData[5].replaceAll("\\\\,",",")).result(util.round(Double.valueOf(resultData[6]),4)).cpu(cpu).build();
@@ -57,16 +57,16 @@ public class ResultService {
     public void insertResultCsv(List<Result> results){
         for(Result result: results) {
             resultRepo.save(result);
-            List<Double> list = getResultsForAverage(result.getBmName(),result.getCpu(),result.getNodes());
+            List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);
-            AverageResult averageResult = averageResultService.getSingleAvgResult(result.getBmName(),result.getCpu(),result.getNodes());
+            AverageResult averageResult = averageResultService.getSingleAvgResult(result.getBmName().trim().toLowerCase(),result.getCpu(),result.getNodes());
             if(averageResult == null){
                 //insert variance
-                AverageResult aResult = AverageResult.builder().appName(result.getAppName()).bmName(result.getBmName()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).build();
+                AverageResult aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).build();
                 averageResultService.insertAverageResult(aResult);
             }
             else{
-                averageResultService.updateAverageResult(result.getCpu(),result.getNodes(),result.getBmName(),avgResult);
+                averageResultService.updateAverageResult(result.getCpu(),result.getNodes(),result.getBmName().trim().toLowerCase(),avgResult);
             }
 
         }

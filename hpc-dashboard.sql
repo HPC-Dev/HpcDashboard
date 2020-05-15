@@ -2,7 +2,8 @@ create database results_dashboard;
 
 use results_dashboard;
 
-select DISTINCT bm_name from average_result where app_name="openfoam" ORDER BY nodes ASC;
+select DISTINCT app_name from average_result;
+
 
 select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER BY cpu_sku ASC;
 

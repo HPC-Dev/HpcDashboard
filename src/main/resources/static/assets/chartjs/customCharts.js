@@ -45,6 +45,7 @@ function clearForm() {
     $("#option2").prop("checked", false);
     $("#noChart").hide();
     $('#tableNew').html('');
+    $('#tableNode').html('');
 }
 
 function clearChart() {
@@ -84,6 +85,7 @@ function appChange() {
     $("#noChart").hide();
     $('#comment').empty();
     $('#tableNew').html('');
+    $('#tableNode').html('');
 }
 
 $("#option1")
@@ -112,6 +114,7 @@ $("#option2")
                 $("#nodeChart").hide();
                 $('#comment').empty();
                 $("#multiChart").show();
+                $('#tableNode').html('');
                 getBmChartData();
             }
         }
@@ -126,7 +129,6 @@ function getNodeChartData() {
         $.getJSON("/chart/resultApp/" + cpu + "/" + app + "/" + node, function(data) {
             var label = data[0].labels;
             var result = data[0].dataset;
-
             if (result.length > 3) {
                 var chartdata = {
                     labels: label,
@@ -213,8 +215,10 @@ function getNodeChartData() {
             var comment = " <p style='font-weight: bold;font-size:12px;text-align:left;font-family:verdana;'>" + "*" + data[0].comment + "</p>"
             $('#comment').append(comment);
             $('#comment').show();
+            updateTableNode(data[0].labelsTable, data[0].tableDataset);
         });
     } else {
+        $('#tableNode').html('');
         $('#comment').empty();
         clearChart();
     }
@@ -241,6 +245,16 @@ function getData() {
     } else {
         $('#tableNew').html('');
     }
+}
+
+function updateTableNode(columns, data) {
+
+    var table;
+    if (Object.keys(data).length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+    }
+
+    $('#tableNode').html(table);
 }
 
 function updateTable(columns, data) {
@@ -339,6 +353,9 @@ function getBmChartData() {
                         })
                     },
                     options: {
+                        responsive:true,
+                        maintainAspectRatio: false,
+
                         legend: {
                             display: true,
                             position: 'bottom',
@@ -352,7 +369,8 @@ function getBmChartData() {
                             xAxes: [{
                                 ticks: {
                                     min: 0,
-                                    max: 20
+                                    max: 20,
+                                    stepSize: 5
                                 },
                                 gridLines: {
                                     drawOnChartArea: false
@@ -367,7 +385,8 @@ function getBmChartData() {
                                 ticks: {
                                     min: 0,
                                     max: 25,
-                                    padding: 10
+                                    stepSize: 5
+                                    ,padding: 10
                                 },
                                 gridLines: {
                                     drawOnChartArea: true,

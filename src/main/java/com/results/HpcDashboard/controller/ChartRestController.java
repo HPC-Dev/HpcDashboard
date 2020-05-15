@@ -83,7 +83,11 @@ public class ChartRestController {
         String metric = getMetric(app_name.toLowerCase().trim());
 
         List<String> label = new ArrayList<>();
+        List<String> labelTable = new ArrayList<>();
+        labelTable.add("");
         List<Double> data = new ArrayList<>();
+
+        List<Map<String,String>> tableDataset = new ArrayList<>();
 
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
@@ -91,12 +95,19 @@ public class ChartRestController {
             comment = "Lower is better";
         }
 
-
+        Map<String,String> record = new LinkedHashMap<>();
+        record.put("",cpu);
         for (AverageResult avgRes : list) {
+            labelTable.add(avgRes.getBmName());
             label.add(avgRes.getBmName());
             data.add(avgRes.getAvgResult());
+            record.put(avgRes.getBmName(), String.valueOf(avgRes.getAvgResult()));
         }
-        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appCpu).dataset(data).labels(label).comment(comment).build();
+        tableDataset.add(record);
+
+
+
+        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appCpu).dataset(data).labels(label).comment(comment).tableDataset(tableDataset).labelsTable(labelTable).build();
         listResponse.add(chartsResponse);
         return listResponse;
     }
@@ -263,30 +274,35 @@ public class ChartRestController {
         int j=0;
           for(Map<String, Double> e : newResList ){
 
-              if(Double.compare(firstResult.get(j),0.0 ) > 0) {
+              if(Double.compare(firstResult.get(j),0.0 ) > 0 ) {
               temp = new ArrayList<>();
               temp.add(1.0);
               int i=0;
               for(Map.Entry<String,Double> m : e.entrySet()) {
 
-                      if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-                          double d1 = 0.0;
+                    if(Double.compare(e.get(cpulist.get(i)),0.0 )> 0) {
 
-                          if(e.containsKey(cpulist.get(i))) {
-                            d1 = util.round(firstResult.get(j) / e.get(cpulist.get(i)), 3);
-                          }
-                          temp.add(d1);
+                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                            double d1 = 0.0;
 
-                      } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-                          double d1 = util.round(e.getOrDefault(cpulist.get(i),0.0) / firstResult.get(j), 3);
-                          temp.add(d1);
-                      }
-                      i++;
+                            if (e.containsKey(cpulist.get(i))) {
+                                d1 = util.round(firstResult.get(j) / e.get(cpulist.get(i)), 3);
+                            }
+                            temp.add(d1);
+
+                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                            double d1 = util.round(e.getOrDefault(cpulist.get(i), 0.0) / firstResult.get(j), 3);
+                            temp.add(d1);
+                        }
+                    }
+                    else {
+                        temp.add(0.0);
+                    }
+                  i++;
                   }
-              j++;
-
                   resListFinal.add(temp);
               }
+              j++;
           }
 
         List<Dataset> dataset = new ArrayList<>();
@@ -302,7 +318,7 @@ public class ChartRestController {
     }
 
     @GetMapping("/multiCPUTable/{app_name}")
-    public MultiChartTableResponse getAvgBySelectedCPUChart2(@PathVariable("app_name") String app_name, String[] cpuList) {
+    public MultiChartTableResponse getAvgBySelectedCPUTable(@PathVariable("app_name") String app_name, String[] cpuList) {
 
        MultiChartTableResponse multiChartTableResponse = null;
         List<String> cpus = Arrays.asList(cpuList);
@@ -391,7 +407,8 @@ public class ChartRestController {
             temp = new LinkedHashMap<>();
             temp.put("", cpusList.get(i));
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
-                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0) {
+
+                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
                         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
@@ -419,51 +436,18 @@ public class ChartRestController {
         return multiChartTableResponse;
     }
 
-    @GetMapping("/resultBm1/{cpu}/{app_name}/{bm_name}")
-    public List<ChartsResponse> getAvgResultCPUBMOld(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("bm_name") String bm_name) {
-        List<ChartsResponse> listResponse = new ArrayList<>();
-        ChartsResponse chartsResponse = null;
-        List<AverageResult> list = null;
-        String comment = null;
-        list = averageResultService.getAvgResultCPUAppBm(cpu, app_name, bm_name);
-
-        if (list == null || list.size()==0)
-            return listResponse;
-
-        String appBmCpu = getAppName(app_name) + " - " + bm_name + " - " + cpu;
-        String metric = getMetric(app_name.toLowerCase().trim());
-
-        List<String> label = new ArrayList<>();
-        List<Double> data = new ArrayList<>();
-
-        for (AverageResult avgRes : list) {
-            label.add(avgRes.getNodes() + " Node");
-            data.add(avgRes.getAvgResult());
-        }
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-            comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            comment = "Lower is better";
-        }
-
-        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appBmCpu).dataset(data).labels(label).comment(comment).build();
-        listResponse.add(chartsResponse);
-        return listResponse;
-
-    }
-
     @GetMapping("/scalingTable/{cpu}/{app_name}")
     public MultiChartTableResponse getScalingTable(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu) {
 
         MultiChartTableResponse multiChartTableResponse = null;
-
+        String comment = null;
         List<Map<String, String>> resListFinal = null;
         List<AverageResult> list = null;
 
         list = averageResultService.getAvgResultCPUApp(cpu, app_name);
 
 
-        if (list == null || list.size() == 0)
+        if (list == null || list.size() == 0 )
             return multiChartTableResponse;
 
         Set<Integer> nodes = new LinkedHashSet<>();
@@ -494,9 +478,11 @@ public class ChartRestController {
                     res.put(a.getBmName(), a.getAvgResult());
                 }
             }
+            if(res.size()>1)
             resList.add(res);
         }
 
+        if(nodesList.size() > 1 && resList.size() > 1 ) {
 
         List<Map<String, Double>> newResList = new ArrayList<>();
 
@@ -514,9 +500,8 @@ public class ChartRestController {
 
         }
 
-
         resListFinal = new ArrayList<>();
-        if(nodesList.size()>1) {
+
             Map<String, Double> firstResult = new LinkedHashMap<>();
             firstResult.putAll(newResList.get(0));
 
@@ -541,7 +526,7 @@ public class ChartRestController {
                 temp.put("Nodes", nodesList.get(i));
                 temp.put("Cores", coresList.get(i));
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
-                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0) {
+                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0 ) {
                         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
@@ -563,7 +548,13 @@ public class ChartRestController {
                 bmlistFinal.add(bm.getKey());
             }
 
-            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).label(bmlistFinal).resultData(resListFinal).build();
+            if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                comment = "Higher is better";
+            } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                comment = "Lower is better";
+            }
+
+            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).label(bmlistFinal).resultData(resListFinal).comment(comment).build();
         }
         return multiChartTableResponse;
     }
@@ -813,6 +804,39 @@ public class ChartRestController {
 
         scatterTableResponse = ScatterTableResponse.builder().nodes(nodes).appName(app_name).resultData(resList).build();
         return scatterTableResponse;
+    }
+
+    @GetMapping("/resultBm1/{cpu}/{app_name}/{bm_name}")
+    public List<ChartsResponse> getAvgResultCPUBMOld(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("bm_name") String bm_name) {
+        List<ChartsResponse> listResponse = new ArrayList<>();
+        ChartsResponse chartsResponse = null;
+        List<AverageResult> list = null;
+        String comment = null;
+        list = averageResultService.getAvgResultCPUAppBm(cpu, app_name, bm_name);
+
+        if (list == null || list.size()==0)
+            return listResponse;
+
+        String appBmCpu = getAppName(app_name) + " - " + bm_name + " - " + cpu;
+        String metric = getMetric(app_name.toLowerCase().trim());
+
+        List<String> label = new ArrayList<>();
+        List<Double> data = new ArrayList<>();
+
+        for (AverageResult avgRes : list) {
+            label.add(avgRes.getNodes() + " Node");
+            data.add(avgRes.getAvgResult());
+        }
+        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
+        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+            comment = "Lower is better";
+        }
+
+        chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appBmCpu).dataset(data).labels(label).comment(comment).build();
+        listResponse.add(chartsResponse);
+        return listResponse;
+
     }
 
 

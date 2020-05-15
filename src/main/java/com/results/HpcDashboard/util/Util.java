@@ -96,11 +96,13 @@ public class Util {
             appMap.put("lsdyna", "LOWER");
             appMap.put("namd", "HIGHER");
             appMap.put("openfoam", "LOWER");
+            appMap.put("ofoam", "LOWER");
             appMap.put("pamcrash", "LOWER");
             appMap.put("quantum-espresso", "HIGHER");
             appMap.put("radioss", "LOWER");
             appMap.put("starccm", "LOWER");
             appMap.put("stream", "HIGHER");
+            appMap.put("lmp", "HIGHER");
             appMap.put("wrf", "LOWER");
             appMap.put("cp2k","LOWER");
 

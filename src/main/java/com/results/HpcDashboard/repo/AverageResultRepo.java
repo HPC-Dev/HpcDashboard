@@ -20,8 +20,8 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_AVG_RESULT_CPU_APP_NODE = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and nodes =:nodes";
     public static final String GET_CPU = "select DISTINCT cpu_sku from average_result where app_name=:appName ORDER BY cpu_sku ASC";
     public static final String GET_CPU_RES = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
-    public static final String GET_APP = "select DISTINCT app_name from average_result ORDER BY app_name ASC";
-    public static final String GET_APP_CPU = "select DISTINCT app_name from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
+    public static final String GET_APP = "select DISTINCT LOWER(app_name) from average_result ORDER BY app_name ASC";
+    public static final String GET_APP_CPU = "select DISTINCT LOWER(app_name) from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
     public static final String GET_SELECTED_CPU_RES_BY_AVG = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name";
     public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 ORDER BY bm_name;";
     public static final String GET_SELECTED_BM_CPU = "select DISTINCT bm_name from average_result where app_name=:app_name and cpu_sku=:cpu ORDER BY bm_name ASC";

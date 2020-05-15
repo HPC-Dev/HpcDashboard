@@ -1,13 +1,12 @@
 var cpus = []
-getCpuCores();
-
+//getCpuCores();
 $('#cpuDrop').on("change", function() {
     var value = $(this).val();
     var text = $(this).find('option:selected').text();
     if (value != '') {
-        $("#core").show();
-        $("#coreCount").show();
-        $("#coreValue")[0].value = 'Cores: ' + findCpuCore(text);
+      //  $("#core").show();
+//        $("#coreCount").show();
+//        $("#coreValue")[0].value = 'Cores: ' + findCpuCore(text);
         $("#app").show();
         $.getJSON("/apps", {
             cpu: value,
@@ -24,20 +23,22 @@ $('#cpuDrop').on("change", function() {
         });
         $("#app").on("change", getData);
     } else if (value == '') {
-        $("#core").hide();
+        //$("#core").hide();
         $("#app").hide();
-        $("#coreCount").hide();
+       // $("#coreCount").hide();
     }
 
     $('#appDrop').val('');
+    $('#table').html('');
+    $('#tableScaling').html('');
     getData();
 });
 
-function getCpuCores() {
-    return $.getJSON("/avg/cpus", function(data) {
-        cpus = data;
-    });
-}
+//function getCpuCores() {
+//    return $.getJSON("/avg/cpus", function(data) {
+//        cpus = data;
+//    });
+//}
 
 function findCpuCore(cpu) {
     return cpus.find(function(eachCpu) {
@@ -48,6 +49,7 @@ function findCpuCore(cpu) {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
+    var comment;
 
     if (app && cpu) {
         $.getJSON("/avg/result/" + cpu + "/" + app, function(data) {
@@ -64,7 +66,7 @@ function getData() {
                 if (!row) {
                     row = {
                         Nodes: item.nodes,
-                        Cores: item.cores * item.nodes
+                        Cores: item.cores
                     };
                     transformedData.push(row);
                 }
@@ -76,18 +78,21 @@ function getData() {
                 }
 
             });
-
             updateTable(columnNames, transformedData);
         });
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+                    comment = data.comment;
+                    console.log(comment);
                     updateTableScaling(data.label, data.resultData);
                 });
 
-    } else {
-        $('#table').html('');
-        $('#tableScaling').html('');
     }
+     $('#table').html('');
+     $('#tableScaling').html('');
+     $("#p1").hide();
+     $("#p2").hide();
+
 }
 
 function updateTable(columns, data) {
@@ -95,6 +100,9 @@ function updateTable(columns, data) {
 
     if (data.length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        //  table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + comment + "</p>"
+        $("#p1").show();
+
     } else {
         table = "<p>No data available</p>";
     }
@@ -107,6 +115,7 @@ function updateTableScaling(columns, data) {
 
     if (data.length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        $("#p2").show();
     }
     $('#tableScaling').html(table);
 }
