@@ -96,7 +96,6 @@ public class ResultDashboardController {
 
                 catch (Exception exception){
                     redirectAttributes.addFlashAttribute("exceptionMessage", ExceptionUtils.getRootCauseMessage(exception));
-                    //redirectAttributes.addFlashAttribute("exceptionMessage", "Please remove the header from CSV or check for any other issues in the file");
                     return "redirect:/result";
                 }
             }

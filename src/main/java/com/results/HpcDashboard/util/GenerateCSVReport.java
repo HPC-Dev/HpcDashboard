@@ -26,7 +26,7 @@ public class GenerateCSVReport {
 
             mapStrategy.setType(Result.class);
 
-            String[] columns = new String[]{"jobId", "appName", "bmName", "cores", "cpu", "nodeName", "nodes", "result"};
+            String[] columns = new String[]{"jobId", "appName", "bmName", "nodes", "cores", "nodeName", "result" , "cpu"};
             mapStrategy.setColumnMapping(columns);
             mapStrategy.generateHeader(columns);
             StatefulBeanToCsv btcsv = new StatefulBeanToCsvBuilder(writer)
@@ -53,7 +53,7 @@ public class GenerateCSVReport {
 
             mapStrategy.setType(Result.class);
 
-            String[] columns = new String[]{"jobId", "appName", "bmName", "cores", "cpu", "nodeName", "nodes", "result"};
+            String[] columns = new String[]{"jobId", "appName", "bmName", "nodes", "cores", "nodeName",  "result" , "cpu"};
             mapStrategy.setColumnMapping(columns);
 
             StatefulBeanToCsv btcsv = new StatefulBeanToCsvBuilder(writer)
