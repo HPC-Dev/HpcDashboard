@@ -61,14 +61,13 @@ public class ResultService {
             double avgResult = util.calculateAverageResult(list);
             AverageResult averageResult = averageResultService.getSingleAvgResult(result.getBmName().trim().toLowerCase(),result.getCpu(),result.getNodes());
             if(averageResult == null){
-                //insert variance
+                    //insert variance
                 AverageResult aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).build();
                 averageResultService.insertAverageResult(aResult);
             }
             else{
-                averageResultService.updateAverageResult(result.getCpu(),result.getNodes(),result.getBmName().trim().toLowerCase(),avgResult);
+                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult);
             }
-
         }
     }
 

@@ -213,4 +213,10 @@ public class AverageResultService {
         }
         return list;
     }
+
+
+    public int getJobExists(String jobId) {
+
+        return averageResultRepo.getJobExists(jobId);
+    }
 }

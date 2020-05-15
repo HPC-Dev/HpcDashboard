@@ -26,7 +26,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 ORDER BY bm_name;";
     public static final String GET_SELECTED_BM_CPU = "select DISTINCT bm_name from average_result where app_name=:app_name and cpu_sku=:cpu ORDER BY bm_name ASC";
     public static final String GET_SELECTED_BM = "select DISTINCT bm_name from average_result where app_name=:app_name ORDER BY bm_name ASC";
-
+    public static final String Job_EXITS ="select count(*) from results where job_id=:jobId";
 
     public static final String GET_SELECTED_CPU_RES_BY_AVG_New_ASC = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name,avg_result";
 
@@ -85,5 +85,8 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
 
     @Query(value = GET_SELECTED_BM, nativeQuery = true)
     List<String> getSelectedBm(String app_name);
+
+    @Query(value = Job_EXITS, nativeQuery = true)
+    int getJobExists(String jobId);
 
 }

@@ -8,14 +8,17 @@ import com.results.HpcDashboard.services.ResultService;
 import com.results.HpcDashboard.util.GenerateCSVReport;
 import com.results.HpcDashboard.util.GenerateExcelReport;
 import com.results.HpcDashboard.util.Util;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -48,7 +51,7 @@ public class ResultDashboardController {
     @PostMapping("/result")
     public String insertResult(
             @ModelAttribute("command") @Valid FormCommand command,
-            Model model, @RequestParam("file") MultipartFile file) {
+            Model model, @RequestParam("file") MultipartFile file, Errors errors, RedirectAttributes redirectAttributes) {
 
         if(command.getRadioButtonSelectedValue().equals("paste")) {
             String[] resultReturned = command.getTextareaField().split("!");
@@ -61,14 +64,22 @@ public class ResultDashboardController {
                 }
 
                 if (resultData.length != 8) {
-                    return "redirect:/result?failure";
+                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)");
+                    return "redirect:/result";
                 }
-                resultService.insertResult(resultData);
+                try {
+                    resultService.insertResult(resultData);
+                }
+                catch (Exception e){
+                    redirectAttributes.addFlashAttribute("failMessage", ExceptionUtils.getRootCauseMessage(e));
+                    return "redirect:/result";
+                }
             }
         }
         else if(command.getRadioButtonSelectedValue().equals("upload")){
             if (file.isEmpty()) {
-                 return "redirect:/result?uploadFailure";
+                redirectAttributes.addFlashAttribute("fileNotUploaded", "Please select a file to upload");
+                return "redirect:/result";
             }
 
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -82,18 +93,20 @@ public class ResultDashboardController {
                     List<Result> results = csvToBean.parse();
                     resultService.insertResultCsv(results);
                 }
-                catch (RuntimeException exception){
-                    return "redirect:/result?fileIncorrect";
-                }
 
-            } catch (Exception ex) {
-                System.out.println(ex.getStackTrace());
+                catch (Exception exception){
+                    redirectAttributes.addFlashAttribute("exceptionMessage", ExceptionUtils.getRootCauseMessage(exception));
+                    //redirectAttributes.addFlashAttribute("exceptionMessage", "Please remove the header from CSV or check for any other issues in the file");
+                    return "redirect:/result";
+                }
+            }
+            catch (Exception ex) {
+                System.out.println(ExceptionUtils.getStackTrace(ex));
             }
 
         }
-
-
-        return "redirect:/result?success";
+        redirectAttributes.addFlashAttribute("successMessage", "Result is successfully inserted!");
+        return "redirect:/result";
     }
 
     @GetMapping("/dashboard")

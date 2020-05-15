@@ -76,41 +76,61 @@
 
             <h3>Result Form</h3>
             <br>
-            <div th:if="${param.success}">
+            <div th:if="${successMessage}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Result is successfully inserted!
+                    <div th:text="${successMessage}"></div>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             </div>
 
-            <div th:if="${param.failure}">
+            <div th:if="${failMessage}">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)
+                    <div th:text="${failMessage}"></div>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             </div>
 
-            <div th:if="${param.uploadFailure}">
+            <div th:if="${failure}">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Please select a file to upload
+                    <div th:text="${failure}"></div>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             </div>
 
-            <div th:if="${param.fileIncorrect}">
+            <div th:if="${fileNotUploaded}">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Please remove the header from CSV or check for any other issues in the file
+                    <div th:text="${fileNotUploaded}"></div>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
             </div>
+
+            <div th:if="${exceptionMessage}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${exceptionMessage}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+
+<!--            <div th:if="${param.numberFormat}">-->
+<!--                <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
+<!--                    Number format exception-->
+<!--                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <form action="#" th:action="@{/result}" th:object="${command}" method="post" enctype="multipart/form-data">
 
@@ -149,6 +169,14 @@
                 </div>
                 </div>
 
+                <div id="noteFile" class="card" style="width: 25rem;display:none;margin-top:40px">
+                    <div class="card-body">
+                        <h6 class="card-title">Note:</h6>
+                        <p class="card-text" style="font-size:13px;" >Please remove header from csv file. </p>
+                        <p class="card-text" style="font-size:10px;">Column order: Job Id,App Name,Benchmark,Nodes,Cores,Node Name,Result,CPU </p>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -162,18 +190,20 @@
 
 <script>
 
-radiobtn = document.getElementById("option1");
-radiobtn.checked = true;
 
+$(function() {
+    $("input[type=\"radio\"]").click(function(){
+        var thisElem = $(this);
+        var value = thisElem.val();
+        localStorage.setItem("option", value);
+     });
+    var itemValue = localStorage.getItem("option");
+    if (itemValue !== null) {
+        $("input[value=\""+itemValue+"\"]").click();
+    }
 
- if( radiobtn.checked == true ){
-            if(radiobtn.value === "paste"){
-             $("#fileUpload").hide();
-             $("#textArea").show();
-             $("#submit").show();
-             $("#note").show();
-            }
-        }
+});
+
 
 
 $("#option1")
@@ -184,6 +214,7 @@ $("#option1")
              $("#fileUpload").hide();
              $("#textArea").show();
              $("#submit").show();
+              $("#noteFile").hide();
              $("#note").show();
             }
         }
@@ -199,9 +230,19 @@ $("#option2")
              $("#fileUpload").show();
              $("#submit").show();
              $("#note").hide();
+             $("#noteFile").show();
+
             }
         }
     });
+
+<!--radiobtn = document.getElementById("option1");-->
+<!--radiobtn.checked = true;-->
+
+<!-- if( radiobtn.checked == true ){-->
+<!--            if(radiobtn.value === "paste"){-->
+<!--            }-->
+<!--        }-->
 
 
 </script>

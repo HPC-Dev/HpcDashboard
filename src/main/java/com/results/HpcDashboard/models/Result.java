@@ -39,11 +39,11 @@ public class Result implements Serializable {
     private String bmName;
 
     @JsonAlias({"Nodes","nodes"})
-    @CsvBindByPosition(position = 6)
+    @CsvBindByPosition(position = 3)
     private int nodes;
 
     @JsonAlias({"Cores", "cores"})
-    @CsvBindByPosition(position = 3)
+    @CsvBindByPosition(position = 4)
     private int cores;
 
     @JsonAlias({"Node Name", "Node_Name", "nodeName"})
@@ -51,11 +51,11 @@ public class Result implements Serializable {
     private String nodeName;
 
     @JsonAlias({"Result", "result"})
-    @CsvBindByPosition(position = 7)
+    @CsvBindByPosition(position = 6)
     private double result;
 
     @JsonAlias({"CPU", "cpu"})
-    @CsvBindByPosition(position = 4)
+    @CsvBindByPosition(position = 7)
     private String cpu;
 
 }
