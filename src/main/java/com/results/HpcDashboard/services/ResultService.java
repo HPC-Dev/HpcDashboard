@@ -135,5 +135,71 @@ public class ResultService {
         return node_list;
     }
 
+    public List<String> getOS() {
+
+        List<String> os = null;
+        os = resultRepo.getOS();
+
+        if(os ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return os;
+    }
+
+    public List<String> getCluster() {
+
+        List<String> cluster = null;
+        cluster = resultRepo.getCluster();
+
+        if(cluster ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cluster;
+    }
+
+    public List<String> getUser() {
+
+        List<String> users = null;
+        users = resultRepo.getUsers();
+
+        if(users ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return users;
+    }
+
+    public List<String> getPlatform() {
+
+        List<String> platform = null;
+        platform = resultRepo.getPlatform();
+
+        if(platform ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return platform;
+    }
+
+    public List<String> getCpuGen() {
+
+        List<String> cpuGen = null;
+        cpuGen = resultRepo.getCpuGen();
+
+        if(cpuGen ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpuGen;
+    }
+
+    public List<String> getRunType() {
+
+        List<String> run_type = null;
+        run_type = resultRepo.getRunType();
+
+        if(run_type ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return run_type;
+    }
+
 
 }

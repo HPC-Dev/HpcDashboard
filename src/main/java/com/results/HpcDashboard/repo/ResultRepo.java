@@ -12,7 +12,14 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     public static final String GET_CPU = "select DISTINCT cpu from results ORDER BY cpu ASC";
     public static final String GET_APP = "select DISTINCT LOWER(app_name) from results ORDER BY app_name ASC;";
     public static final String GET_BM = "select DISTINCT bm_name from results ORDER BY bm_name ASC";
-    public static final String GET_Nodes = "select DISTINCT nodes from results ORDER BY nodes ASC";
+    public static final String GET_NODES = "select DISTINCT nodes from results ORDER BY nodes ASC";
+
+    public static final String GET_OS = "select DISTINCT LOWER(os) from results ORDER BY os ASC;";
+    public static final String GET_CLUSTER = "select DISTINCT LOWER(cluster) from results ORDER BY cluster ASC;";
+    public static final String GET_USERS = "select DISTINCT LOWER(user) from results ORDER BY user ASC;";
+    public static final String GET_PLATFORM = "select DISTINCT LOWER(platform) from results ORDER BY platform ASC;";
+    public static final String GET_CPU_GEN = "select DISTINCT LOWER(cpu_gen) from results ORDER BY cpu_gen ASC;";
+    public static final String GET_RUN_TYPE = "select DISTINCT LOWER(run_type) from results ORDER BY run_type ASC;";
 
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
@@ -27,7 +34,24 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     @Query(value = GET_BM, nativeQuery = true)
     List<String> getBm();
 
-    @Query(value = GET_Nodes, nativeQuery = true)
+    @Query(value = GET_NODES, nativeQuery = true)
     List<Integer> getNodes();
 
+    @Query(value = GET_OS, nativeQuery = true)
+    List<String> getOS();
+
+    @Query(value = GET_CLUSTER, nativeQuery = true)
+    List<String> getCluster();
+
+    @Query(value = GET_USERS, nativeQuery = true)
+    List<String> getUsers();
+
+    @Query(value = GET_PLATFORM, nativeQuery = true)
+    List<String> getPlatform();
+
+    @Query(value = GET_CPU_GEN, nativeQuery = true)
+    List<String> getCpuGen();
+
+    @Query(value = GET_RUN_TYPE, nativeQuery = true)
+    List<String> getRunType();
 }

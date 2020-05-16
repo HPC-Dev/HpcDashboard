@@ -23,7 +23,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container-fluid" style="max-width:1300px">
+    <div class="container-fluid" style="max-width:1450px">
         <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
@@ -84,7 +84,7 @@
         <div class="col-custom-1">
 
         </div>
-        <div class="col-custom-2" style="margin-top:69px">
+        <div class="col-custom-2" style="margin-top:22px">
 
             <div id="app" class="dropdown">
                 <select class="form-control form-control-sm" id="appDrop" name="appDrop">
@@ -95,14 +95,13 @@
                 </select>
             </div>
             <br>
-
-            <div id="bm">
+            <div id="bm" class="dropdown">
                 <select class="form-control form-control-sm" id="bmDrop" name="bmDrop">
                     <option selected="true" disabled="disabled">-- Benchmark --</option>
                 </select>
             </div>
             <br>
-            <div id="node" >
+            <div id="node" class="dropdown">
                 <select class="form-control form-control-sm" id="nodeDrop" name="nodeDrop">
                     <option selected="true" disabled="disabled">-- Node count --</option>
                     <option th:each="node : ${nodes}"
@@ -111,8 +110,7 @@
                 </select>
             </div>
             <br>
-
-            <div id="cpu" >
+            <div id="cpu" class="dropdown">
                 <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
                     <option selected="true" disabled="disabled">-- CPU --</option>
                     <option th:each="cpu : ${cpus}"
@@ -120,9 +118,63 @@
                             th:text="${cpu}"></option>
                 </select>
             </div>
+            <br>
+            <div id="os" class="dropdown">
+                <select class="form-control form-control-sm" id="osDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- OS --</option>
+                    <option th:each="o : ${os}"
+                            th:value="${o}"
+                            th:text="${o}"></option>
+                </select>
+            </div>
+            <br>
+            <div id="cluster" class="dropdown">
+                <select class="form-control form-control-sm" id="clusterDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Cluster --</option>
+                    <option th:each="cluster : ${clusters}"
+                            th:value="${cluster}"
+                            th:text="${cluster}"></option>
+                </select>
+            </div>
+            <br>
+            <div id="user" class="dropdown" >
+                <select class="form-control form-control-sm" id="userDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- User --</option>
+                    <option th:each="user : ${users}"
+                            th:value="${user}"
+                            th:text="${user}"></option>
+                </select>
+            </div>
+            <br>
+            <div id="platform" class="dropdown" >
+                <select class="form-control form-control-sm" id="platformDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Platform --</option>
+                    <option th:each="platform : ${platforms}"
+                            th:value="${platform}"
+                            th:text="${platform}"></option>
+                </select>
+            </div>
+            <br>
+            <div id="cpuGen" class="dropdown">
+                <select class="form-control form-control-sm" id="cpuGenDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- CPU Gen --</option>
+                    <option th:each="cpugen : ${cpugens}"
+                            th:value="${cpugen}"
+                            th:text="${cpugen}"></option>
+                </select>
+            </div>
+            <br>
+            <div id="runType" class="dropdown">
+                <select class="form-control form-control-sm" id="runTypeDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Run Type --</option>
+                    <option th:each="runtype : ${runtypes}"
+                            th:value="${runtype}"
+                            th:text="${runtype}"></option>
+                </select>
+            </div>
 
             <br>
-            <div class="form-inline" style="margin-top:180px; margin-left:9px">
+            <div class="form-inline" style=" margin-left:9px">
                 <p style="font-size:14px;"> Add new result &nbsp </p>
                 <div class="input-group" style="margin-top:-12px; ">
                               <a th:href="@{/result}"
@@ -131,8 +183,8 @@
                                         class="fa fa-plus"></i></a>
                 </div>
             </div>
-            <br>
-            <div class="form-inline" style="margin-left:8px">
+
+            <div class="form-inline" style="margin-left:8px; margin-top:5px">
                 <p style="font-size:14px;"> Download excel &nbsp </p>
                 <div class="input-group" style="margin-top:-12px;">
                     <a th:href="@{/resultsExcel}"
@@ -156,6 +208,14 @@
                     <th>Node</th>
                     <th>Metric</th>
                     <th>CPU</th>
+                    <th>OS</th>
+                    <th>BIOS</th>
+                    <th>Cluster</th>
+                    <th>User</th>
+                    <th>Platform</th>
+                    <th>CPU gen</th>
+                    <th>Run type</th>
+                    <th>Setting</th>
                 </tr>
                 </thead>
             </table>

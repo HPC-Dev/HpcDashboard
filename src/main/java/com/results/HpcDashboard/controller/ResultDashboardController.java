@@ -115,10 +115,24 @@ public class ResultDashboardController {
         List<String> app_list = resultService.getApp();
         List<String> bm_list = null;
         List<Integer> node_list = resultService.getNodes();
+        List<String> os_list = resultService.getOS();
+        List<String> cluster_list = resultService.getCluster();
+        List<String> user_list = resultService.getUser();
+        List<String> platform_list = resultService.getPlatform();
+        List<String> cpu_gen_list = resultService.getCpuGen();
+        List<String> run_type_list = resultService.getRunType();
+
         model.addAttribute("cpus", cpu_list);
         model.addAttribute("apps", app_list);
         model.addAttribute("nodes", node_list);
         model.addAttribute("bms", bm_list);
+        model.addAttribute("os", os_list);
+        model.addAttribute("clusters", cluster_list);
+        model.addAttribute("users", user_list);
+        model.addAttribute("platforms", platform_list);
+        model.addAttribute("cpugens", cpu_gen_list);
+        model.addAttribute("runtypes", run_type_list);
+
         return "resultDashboard";
     }
 

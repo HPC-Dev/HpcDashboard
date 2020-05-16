@@ -19,7 +19,7 @@ show tables;
 
 select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;
 
-select * from cpu_info;
+select * from results;
 
 select precision_info from applications where app_name="openfoam";
 
@@ -92,13 +92,14 @@ SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDE
 
 drop table average_result;
 
-drop table benchmarks;
-
-drop table applications;
-
 drop table results;
 
-drop table cpu_info;
+
+#drop table benchmarks;
+
+#drop table applications;
+
+#drop table cpu_info;
 
 ALTER TABLE results
 ADD COLUMN inserted_at 

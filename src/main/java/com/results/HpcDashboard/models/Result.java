@@ -58,4 +58,35 @@ public class Result implements Serializable {
     @CsvBindByPosition(position = 7)
     private String cpu;
 
+    @JsonAlias({"OS", "os"})
+    @CsvBindByPosition(position = 8)
+    private String os;
+
+    @JsonAlias({"BIOS version", "Bios", "bios version" , "BIOS Version"})
+    @CsvBindByPosition(position = 9)
+    private String biosVer;
+
+    @JsonAlias({"Cluster","cluster"})
+    @CsvBindByPosition(position = 10)
+    private String cluster;
+
+    @JsonAlias({"user", "User"})
+    @CsvBindByPosition(position = 11)
+    private String user;
+
+    @JsonAlias({"platform", "Platform"})
+    @CsvBindByPosition(position = 12)
+    private String platform;
+
+    @JsonAlias({"cpuGen", "CPU Generation", "CPU generation"})
+    @CsvBindByPosition(position = 13)
+    private String cpuGen;
+
+    @JsonAlias({"runType", "Run Type", "Run type"})
+    @CsvBindByPosition(position = 14)
+    private String runType;
+
+    @JsonAlias({"Setting", "setting"})
+    @CsvBindByPosition(position = 15)
+    private String setting;
 }
