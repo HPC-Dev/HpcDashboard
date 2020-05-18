@@ -3,9 +3,10 @@ package com.results.HpcDashboard.services;
 import com.results.HpcDashboard.dto.UserRegistrationDto;
 import com.results.HpcDashboard.models.Role;
 import com.results.HpcDashboard.models.User;
+import com.results.HpcDashboard.repo.RoleRepository;
 import com.results.HpcDashboard.repo.UserRepository;
-import java.util.Arrays;
-import java.util.Collection;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setUserName(register.getUserName());
         user.setEmail(register.getEmail());
         user.setPassword(passwordEncoder.encode(register.getPassword()));
-        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
+        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         return userRepository.save(user);
     }
 
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService {
                 mapRolesToAuthorities(user.getRoles()));
     }
 
-    private Collection <? extends GrantedAuthority> mapRolesToAuthorities(Collection < Role > roles) {
+    private Collection <? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());

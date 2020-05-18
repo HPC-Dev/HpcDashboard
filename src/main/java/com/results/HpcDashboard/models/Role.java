@@ -2,10 +2,8 @@ package com.results.HpcDashboard.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -20,6 +18,9 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Collection<User> users;
 
     public Role(String name) {
         this.name = name;

@@ -78,7 +78,7 @@ public class ResultDashboardController {
         }
         else if(command.getRadioButtonSelectedValue().equals("upload")){
             if (file.isEmpty()) {
-                redirectAttributes.addFlashAttribute("fileNotUploaded", "Please select a file to upload");
+                redirectAttributes.addFlashAttribute("fileNotUploaded", "Please upload a file");
                 return "redirect:/result";
             }
 

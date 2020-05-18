@@ -390,10 +390,10 @@ function getBmChartData() {
                                 },
                                 gridLines: {
                                     drawOnChartArea: true,
-                                    color: "rgb(234, 236, 244)",
-                                    zeroLineColor: "rgb(234, 236, 244)",
-                                    borderDash: [2],
-                                    zeroLineBorderDash: [2]
+//                                    color: "rgb(234, 236, 244)",
+//                                    zeroLineColor: "rgb(234, 236, 244)",
+                                      borderDash: [2],
+                                      zeroLineBorderDash: [2]
                                 },
                                 scaleLabel: {
                                     display: true,

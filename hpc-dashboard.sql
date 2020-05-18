@@ -9,7 +9,9 @@ select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER B
 
 select DISTINCT bm_name from results where app_name="openfoam" ORDER BY nodes ASC;
 
-select cpu_sku,cores from cpu_info;
+select * from cpu_info;
+
+#UPDATE cpu_info SET cpu_sku = LOWER(cpu_sku) where id in (26,27,28,29);
 
 select cpu_sku,cores from average_result group by cpu_sku;
 
@@ -76,12 +78,19 @@ select * from user;
 select * from role;	
 select * from users_roles;
 
+#insert into users_roles (user_id,role_id) values (17,7);
+
+
+
+#update users_roles set role_id=2 where user_id=5 and role_id=6;
+
+#update applications set comp_flags="-march=znver2 -O3" where app_id="openfoam_v1906";
+
 
 select app_name from benchmarks;
 
-#delete from users_roles where user_id=3;
-#delete from role where id=4;
-#delete from user where id=3;
+#delete from users_roles where user_id=17;
+#delete from user where id=17;
 
 
 SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDER BY bm_name;

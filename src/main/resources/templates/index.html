@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8" />
@@ -45,6 +45,9 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
+<!--                <li class="nav-item" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">-->
+<!--                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>-->
+<!--                </li>-->
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
@@ -77,7 +80,16 @@
 <br>
 <div class="container-fluid" style="max-width:1300px">
     <h5 th:text="'Welcome ' + ${user}"></h5>
+    <div  th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+        <!--    <p th:text="${#httpServletRequest.getUserPrincipal()}">-->
+<!--        <p>This content is only shown to administrators.</p>-->
+    </div>
 </div>
+
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--    This content is only shown to administrators.-->
+<!--</div>-->
+
 
 <script type="text/javascript"
         th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>

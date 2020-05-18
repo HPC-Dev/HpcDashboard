@@ -89,6 +89,7 @@
             <div id="app" class="dropdown">
                 <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                     <option  selected="true" disabled="disabled">-- App --</option>
+<!--                    <option>     </option>-->
                     <option th:each="app : ${apps}"
                             th:value="${app}"
                             th:text="${app}"></option>
