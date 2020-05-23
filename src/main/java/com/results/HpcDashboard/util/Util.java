@@ -23,7 +23,7 @@ public class Util {
     private HashMap<String,String> metricMap = new HashMap<>();
 
     public List<BenchmarkDto> getBenchmarks(EntityManager entityManager) {
-        String queryStr = "select b.app_name,a.bm_name,a.bm_full_name,a.bm_dur,a.bm_metric,a.bm_size, a.bm_size_units,a.bm_dur_units,a.bm_units,a.est_runtime from benchmarks a JOIN applications b on a.app_name=b.app_id";
+        String queryStr = "select a.app_name,a.bm_name,a.bm_full_name,a.bm_dur,a.bm_metric,a.bm_size, a.bm_size_units,a.bm_dur_units,a.bm_units,a.est_runtime from benchmarks a";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
             List<Object[]> objectList = query.getResultList();

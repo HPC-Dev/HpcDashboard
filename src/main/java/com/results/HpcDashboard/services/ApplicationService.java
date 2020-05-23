@@ -1,6 +1,7 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.models.Application;
+import com.results.HpcDashboard.models.CPU;
 import com.results.HpcDashboard.repo.ApplicationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,11 @@ public class ApplicationService {
             return "";
         }
         return metric;
+    }
+
+    public void insertAppCsv(List<Application> apps){
+        for(Application app: apps) {
+            applicationRepo.save(app);
+        }
     }
 }

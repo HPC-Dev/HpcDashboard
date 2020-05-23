@@ -56,7 +56,6 @@ public class CPUService {
     public void insertCPUCsv(List<CPU> cpus){
         for(CPU cpu: cpus) {
             cpuRepo.save(cpu);
-
         }
     }
 

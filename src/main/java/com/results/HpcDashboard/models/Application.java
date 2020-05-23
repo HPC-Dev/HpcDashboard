@@ -57,10 +57,8 @@ public class Application implements Serializable {
 
     private String appBound;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appName", cascade = CascadeType.ALL)
-    private Set<Benchmark> apps;
 
-    public Application(String appId, String appName, String appCategory, String appVerion, String precisionInfo, String binaryInfo, String compName, String compVer, String compFlags, String libName, String libVer, String libFlags, Boolean avx2Accel, Boolean avx512Accel, LocalDate licExp, Boolean libFftw, Boolean libDgemm, Boolean libBlas, String appBound, Set<Benchmark> apps) {
+    public Application(String appId, String appName, String appCategory, String appVerion, String precisionInfo, String binaryInfo, String compName, String compVer, String compFlags, String libName, String libVer, String libFlags, Boolean avx2Accel, Boolean avx512Accel, LocalDate licExp, Boolean libFftw, Boolean libDgemm, Boolean libBlas, String appBound) {
         this.appId = appId;
         this.appName = appName;
         this.appCategory = appCategory;
@@ -80,7 +78,5 @@ public class Application implements Serializable {
         this.libDgemm = libDgemm;
         this.libBlas = libBlas;
         this.appBound = appBound;
-        this.apps = apps;
-        this.apps.forEach(x -> x.setAppName(this));
     }
 }
