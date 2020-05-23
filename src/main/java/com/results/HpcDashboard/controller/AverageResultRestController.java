@@ -83,19 +83,26 @@ public class AverageResultRestController {
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {
 
         CompareResult compareResult = null;
-        String comment=null;
-        List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name,cpu1);
-        List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name,cpu2);
+        String comment = null;
+        List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name, cpu1);
+        List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name, cpu2);
 
-
-        if (list1 == null || list1.size()==0 || list2 == null || list2.size()==0)
+        if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
             return compareResult;
 
 
         Set<String> bms = new LinkedHashSet<>();
         bms.add("");
-        for(AverageResult avg : list1){
-            bms.add(avg.getBmName());
+
+        if (list2.size() > list1.size()){
+            for (AverageResult avg : list1) {
+                bms.add(avg.getBmName());
+            }
+        }
+        else{
+            for (AverageResult avg : list2) {
+                bms.add(avg.getBmName());
+            }
         }
 
         Map<String,Double> result1 = new LinkedHashMap<>();
@@ -112,40 +119,48 @@ public class AverageResultRestController {
 
         perfDifference.put("","Perf diff(%)");
 
-        Set<String> keys = result1.keySet();
+        Set<String> keys = null;
+
+        if(result2.size() > result1.size())
+         keys= result1.keySet();
+        else
+         keys= result2.keySet();
+
 
         for(String k : keys){
 
-            double val1 = result1.get(k);
-            double val2 = result2.get(k);
+            double val1 = result1.getOrDefault(k,0.0);
+            double val2 = result2.getOrDefault(k,0.0);
 
-            if(getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-                if (Double.compare(val1, val2) < 0) {
-                    double d = (val2 - val1) / Math.abs(val1);
-                    double percentage = util.round(d * 100, 2);
-                    perfDifference.put(k, "+" + percentage + "%");
-                } else if (Double.compare(val1, val2) > 0) {
-                    double d = (val1 - val2) / Math.abs(val2);
-                    double percentage = util.round(d * 100, 2);
-                    perfDifference.put(k, "-" + percentage + "%");
+            if(val1 != 0.0 && val2 != 0.0 ) {
+
+                if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                    if (Double.compare(val1, val2) < 0) {
+                        double d = (val2 - val1) / Math.abs(val1);
+                        double percentage = util.round(d * 100, 2);
+                        perfDifference.put(k, "+" + percentage + "%");
+                    } else if (Double.compare(val1, val2) > 0) {
+                        double d = (val1 - val2) / Math.abs(val2);
+                        double percentage = util.round(d * 100, 2);
+                        perfDifference.put(k, "-" + percentage + "%");
+                    } else {
+                        perfDifference.put(k, 0 + "%");
+                    }
+                    comment = "Higher is better";
                 } else {
-                    perfDifference.put(k, 0 + "%");
+                    if (Double.compare(val1, val2) > 0) {
+                        double d = (val1 - val2) / Math.abs(val2);
+                        double percentage = util.round(d * 100, 2);
+                        perfDifference.put(k, "+" + percentage + "%");
+                    } else if (Double.compare(val1, val2) < 0) {
+                        double d = (val2 - val1) / Math.abs(val1);
+                        double percentage = util.round(d * 100, 2);
+                        perfDifference.put(k, "-" + percentage + "%");
+                    } else {
+                        perfDifference.put(k, 0 + "%");
+                    }
+                    comment = "Lower is better";
                 }
-                comment = "Higher is better";
-            }
-            else{
-                if (Double.compare(val1, val2) > 0) {
-                    double d = (val1 - val2) / Math.abs(val2);
-                    double percentage = util.round(d * 100, 2);
-                    perfDifference.put(k, "+" + percentage + "%");
-                } else if (Double.compare(val1, val2) < 0) {
-                    double d = (val2 - val1) / Math.abs(val1);
-                    double percentage = util.round(d * 100, 2);
-                    perfDifference.put(k, "-" + percentage + "%");
-                } else {
-                    perfDifference.put(k, 0 + "%");
-                }
-                comment = "Lower is better";
             }
         }
 
@@ -156,8 +171,8 @@ public class AverageResultRestController {
         res2.put("",cpu2);
 
         for(String k : keys){
-            res1.put(k,result1.get(k).toString());
-            res2.put(k,result2.get(k).toString());
+            res1.put(k,result1.getOrDefault(k,0.0).toString());
+            res2.put(k,result2.getOrDefault(k,0.0).toString());
         }
 
         List<Map<String,String>> dataSets = new ArrayList<>();

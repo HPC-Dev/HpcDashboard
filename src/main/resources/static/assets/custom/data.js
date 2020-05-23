@@ -83,7 +83,6 @@ function getData() {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
                     comment = data.comment;
-                    console.log(comment);
                     updateTableScaling(data.label, data.resultData);
                 });
 
