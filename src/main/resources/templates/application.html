@@ -41,7 +41,7 @@
                     <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
                 </li>
 
-                <li class="nav-item ">
+                <li class="nav-item"  th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
                 <li class="nav-item">

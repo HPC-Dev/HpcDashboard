@@ -560,12 +560,6 @@ public class ChartRestController {
     }
 
 
-
-
-
-
-
-
     @GetMapping("/result/{app_name}")
     public List<MultiChartResponseOld> getAvgBySelectedCPUChartOld(@PathVariable("app_name") String app_name, String[] cpuList) {
         List<String> cpus = Arrays.asList(cpuList);

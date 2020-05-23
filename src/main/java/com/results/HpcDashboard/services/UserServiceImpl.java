@@ -48,6 +48,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    public void update(String uname, String roles){
+      User  user = userRepository.findByUserName(uname);
+
+      if(roles != null || roles.length() >1)
+      {
+      String[] s = roles.split(":");
+      if(s.length == 1 && s[0].equals("USER")){
+          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
+      }
+      else if(s.length == 1 && s[0].equals("ADMIN") ){
+          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_ADMIN"))));
+      }
+      else if(s.length > 1){
+          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_ADMIN"), roleRepository.findByName("ROLE_USER"))));
+      }
+
+      userRepository.save(user);
+      }
+
+    }
+
     @Override
     public UserDetails loadUserByUsername(String uname) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(uname);

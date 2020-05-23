@@ -45,7 +45,7 @@
                     <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
                 </li>
 
-                <li class="nav-item ">
+                <li class="nav-item"  th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
                 <li class="nav-item active">
@@ -175,7 +175,7 @@
             </div>
 
             <br>
-            <div class="form-inline" style=" margin-left:9px">
+            <div class="form-inline" style=" margin-left:9px" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
                 <p style="font-size:14px;"> Add new result &nbsp </p>
                 <div class="input-group" style="margin-top:-12px; ">
                               <a th:href="@{/result}"
@@ -185,7 +185,7 @@
                 </div>
             </div>
 
-            <div class="form-inline" style="margin-left:8px; margin-top:5px">
+            <div class="form-inline" style="margin-left:8px; margin-top:5px" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
                 <p style="font-size:14px;"> Download excel &nbsp </p>
                 <div class="input-group" style="margin-top:-12px;">
                     <a th:href="@{/resultsExcel}"

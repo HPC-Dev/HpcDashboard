@@ -75,11 +75,11 @@ select DISTINCT cpu from results ORDER BY cpu ASC;
 
 
 select * from user;
-select * from role;	
+select * from role;
 select * from users_roles;
 
-#insert into users_roles (user_id,role_id) values (17,7);
 
+#insert into users_roles (user_id,role_id) values (17,7),(18,7),(19,7);
 
 
 #update users_roles set role_id=2 where user_id=5 and role_id=6;
@@ -89,8 +89,8 @@ select * from users_roles;
 
 select app_name from benchmarks;
 
-#delete from users_roles where user_id=17;
-#delete from user where id=17;
+#delete from users_roles where user_id=5 and role_id=7;
+delete from user where id=5;
 
 
 SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDER BY bm_name;

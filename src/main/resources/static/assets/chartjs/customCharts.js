@@ -3,6 +3,8 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 var BACKGROUND_COLORS = ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
+var BACKGROUND_COLORS_NEW = ['rgb(19,91,105)','rgb(21,104,121)','rgb(20,116,132)','rgb(133,155,163)','rgb(173,183,191)'   ,'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
+
 $('#appDrop').change(appChange);
 $('#cpuDrop').change(cpuChange);
 
@@ -342,8 +344,8 @@ function getBmChartData() {
                                 label: label[index],
                                 data: result[index],
                                 borderWidth: 1,
-                                pointBackgroundColor: [BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index], BACKGROUND_COLORS[index]],
-                                borderColor: BACKGROUND_COLORS[index],
+                                pointBackgroundColor: [BACKGROUND_COLORS_NEW[index], BACKGROUND_COLORS_NEW[index], BACKGROUND_COLORS_NEW[index], BACKGROUND_COLORS_NEW[index], BACKGROUND_COLORS_NEW[index]],
+                                borderColor: BACKGROUND_COLORS_NEW[index],
                                 pointRadius: 5,
                                 pointHoverRadius: 5,
                                 fill: false,
@@ -390,8 +392,6 @@ function getBmChartData() {
                                 },
                                 gridLines: {
                                     drawOnChartArea: true,
-//                                    color: "rgb(234, 236, 244)",
-//                                    zeroLineColor: "rgb(234, 236, 244)",
                                       borderDash: [2],
                                       zeroLineBorderDash: [2]
                                 },

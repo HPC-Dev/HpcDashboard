@@ -9,7 +9,6 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @EqualsAndHashCode
 @Entity
 public class Role {
@@ -18,9 +17,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
 
     public Role(String name) {
         this.name = name;

@@ -12,4 +12,6 @@ public interface UserService extends UserDetailsService {
     User findByUserName(String uname);
 
     User save(UserRegistrationDto registration);
+
+    void update(String uname, String roles);
 }

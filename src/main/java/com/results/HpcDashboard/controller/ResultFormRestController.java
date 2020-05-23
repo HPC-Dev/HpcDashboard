@@ -9,7 +9,9 @@ import com.results.HpcDashboard.services.ResultService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -29,13 +31,12 @@ public class ResultFormRestController {
     @Autowired
     ResultRepo resultRepo;
 
-    @PostMapping(value = "/resultJson")
+    @PostMapping(value = "/resultJson", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<Result> insertResult(@RequestBody List<Result> results) {
-
+    public ResponseEntity<String> insertResult(@RequestBody List<Result> results) {
         if(results != null || results.size() > 0 )
-        resultService.insertResultCsv(results);
-        return results;
+          resultService.insertResultCsv(results);
+        return new ResponseEntity("Success!",HttpStatus.OK);
     }
 
     @GetMapping(value = "/resultJson")
