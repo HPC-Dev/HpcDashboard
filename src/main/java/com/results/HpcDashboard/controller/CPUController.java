@@ -1,16 +1,13 @@
 package com.results.HpcDashboard.controller;
 
+import com.results.HpcDashboard.models.CPU;
 import com.results.HpcDashboard.services.CPUService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.Valid;
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 
 @Controller
@@ -46,5 +43,17 @@ public class CPUController {
             return "redirect:/cpuInsert?success";
 
         }
+
+
+    @PostMapping(value = "/cpuJson", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> insertCPUJson(@RequestBody List<CPU> cpus) {
+        if(cpus != null || cpus.size() > 0 )
+            cpuService.insertCPUCsv(cpus);
+        return new ResponseEntity("Success!",HttpStatus.OK);
+    }
+
+
+
     }
 

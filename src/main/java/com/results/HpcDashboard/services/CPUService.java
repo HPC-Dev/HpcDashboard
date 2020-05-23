@@ -2,18 +2,14 @@ package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.models.CPU;
-import com.results.HpcDashboard.models.Result;
 import com.results.HpcDashboard.repo.CPURepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,6 +49,15 @@ public class CPUService {
 
     public List<String> getAllCPUs(){
         return cpuRepo.findAllCPUs();
+    }
+
+
+
+    public void insertCPUCsv(List<CPU> cpus){
+        for(CPU cpu: cpus) {
+            cpuRepo.save(cpu);
+
+        }
     }
 
 
