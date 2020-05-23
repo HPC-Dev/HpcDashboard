@@ -51,8 +51,6 @@ public class CPUService {
         return cpuRepo.findAllCPUs();
     }
 
-
-
     public void insertCPUCsv(List<CPU> cpus){
         for(CPU cpu: cpus) {
             cpuRepo.save(cpu);

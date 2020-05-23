@@ -1,15 +1,13 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.dto.BenchmarkDto;
 import com.results.HpcDashboard.models.Application;
+import com.results.HpcDashboard.models.Benchmark;
 import com.results.HpcDashboard.models.CPU;
 import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.paging.Page;
-import com.results.HpcDashboard.paging.PagingRequest;
 import com.results.HpcDashboard.repo.ApplicationRepo;
+import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.repo.CPURepo;
 import com.results.HpcDashboard.repo.ResultRepo;
-import com.results.HpcDashboard.services.BenchmarkDataTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
@@ -22,9 +20,6 @@ import javax.validation.Valid;
 @RequestMapping(value = "/datatable")
 public class DatatableRestController {
 
-    private final BenchmarkDataTableService benchmarkDataTableService;
-
-
     @Autowired
     ResultRepo resultRepo;
 
@@ -34,17 +29,9 @@ public class DatatableRestController {
     @Autowired
     CPURepo cpuRepo;
 
-
     @Autowired
-    public DatatableRestController(BenchmarkDataTableService benchmarkDataTableService) {
-        this.benchmarkDataTableService = benchmarkDataTableService;
+    BenchmarkRepo benchmarkRepo;
 
-    }
-
-    @PostMapping("benchmarkAjax")
-    public Page<BenchmarkDto> getBenchmarks(@RequestBody PagingRequest pagingRequest) {
-        return benchmarkDataTableService.getData(pagingRequest);
-    }
 
     @GetMapping(value = "dashboard")
     public DataTablesOutput<Result> listResults(@Valid DataTablesInput input) {
@@ -62,6 +49,12 @@ public class DatatableRestController {
     @GetMapping(value = "cpu")
     public DataTablesOutput<CPU> listCPU(@Valid DataTablesInput input) {
         DataTablesOutput<CPU> cpu = cpuRepo.findAll(input);
+        return cpu;
+    }
+
+    @GetMapping(value = "bms")
+    public DataTablesOutput<Benchmark> listBms(@Valid DataTablesInput input) {
+        DataTablesOutput<Benchmark> cpu = benchmarkRepo.findAll(input);
         return cpu;
     }
 

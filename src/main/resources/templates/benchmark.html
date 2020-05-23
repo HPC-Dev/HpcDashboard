@@ -103,37 +103,52 @@
 <script type="text/javascript"
         th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{js/jquery.spring-friendly.js}"></script>
 
 <script>
-    $('#ajax').removeAttr('width').DataTable({
-        "processing": true,
-        "serverSide": true,
+    var table = $('table#ajax').DataTable({
+		'ajax' : '/datatable/bms',
+		'processing': true,
+        'serverSide': true,
         'scrollY': "490px",
         'scrollX': true,
         'scrollCollapse': true,
-        "ajax": {
-            "url": "/datatable/benchmarkAjax",
-            "type": "POST",
-            "dataType": "json",
-            "contentType": "application/json",
-            "data": function (d) {
-                return JSON.stringify(d);
+		columns : [
+		{
+                data: 'appName'
+            },
+            {
+                data: 'bmName'
+            },
+            {
+                data: 'bmFullName'
+            },
+            {
+                data: 'bmMetric'
+            },
+            {
+                data: 'bmSize'
+            },
+            {
+                data: 'bmSizeUnits'
+            },
+            {
+                data: 'bmDur'
+            },
+            {
+                data: 'bmDurUnits'
+            },
+            {
+                data: 'estRuntime'
+            },
+            {
+                data: 'bmUnits'
             }
-        },
-        "columns": [
-            {"data": "appName", width: 80, targets: 0},
-            {"data": "bmName",width: 80, targets: 1},
-            {"data": "bmFullName", width: 120, targets: 2},
-            {"data": "bmMetric", width: 200, targets: 3},
-            {"data": "bmSize", width: 60, targets: 4},
-            {"data": "bmSizeUnits", width: 140, targets: 5},
-            {"data": "bmDur", width: 60, targets: 6},
-            {"data": "bmDurUnits", width: 60, targets: 7},
-            {"data": "estRuntime", width: 80, targets: 8},
-            {"data": "bmUnits", width: 40, targets: 9}
-        ]
-        ,fixedColumns: true
-    });
+		]
+	});
+
+
+
 </script>
 
 </body>

@@ -1,6 +1,5 @@
 package com.results.HpcDashboard.services;
 
-import com.results.HpcDashboard.dto.BenchmarkDto;
 import com.results.HpcDashboard.models.Benchmark;
 import com.results.HpcDashboard.repo.BenchmarkRepo;
 import com.results.HpcDashboard.util.Util;
@@ -25,9 +24,6 @@ public class BenchmarkService {
 
     }
 
-    public List<BenchmarkDto> getAllBenchmarks(){
-        return util.getBenchmarks(entityManager);
-    }
 
     public void insertBmCsv(List<Benchmark> bms){
         for(Benchmark bm: bms) {

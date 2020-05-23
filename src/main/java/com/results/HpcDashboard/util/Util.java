@@ -1,10 +1,8 @@
 package com.results.HpcDashboard.util;
 
-import com.results.HpcDashboard.dto.BenchmarkDto;
-import com.results.HpcDashboard.dto.CPUDto;
-import com.results.HpcDashboard.models.CPU;
-import org.springframework.stereotype.Component;
 
+import com.results.HpcDashboard.dto.CPUDto;
+import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
@@ -21,22 +19,6 @@ public class Util {
     private final String regex = "(?<!\\\\)" + Pattern.quote(",");
     private HashMap<String,String> appMap = new HashMap<>();
     private HashMap<String,String> metricMap = new HashMap<>();
-
-    public List<BenchmarkDto> getBenchmarks(EntityManager entityManager) {
-        String queryStr = "select a.app_name,a.bm_name,a.bm_full_name,a.bm_dur,a.bm_metric,a.bm_size, a.bm_size_units,a.bm_dur_units,a.bm_units,a.est_runtime from benchmarks a";
-        try {
-            Query query = entityManager.createNativeQuery(queryStr);
-            List<Object[]> objectList = query.getResultList();
-            List<BenchmarkDto> result = new ArrayList<>();
-            for (Object[] row : objectList) {
-                result.add(new BenchmarkDto(row));
-            }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
     public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
         String queryStr = "select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;";
