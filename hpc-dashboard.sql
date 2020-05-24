@@ -79,6 +79,9 @@ select * from role;
 select * from users_roles;
 
 
+update role set name="ROLE_TEAM" where id=11;
+
+
 #insert into users_roles (user_id,role_id) values (17,7),(18,7),(19,7);
 
 

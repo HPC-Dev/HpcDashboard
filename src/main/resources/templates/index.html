@@ -42,12 +42,10 @@
                     <a class="nav-link" href="#" th:href="@{/cpu}">CPU</a>
                 </li>
 
-                <li class="nav-item"  th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+                <li class="nav-item"  th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
                     <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
                 </li>
-<!--                <li class="nav-item" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">-->
-<!--                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>-->
-<!--                </li>-->
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a>
                 </li>
@@ -80,14 +78,10 @@
 <br>
 <div class="container-fluid" style="max-width:1300px">
     <h5 th:text="'Welcome ' + ${user}"></h5>
-    <div  th:if="${#httpServletRequest.isUserInRole('ROLE_SPECIAL')}">
+    <div  th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
 <!--            <p th:text="${#httpServletRequest.getUserPrincipal()}">-->
     </div>
 </div>
-
-<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
-<!--    This content is only shown to administrators.-->
-<!--</div>-->
 
 
 <script type="text/javascript"

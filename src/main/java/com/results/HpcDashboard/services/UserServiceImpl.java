@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setUserName(register.getUserName());
         user.setEmail(register.getEmail());
         user.setPassword(passwordEncoder.encode(register.getPassword()));
-        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_TEAM")));
         return userRepository.save(user);
     }
 
@@ -60,8 +60,11 @@ public class UserServiceImpl implements UserService {
       else if(s.length == 1 && s[0].equals("ADMIN") ){
           user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_ADMIN"))));
       }
+      else if(s.length == 1 && s[0].equals("TEAM") ){
+          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_TEAM"))));
+      }
       else if(s.length > 1){
-          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_ADMIN"), roleRepository.findByName("ROLE_USER"))));
+          user.setRoles(new ArrayList<>(Arrays.asList(roleRepository.findByName("ROLE_TEAM"), roleRepository.findByName("ROLE_USER"))));
       }
 
       userRepository.save(user);

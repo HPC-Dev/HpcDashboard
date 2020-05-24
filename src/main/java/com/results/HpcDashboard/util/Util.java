@@ -64,7 +64,7 @@ public class Util {
         return average;
     }
 
-        public HashMap<String,String> getAppMap() {
+    public HashMap<String,String> getAppMap() {
             appMap.put("abaqus", "LOWER");
             appMap.put("acusolve", "LOWER");
             appMap.put("cfx","LOWER");
