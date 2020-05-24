@@ -59,7 +59,6 @@ select * from average_result where app_name="namd" and cpu_sku IN ("7F52", "7F32
 
 select * from average_result where app_name="namd" and cpu_sku IN ("n1-standard-96", "n2d-standard-224", "n2d-highcpu-224","n1-highcpu-96") and nodes =1 ORDER BY bm_name;
 
-
 #update applications set precision_info="Elapsed Time" where app_id="openfoam_v1906";
 
 select DISTINCT app_name from average_result;
@@ -77,7 +76,6 @@ select DISTINCT cpu from results ORDER BY cpu ASC;
 select * from user;
 select * from role;
 select * from users_roles;
-
 
 update role set name="ROLE_TEAM" where id=11;
 

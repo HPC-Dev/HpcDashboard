@@ -15,66 +15,13 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container-fluid" style="max-width:1300px">
-        <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-
-
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/application}">Applications</a>
-                </li>
-
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a>
-                </li>
-
-                <li class="nav-item active ">
-                    <a class="nav-link" href="#" th:href="@{/cpu}">CPU <span class="sr-only">(current)</span></a>
-                </li>
-
-                <li class="nav-item"  th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
-                    <a class="nav-link" href="#" th:href="@{/result}">Result Form</a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard </a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data</a>
-                    <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
-                        <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
-                        <a class="dropdown-item" href="#" th:href="@{/part-comparision}" >2 Part Comparision</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>
-                    <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
-                        <a class="dropdown-item" href="#" th:href="@{/charts}" >Single CPU Charts </a>
-                        <a class="dropdown-item" href="#" th:href="@{/mChart}" >Multi CPU Charts</a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="~{fragments/header :: header}">...</div>
 
 
 <br>
 <br>
 
-<div class="container-fluid" style="max-width:1225px">
+<div class="container-fluid" style="max-width:1400px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 

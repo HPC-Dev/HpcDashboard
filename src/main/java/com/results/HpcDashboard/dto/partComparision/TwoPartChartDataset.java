@@ -1,4 +1,4 @@
-package com.results.HpcDashboard.dto.multichart;
+package com.results.HpcDashboard.dto.partComparision;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
-public class DatasetOld {
+public class TwoPartChartDataset {
     private String cpuName;
     private List<Double> value;
 }

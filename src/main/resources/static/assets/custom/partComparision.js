@@ -77,6 +77,7 @@ function getMultiChartData(app, cpu1, cpu2) {
     params.cpuList = cpuList;
     if (app && cpu1 && cpu2) {
         $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
+            if(data.length >0){
             var label = data[0].labels;
 
             var chartdata = {
@@ -147,6 +148,7 @@ function getMultiChartData(app, cpu1, cpu2) {
                 data: chartdata,
                 options: chartOptions
             });
+        }
         });
     } else {
         clearChart();

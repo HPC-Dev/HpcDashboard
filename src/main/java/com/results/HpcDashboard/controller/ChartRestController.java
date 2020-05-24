@@ -2,10 +2,11 @@ package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.ChartsResponse;
 import com.results.HpcDashboard.dto.multichart.*;
+import com.results.HpcDashboard.dto.partComparision.TwoPartChartDataset;
+import com.results.HpcDashboard.dto.partComparision.TwoPartChartResponse;
 import com.results.HpcDashboard.dto.scatter.ScatterChartsResponse;
 import com.results.HpcDashboard.dto.scatter.ScatterTableResponse;
 import com.results.HpcDashboard.models.AverageResult;
-import com.results.HpcDashboard.services.ApplicationService;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -559,14 +560,13 @@ public class ChartRestController {
         return multiChartTableResponse;
     }
 
-
     @GetMapping("/result/{app_name}")
-    public List<MultiChartResponseOld> getAvgBySelectedCPUChartOld(@PathVariable("app_name") String app_name, String[] cpuList) {
+    public List<TwoPartChartResponse> getTwoPartChartResponse(@PathVariable("app_name") String app_name, String[] cpuList) {
         List<String> cpus = Arrays.asList(cpuList);
         String metric = getMetric(app_name.toLowerCase().trim());
         String comment = "";
-        List<MultiChartResponseOld> resultList = new ArrayList<>();
-        MultiChartResponseOld mlr = new MultiChartResponseOld();
+        List<TwoPartChartResponse> resultList = new ArrayList<>();
+        TwoPartChartResponse mlr = new TwoPartChartResponse();
         List<AverageResult> list = null;
         list = averageResultService.getBySelectedCPUApp(app_name, cpus);
 
@@ -591,10 +591,10 @@ public class ChartRestController {
         mlr.setMetric(metric);
         mlr.setAppName(getAppName(list.get(0).getAppName()));
         mlr.setComment(comment);
-        List<DatasetOld> d = new ArrayList<>();
+        List<TwoPartChartDataset> d = new ArrayList<>();
         for (String c : cpu) {
 
-            DatasetOld data = new DatasetOld();
+            TwoPartChartDataset data = new TwoPartChartDataset();
             List<Double> res = new ArrayList<>();
             for (AverageResult avg : list) {
                 if (avg.getCpuSku().equals(c)) {
@@ -613,6 +613,9 @@ public class ChartRestController {
         }
         return resultList;
     }
+
+
+
 
     @GetMapping("/scalingTableOld/{cpu}/{app_name}")
     public MultiChartTableResponse getScalingTableOld(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu) {

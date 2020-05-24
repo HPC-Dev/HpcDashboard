@@ -1,14 +1,14 @@
-package com.results.HpcDashboard.dto.multichart;
+package com.results.HpcDashboard.dto.partComparision;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class MultiChartResponseOld {
+public class TwoPartChartResponse {
     private String appName;
     private String metric;
     private List<String> labels;
-    private List<DatasetOld> datasets;
+    private List<TwoPartChartDataset> datasets;
     private String comment;
 }
