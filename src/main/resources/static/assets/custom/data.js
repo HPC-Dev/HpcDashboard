@@ -132,7 +132,7 @@ function updateTableCV(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBodyVariance(columns, data) + "</table>";
         $("#p3").show();
     }
     $('#tableCV').html(table);
@@ -142,7 +142,7 @@ function updateTableCount(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBodyCount(columns, data) + "</table>";
         $("#p4").show();
     }
     $('#tableCount').html(table);
@@ -177,10 +177,105 @@ function generateRow(columns, rowData) {
     columns.forEach(function(column) {
         if (rowData[column] != undefined) {
             val = rowData[column];
+
         } else {
             val = '';
         }
-        row.push("<td>" + val + "</td>")
+
+        row.push('<td>' + val + '</td>')
+
+    });
+
+    row.push('</tr>');
+
+    return row.join('');
+}
+
+function getBodyVariance(columns, data) {
+    var body = ['<tbody>'];
+    data.forEach(function(row) {
+        body.push(generateRowVariance(columns, row))
+    });
+
+    body.push('</tbody>');
+
+    return body.join('');
+}
+
+
+function generateRowVariance(columns, rowData) {
+    var row = ['<tr>'];
+    var val;
+
+    columns.forEach(function(column) {
+
+        if (rowData[column] != undefined) {
+            val = rowData[column];
+
+        } else {
+            val = '';
+        }
+
+        if(column != 'Nodes' &&  column != 'Cores' && rowData[column] != undefined){
+
+            if(val < 3.0){
+                row.push('<td bgcolor="#C8E6C9">' + val.concat('%') +  '</td>')
+            }
+            else if(val > 3.0 && val < 5.0 ){
+                row.push('<td bgcolor="#FFF9C4">' + val.concat('%') + '</td>')
+            }
+            else if(val > 5.0 ){
+                row.push('<td bgcolor="FFCDD2">' + val.concat('%') + '</td>')
+            }
+        }
+       else{
+            row.push('<td>' + val + '</td>')
+       }
+    });
+
+    row.push('</tr>');
+
+    return row.join('');
+}
+
+
+function getBodyCount(columns, data) {
+    var body = ['<tbody>'];
+    data.forEach(function(row) {
+        body.push(generateRowCount(columns, row))
+    });
+
+    body.push('</tbody>');
+
+    return body.join('');
+}
+
+
+function generateRowCount(columns, rowData) {
+    var row = ['<tr>'];
+    var val;
+
+    columns.forEach(function(column) {
+
+        if (rowData[column] != undefined) {
+            val = rowData[column];
+
+        } else {
+            val = '';
+        }
+
+        if(column != 'Nodes' &&  column != 'Cores' && rowData[column] != undefined){
+
+            if(val < 3){
+                row.push('<td bgcolor="#FFCDD2">' + val +  '</td>')
+            }
+            else {
+                row.push('<td bgcolor="#C8E6C9">' + val + '</td>')
+            }
+        }
+       else{
+            row.push('<td>' + val + '</td>')
+       }
     });
 
     row.push('</tr>');

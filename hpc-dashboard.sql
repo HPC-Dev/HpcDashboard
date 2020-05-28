@@ -44,7 +44,7 @@ select bm_name,app_name,avg_result from average_result where cpu_sku="7F72" and 
 
 
 
-select * from average_result where app_name="abaqus" and cpu_sku="6248" and nodes =1 ORDER BY cpu_sku;
+select * from average_result where app_name="abaqus" and cpu_sku="6248";
 
 
 select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;

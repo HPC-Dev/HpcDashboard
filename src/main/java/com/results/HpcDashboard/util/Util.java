@@ -139,7 +139,7 @@ public class Util {
 
         double CV = (sd/mean)*100;
 
-        return round(CV,4);
+        return round(CV,2);
     }
 
 }

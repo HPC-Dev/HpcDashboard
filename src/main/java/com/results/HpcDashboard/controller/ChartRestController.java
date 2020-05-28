@@ -501,7 +501,7 @@ public class ChartRestController {
 
                 if (a.getNodes() == n) {
                     countMap.put(a.getBmName(),a.getRunCount());
-                    CVMap.put(a.getBmName(),a.getCoefficientOfVariation()+"%");
+                    CVMap.put(a.getBmName(),String.valueOf(a.getCoefficientOfVariation()));
                 }
             }
             countData.add(countMap);
