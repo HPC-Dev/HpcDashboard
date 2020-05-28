@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AverageResultRepo extends DataTablesRepository<AverageResult, AverageResultId> {
 
-    public static final String UPDATE_AVG_RESULT = "UPDATE average_result set avg_result=:avg where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
+    public static final String UPDATE_AVG_RESULT = "UPDATE average_result set avg_result=:avg, coefficient_of_variation=:cv, run_count=:count where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String DELETE_AVG_RESULT = "DELETE FROM average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String GET_AVG_RESULT = "SELECT * from average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes";
     public static final String GET_AVG_RESULT_CPU_APP = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name ORDER BY bm_name";
@@ -34,7 +34,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
 
     @Modifying
     @Query(value = UPDATE_AVG_RESULT, nativeQuery = true)
-    void updateAverageResult(String bm_name, String cpu_sku, int nodes, double avg);
+    void updateAverageResult(String bm_name, String cpu_sku, int nodes, double avg, double cv, int count);
 
     @Modifying
     @Query(value = DELETE_AVG_RESULT, nativeQuery = true)

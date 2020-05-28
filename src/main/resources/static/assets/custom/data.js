@@ -31,6 +31,8 @@ $('#cpuDrop').on("change", function() {
     $('#appDrop').val('');
     $('#table').html('');
     $('#tableScaling').html('');
+    $('#tableCV').html('');
+    $('#tableCount').html('');
     getData();
 });
 
@@ -50,7 +52,6 @@ function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
     var comment;
-
     if (app && cpu) {
         $.getJSON("/avg/result/" + cpu + "/" + app, function(data) {
             var transformedData = [];
@@ -83,14 +84,22 @@ function getData() {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
                     comment = data.comment;
-                    updateTableScaling(data.label, data.resultData);
+                    if(data.scalingResultData.length >1) {
+                    updateTableScaling(data.nodeLabel, data.scalingResultData);
+                    }
+                    updateTableCV(data.nodeLabel, data.cvdata);
+                    updateTableCount(data.nodeLabel, data.countData);
                 });
 
     }
      $('#table').html('');
      $('#tableScaling').html('');
+     $('#tableCV').html('');
+     $('#tableCount').html('');
      $("#p1").hide();
      $("#p2").hide();
+     $("#p3").hide();
+     $("#p4").hide();
 
 }
 
@@ -117,6 +126,26 @@ function updateTableScaling(columns, data) {
         $("#p2").show();
     }
     $('#tableScaling').html(table);
+}
+
+function updateTableCV(columns, data) {
+    var table;
+
+    if (data.length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        $("#p3").show();
+    }
+    $('#tableCV').html(table);
+}
+
+function updateTableCount(columns, data) {
+    var table;
+
+    if (data.length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        $("#p4").show();
+    }
+    $('#tableCount').html(table);
 }
 
 function getHeaders(columns) {

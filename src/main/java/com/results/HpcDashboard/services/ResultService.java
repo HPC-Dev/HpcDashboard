@@ -38,16 +38,17 @@ public class ResultService {
 
         List<Double> list = getResultsForAverage(bm_name,cpu,nodes);
         double avgResult = util.calculateAverageResult(list);
-
+        double coefficientOfVariation = util.resultCoefficientOfVariation(list);
+        int runCount = list.size();
         AverageResult averageResult = averageResultService.getSingleAvgResult(bm_name,cpu,nodes);
 
         if(averageResult == null){
-            //insert variance
-         AverageResult aResult = AverageResult.builder().appName(app_name).bmName(bm_name).cores(cores).cpuSku(cpu).avgResult(avgResult).nodes(nodes).build();
+            //insert CV
+         AverageResult aResult = AverageResult.builder().appName(app_name).bmName(bm_name).cores(cores).cpuSku(cpu).avgResult(avgResult).nodes(nodes).coefficientOfVariation(coefficientOfVariation).runCount(runCount).build();
          averageResultService.insertAverageResult(aResult);
         }
         else{
-            averageResultService.updateAverageResult(cpu,nodes,bm_name,avgResult);
+            averageResultService.updateAverageResult(cpu,nodes,bm_name,avgResult,coefficientOfVariation,runCount);
         }
 
     }
@@ -59,14 +60,16 @@ public class ResultService {
             resultRepo.save(result);
             List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);
+            double coefficientOfVariation = util.resultCoefficientOfVariation(list);
+            int runCount = list.size();
             AverageResult averageResult = averageResultService.getSingleAvgResult(result.getBmName().trim().toLowerCase(),result.getCpu(),result.getNodes());
             if(averageResult == null){
-                    //insert variance
-                AverageResult aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).build();
+                    //insert CV
+                AverageResult aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).coefficientOfVariation(coefficientOfVariation).runCount(runCount).build();
                 averageResultService.insertAverageResult(aResult);
             }
             else{
-                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult);
+                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,coefficientOfVariation,runCount);
             }
         }
     }
@@ -111,18 +114,6 @@ public class ResultService {
         }
         return cpu_list;
     }
-
-    public List<String> getBm() {
-
-        List<String> bm_list = null;
-        bm_list = resultRepo.getBm();
-
-        if(bm_list ==null){
-            return Collections.EMPTY_LIST;
-        }
-        return bm_list;
-    }
-
 
     public List<Integer> getNodes() {
 

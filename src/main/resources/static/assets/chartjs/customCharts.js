@@ -242,7 +242,7 @@ function getData() {
     if (app && cpu) {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
-            updateTable(data.label, data.resultData);
+            updateTable(data.nodeLabel, data.scalingResultData);
         });
     } else {
         $('#tableNew').html('');

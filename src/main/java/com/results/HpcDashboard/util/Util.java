@@ -117,5 +117,29 @@ public class Util {
     }
 
 
+    public double resultCoefficientOfVariation(List<Double> list)
+    {
+        if(list.size()==1)
+            return 0;
+
+        double standardDeviation = 0.0;
+        int length = list.size();
+        double sum = 0;
+        for(double num : list) {
+            sum += num;
+        }
+
+        double mean = sum/length;
+
+        for(double num: list) {
+            standardDeviation += Math.pow(num - mean, 2);
+        }
+
+        double sd = Math.sqrt(standardDeviation/length);
+
+        double CV = (sd/mean)*100;
+
+        return round(CV,4);
+    }
 
 }

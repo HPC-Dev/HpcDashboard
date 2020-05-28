@@ -12,7 +12,12 @@ import java.util.Set;
 public class MultiChartTableResponse {
 
     private String appName;
-    private List<String> label;
-    private List<Map<String,String>> resultData;
+    private List<String> nodeLabel;
+    private List<Map<String,String>> scalingResultData;
     private String comment;
+
+    private List<Map<String,Integer>> countData;
+
+    private List<Map<String,String>> CVData;
+
 }

@@ -432,7 +432,7 @@ public class ChartRestController {
             bmlistFinal.add(bm.getKey());
         }
 
-        multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).label(bmlistFinal).resultData(resListFinal).build();
+        multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
 
         return multiChartTableResponse;
     }
@@ -465,25 +465,57 @@ public class ChartRestController {
 
         List<Map<String, Double>> resList = new ArrayList<>();
 
-        Map<String, Double> res = null;
+        List<Map<String,Integer>> countData = new ArrayList<>();
+
+        List<Map<String, String>> CVData = new ArrayList<>();
+
+        Map<String, Double> avgRes = null;
+        Map<String, Integer> countMap = null;
+        Map<String, String> CVMap = null;
 
         List<String> nodesList = new ArrayList<>();
         List<String> coresList = cores.stream().collect(Collectors.toList());
 
         for (Integer n : nodes) {
-            res = new LinkedHashMap<>();
+            avgRes = new LinkedHashMap<>();
             nodesList.add(n.toString());
             for (AverageResult a : list) {
                 if (a.getNodes() == n) {
-
-                    res.put(a.getBmName(), a.getAvgResult());
+                    avgRes.put(a.getBmName(), a.getAvgResult());
                 }
             }
-            if(res.size()>1)
-            resList.add(res);
+            resList.add(avgRes);
         }
 
-        if(nodesList.size() > 1 && resList.size() > 1 ) {
+        int core=0;
+        for (Integer n : nodes) {
+            countMap = new LinkedHashMap<>();
+            CVMap = new LinkedHashMap<>();
+            nodesList.add(n.toString());
+            countMap.put("Nodes", n);
+            CVMap.put("Nodes", String.valueOf(n));
+            countMap.put("Cores", Integer.valueOf(coresList.get(core)));
+            CVMap.put("Cores", coresList.get(core));
+
+            for (AverageResult a : list) {
+
+                if (a.getNodes() == n) {
+                    countMap.put(a.getBmName(),a.getRunCount());
+                    CVMap.put(a.getBmName(),a.getCoefficientOfVariation()+"%");
+                }
+            }
+            countData.add(countMap);
+            CVData.add(CVMap);
+            core++;
+        }
+
+
+        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
+        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+            comment = "Lower is better";
+        }
+
 
         List<Map<String, Double>> newResList = new ArrayList<>();
 
@@ -519,6 +551,8 @@ public class ChartRestController {
 
             newResList.remove(0);
 
+
+        if(nodesList.size() > 1 && resList.size() > 1 ) {
             int i = 1;
 
             for (Map<String, Double> lis : newResList) {
@@ -527,7 +561,7 @@ public class ChartRestController {
                 temp.put("Nodes", nodesList.get(i));
                 temp.put("Cores", coresList.get(i));
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
-                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0 ) {
+                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
                         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
@@ -542,21 +576,24 @@ public class ChartRestController {
                 resListFinal.add(temp);
                 i++;
             }
-
-            List<String> bmlistFinal = new ArrayList<>();
-
-            for (Map.Entry<String, String> bm : resListFinal.get(0).entrySet()) {
-                bmlistFinal.add(bm.getKey());
-            }
-
-            if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-                comment = "Higher is better";
-            } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-                comment = "Lower is better";
-            }
-
-            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).label(bmlistFinal).resultData(resListFinal).comment(comment).build();
         }
+
+//        List<String> bmlistFinalOld = new ArrayList<>();
+//
+//            for (Map.Entry<String, String> bm : resListFinal.get(0).entrySet()) {
+//                bmlistFinalOld.add(bm.getKey());
+//            }
+        List<String> bmlistFinal = new ArrayList<>();
+        bmlistFinal.add("Nodes");
+        bmlistFinal.add("Cores");
+        for(String s : bmlist){
+            bmlistFinal.add(s);
+        }
+
+
+
+         multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).countData(countData).CVData(CVData).comment(comment).build();
+
         return multiChartTableResponse;
     }
 
@@ -724,7 +761,7 @@ public class ChartRestController {
                 bmlistFinal.add(bm.getKey());
             }
 
-            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).label(bmlistFinal).resultData(resListFinal).build();
+            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
         }
         return multiChartTableResponse;
     }

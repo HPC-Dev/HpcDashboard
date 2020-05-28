@@ -155,7 +155,7 @@ $('button').on('click', function() {
         if (app && cpuList.length > 1) {
 
             $.getJSON("/chart/multiCPUTable/" + app, $.param(params, true), function(data) {
-                updateTable(data.label, data.resultData);
+                updateTable(data.nodeLabel, data.scalingResultData);
 
             });
         } else {
