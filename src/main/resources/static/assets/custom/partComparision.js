@@ -202,7 +202,24 @@ function generateRow(columns, rowData) {
         } else {
             val = '';
         }
-        row.push("<td>" + val + "</td>")
+
+        if(column != ""){
+
+            if(val.startsWith("+"))
+            {
+                row.push('<td bgcolor="#C8E6C9">' + val + '</td>')
+            }
+            else if(val.startsWith("-"))
+            {
+                row.push('<td bgcolor="FFCDD2">' + val + '</td>')
+            }
+            else{
+                row.push("<td>" + val + "</td>")
+            }
+        }
+        else{
+        row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+        }
     });
 
     row.push('</tr>');

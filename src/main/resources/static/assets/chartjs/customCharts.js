@@ -147,7 +147,7 @@ function getNodeChartData() {
                         backgroundColor: ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'],
                         borderWidth: 1,
                         data: result,
-                        barPercentage: 0.2,
+                        barPercentage: 0.2
                     }]
                 };
             }
@@ -242,7 +242,9 @@ function getData() {
     if (app && cpu) {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+            if(data.scalingResultData.length > 1){
             updateTable(data.nodeLabel, data.scalingResultData);
+            }
         });
     } else {
         $('#tableNew').html('');
@@ -253,7 +255,7 @@ function updateTableNode(columns, data) {
 
     var table;
     if (Object.keys(data).length > 0) {
-        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBodySingle(columns, data) + "</table>";
     }
 
     $('#tableNode').html(table);
@@ -301,6 +303,40 @@ function generateRow(columns, rowData) {
             val = '';
         }
         row.push("<td>" + val + "</td>")
+    });
+
+    row.push('</tr>');
+
+    return row.join('');
+}
+
+function getBodySingle(columns, data) {
+    var body = ['<tbody>'];
+    data.forEach(function(row) {
+        body.push(generateRowSingle(columns, row))
+    });
+    body.push('</tbody>');
+
+    return body.join('');
+}
+
+function generateRowSingle(columns, rowData) {
+    var row = ['<tr>'];
+    var val;
+
+    columns.forEach(function(column) {
+        if (rowData[column] != undefined) {
+            val = rowData[column];
+        } else {
+            val = '';
+        }
+        if(column != ""){
+        row.push("<td>" + val + "</td>")
+        }
+        else{
+        row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+        }
+
     });
 
     row.push('</tr>');
@@ -407,6 +443,8 @@ function getBmChartData() {
                 });
             } else {
                 $("#noChart").show();
+                $('#tableNew').html('');
+                $('#tableNode').html('');
             }
         });
     }
