@@ -33,6 +33,7 @@
                     <th>TDP</th>
                     <th>Cores</th>
                     <th>Base Freq</th>
+                    <th>All Core Freq</th>
                     <th>Peak Freq</th>
                     <th>L3 cache</th>
                     <th>DDR channels</th>
@@ -40,8 +41,8 @@
                 </tr>
                 </thead>
             </table>
-            <br>
-            <p style="font-size:12px;text-align:right;font-family:verdana;">*8 channel and 3200 capable,  Performance Optimized to 4 channels @ 2666</p>
+<!--            <br>-->
+<!--            <p style="font-size:12px;text-align:right;font-family:verdana;">*8 channel and 3200 capable,  Performance Optimized to 4 channels @ 2666</p>-->
         </div>
     </div>
 </div>
@@ -59,7 +60,7 @@
 
     var table = $('table#ajax').DataTable({
 		'ajax' : '/datatable/cpu',
-		'scrollY': "450px",
+		'scrollY': "490px",
         'scrollX': true,
         'scrollCollapse': true,
         'processing': true,
@@ -84,6 +85,9 @@
             },
             {
                 data: 'baseFreq'
+            },
+             {
+                data: 'allCoreFreq'
             },
             {
                 data: 'peakFreq'

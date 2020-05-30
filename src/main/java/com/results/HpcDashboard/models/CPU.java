@@ -37,7 +37,7 @@ public class CPU implements Serializable {
 
     String peakFreq;
 
-    int l3Cache;
+    String l3Cache;
 
     int ddrChannels;
 
