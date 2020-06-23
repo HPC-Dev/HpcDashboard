@@ -59,6 +59,15 @@
                 </select>
             </div>
             <br>
+            <div id="cpuGen" class="dropdown">
+                <select class="form-control form-control-sm" id="cpuGenDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- CPU Gen --</option>
+                    <option th:each="cpugen : ${cpugens}"
+                            th:value="${cpugen}"
+                            th:text="${cpugen}"></option>
+                </select>
+            </div>
+            <br>
             <div id="cpu" class="dropdown">
                 <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
                     <option selected="true" disabled="disabled">-- CPU --</option>
@@ -104,15 +113,7 @@
                 </select>
             </div>
             <br>
-            <div id="cpuGen" class="dropdown">
-                <select class="form-control form-control-sm" id="cpuGenDrop" name="cpuDrop">
-                    <option selected="true" disabled="disabled">-- CPU Gen --</option>
-                    <option th:each="cpugen : ${cpugens}"
-                            th:value="${cpugen}"
-                            th:text="${cpugen}"></option>
-                </select>
-            </div>
-            <br>
+
             <div id="runType" class="dropdown">
                 <select class="form-control form-control-sm" id="runTypeDrop" name="cpuDrop">
                     <option selected="true" disabled="disabled">-- Run Type --</option>

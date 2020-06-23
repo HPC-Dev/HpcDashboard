@@ -76,6 +76,24 @@ $('#appDrop').change(
         });
     });
 
+
+$('#cpuGenDrop').change(
+    function() {
+        $.getJSON("/cpusGen", {
+            cpuGen: $(this).val(),
+            ajax: 'true'
+        }, function(data) {
+            var html = '<option value="" selected="true" disabled="disabled">-- CPU --</option>';
+            var len = data.length;
+            for (var i = 0; i < len; i++) {
+                html += '<option value="' + data[i] + '">' +
+                    data[i] + '</option>';
+            }
+            html += '</option>';
+            $('#cpuDrop').html(html);
+        });
+    });
+
 $('#appDrop').change(function() {
     var filter = '';
     $('#appDrop option:selected').each(function() {

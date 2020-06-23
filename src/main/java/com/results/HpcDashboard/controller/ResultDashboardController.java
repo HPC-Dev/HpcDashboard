@@ -137,6 +137,14 @@ public class ResultDashboardController {
     }
 
 
+    @RequestMapping(value = "/cpusGen", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllCPUs(
+            @RequestParam(value = "cpuGen", required = true) String cpuGen) {
+
+        return resultService.getCpu(cpuGen);
+    }
+
     @GetMapping(value = "/resultsExcel")
     public ResponseEntity<InputStreamResource> excelResults() throws IOException {
         List<Result> results = resultService.getAllResults();

@@ -115,6 +115,17 @@ public class ResultService {
         return cpu_list;
     }
 
+    public List<String> getCpu(String cpuGen) {
+
+        List<String> cpu_list = null;
+        cpu_list = resultRepo.getCPUGen(cpuGen);
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
     public List<Integer> getNodes() {
 
         List<Integer> node_list = null;
