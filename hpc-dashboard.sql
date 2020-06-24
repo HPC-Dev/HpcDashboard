@@ -27,6 +27,8 @@ select precision_info from applications where app_name="openfoam";
 
 select * from average_result where app_name="openfoam" and cpu_sku in ("7F52","7F72") and nodes=1;
 
+select DISTINCT cpu from results where cpu_gen="rome" ORDER BY cpu ASC;
+
 
 select * from benchmarks;
 
