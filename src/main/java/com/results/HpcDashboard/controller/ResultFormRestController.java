@@ -5,6 +5,7 @@ import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.ResultService;
 import com.results.HpcDashboard.util.Util;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,14 @@ public class ResultFormRestController {
     @PostMapping(value = "/resultJson", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> insertResult(@RequestBody List<Result> results) {
-        if(results != null || results.size() > 0 )
-          resultService.insertResultCsv(results);
-        return new ResponseEntity("Success!",HttpStatus.OK);
+        if(results != null || results.size() > 0 ) {
+            try {
+                resultService.insertResultCsv(results);
+            } catch (Exception e) {
+                return new ResponseEntity(ExceptionUtils.getRootCauseMessage(e) +"\n" , HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity("Success! \n",HttpStatus.OK);
     }
 
     @GetMapping(value = "/resultJson")

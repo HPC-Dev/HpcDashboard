@@ -94,9 +94,10 @@ public class ResultService {
     @Transactional
     public void insertResultCsv(List<Result> results){
         for(Result result: results) {
-            if(result.getCpuGen().equals("") || result.getCpuGen().equals(null) || result.getCpuGen().equals(" ")){
-                result.setCpuGen(getCpuGen(result.getCpu().trim()));
-            }
+
+            if(result.getCpu() != null)
+            result.setCpuGen(getCpuGen(result.getCpu().trim()));
+
             resultRepo.save(result);
             List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);
