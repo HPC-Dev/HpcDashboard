@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link rel="icon" th:href="@{assets/favicon.ico}" />
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+    <title>Delete Job</title>
+</head>
+<body>
+
+<div th:insert="~{fragments/header :: header}">...</div>
+
+<br>
+<br>
+
+<div class="container-fluid" style="max-width:1400px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <h3>Delete Jobs</h3>
+            <br>
+            <div th:if="${successMessage}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:text="${successMessage}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${partialSuccess}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${partialSuccess}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${notFound}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${notFound}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${oneNotFound}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${oneNotFound}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${oneJobNotFound}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${oneJobNotFound}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <div th:if="${failMessage}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div th:text="${failMessage}"></div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+            <form action="#" th:action="@{/deleteJob}" th:object="${command}" method="post" >
+
+                <div id="textArea"  class="form-group col-sm-6" style=''>
+                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+                    error</p>
+                <textarea rows="4" cols="60" th:field="*{textareaField}" ></textarea>
+                </div>
+
+
+
+                <div id="submit" class="form-group" style="margin-top:5px;margin-left:15px">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+
+                <div id="note" class="card" style="width: 16rem;margin-left:15px; margin-top:40px">
+                    <div class="card-body">
+                        <h6 class="card-title">Note:</h6>
+                        <p class="card-text" style="font-size:13px;" >Pasting Job Ids delimited by <b>comma</b></p>
+                </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+
+
+<script>
+</script>
+
+</body>
+</html>

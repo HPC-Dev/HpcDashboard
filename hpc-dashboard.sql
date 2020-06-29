@@ -36,14 +36,11 @@ select *  from results;
 
 select DISTINCT app_name from average_result;
 
-select * from results where bm_name="ls-3cars" and cpu="7F72" and nodes=1;
+select job_id, result from results where bm_name="cfx_pump" and cpu="7F72" and nodes=1;
 
-select * from results where app_name='fluent' and bm_name='fluent-sed4';
 
-select DISTINCT bm_name from results where app_name='fluent' ORDER BY nodes ASC;
-
-select bm_name,app_name,avg_result from average_result where cpu_sku="7F72" and nodes=1;
-
+select avg_result from average_result where bm_name="cfx_pump" and cpu_sku="7F72" and nodes=1;
+#13.017
 
 
 select * from average_result where app_name="abaqus" and cpu_sku="6248";

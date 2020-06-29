@@ -134,6 +134,17 @@
                 </div>
             </div>
 
+
+            <div class="form-inline" style=" margin-left:9px" th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
+                <p style="font-size:14px;"> Delete result &nbsp </p>
+                <div class="input-group" style="margin-top:-12px; ">
+                    <a th:href="@{/deleteJob}"
+                       class="badge badge-pill badge-danger"
+                       title="Delete Result"><i
+                            class="fa fa-minus"></i></a>
+                </div>
+            </div>
+
             <div class="form-inline" style="margin-left:8px; margin-top:5px" th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
                 <p style="font-size:14px;"> Download excel &nbsp </p>
                 <div class="input-group" style="margin-top:-12px;">

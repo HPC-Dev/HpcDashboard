@@ -48,6 +48,11 @@ public class ResultDashboardController {
         return "resultForm";
     }
 
+    @GetMapping("/deleteJob")
+    public String showDeleteJobForm() {
+        return "deleteJob";
+    }
+
     @PostMapping("/result")
     public String insertResult(
             @ModelAttribute("command") @Valid FormCommand command,
@@ -106,6 +111,50 @@ public class ResultDashboardController {
         }
         redirectAttributes.addFlashAttribute("successMessage", "Result is successfully inserted!");
         return "redirect:/result";
+    }
+
+
+    @PostMapping("/deleteJob")
+    public String deleteJob(
+            @ModelAttribute("command") @Valid FormCommand command,
+            Model model, Errors errors, RedirectAttributes redirectAttributes) {
+
+
+                String[] jobIds = command.getTextareaField().split(",");
+
+                try {
+                    int count = resultService.deleteJobs(jobIds);
+
+
+                    if(count == 1 && count == jobIds.length){
+                        redirectAttributes.addFlashAttribute("oneJobNotFound", "Job not found" );
+                        return "redirect:/deleteJob";
+                    }
+
+                    if(count > 1 && count == jobIds.length){
+                        redirectAttributes.addFlashAttribute("notFound", count+ " jobs not found" );
+                        return "redirect:/deleteJob";
+                    }
+
+                    if(count == 1 && jobIds.length > 1){
+                        redirectAttributes.addFlashAttribute("oneNotFound", count+" job not found! Successfully deleted remaining" );
+                        return "redirect:/deleteJob";
+                    }
+
+                    if(count > 1){
+                        redirectAttributes.addFlashAttribute("partialSuccess", count+" jobs not found! Successfully deleted remaining" );
+                        return "redirect:/deleteJob";
+                    }
+                    else {
+                        redirectAttributes.addFlashAttribute("successMessage", "Successfully deleted!");
+                        return "redirect:/deleteJob";
+                    }
+                }
+                catch (Exception e){
+                    redirectAttributes.addFlashAttribute("failMessage", ExceptionUtils.getRootCauseMessage(e));
+                    return "redirect:/deleteJob";
+                }
+
     }
 
     @GetMapping("/dashboard")

@@ -1,14 +1,19 @@
 package com.results.HpcDashboard.services;
 
+import com.results.HpcDashboard.dto.JobDto;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.Result;
+import com.results.HpcDashboard.repo.AverageResultRepo;
 import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -24,6 +29,39 @@ public class ResultService {
     @Autowired
     AverageResultService averageResultService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public String getCpuGen(String cpu) {
+        HashMap<String, String> cpuGenMap = util.getCpuGenMap();
+        return cpuGenMap.getOrDefault(cpu, "");
+    }
+
+    @Transactional
+    public int deleteJobs(String[] jobIds) {
+        int count=0;
+        for(String job : jobIds){
+            if(resultRepo.existsById(job)) {
+                JobDto j = util.findJobDetails(entityManager, job);
+                resultRepo.deleteById(job);
+                List<Double> list = getResultsForAverage(j.getBmName(), j.getCpu(), j.getNodes());
+
+                if (list.size() > 0) {
+                    double avgResult = util.calculateAverageResult(list);
+                    double coefficientOfVariation = util.resultCoefficientOfVariation(list);
+                    int runCount = list.size();
+                    averageResultService.updateAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), avgResult, coefficientOfVariation, runCount);
+                } else {
+                    averageResultService.deleteAverageResult(j.getCpu(), j.getNodes(), j.getBmName());
+                }
+            }
+            else{
+                count++;
+            }
+        }
+        return count;
+
+    }
 
     @Transactional
     public void insertResult(String[] resultData){
@@ -53,10 +91,12 @@ public class ResultService {
 
     }
 
-
     @Transactional
     public void insertResultCsv(List<Result> results){
         for(Result result: results) {
+            if(result.getCpuGen().equals("") || result.getCpuGen().equals(null) || result.getCpuGen().equals(" ")){
+                result.setCpuGen(getCpuGen(result.getCpu().trim()));
+            }
             resultRepo.save(result);
             List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);

@@ -51,6 +51,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 //.antMatchers("/dashboard").hasAuthority("")
                 .antMatchers("/result").hasAnyAuthority("ROLE_TEAM")
+                .antMatchers("/deleteJob").hasAnyAuthority("ROLE_TEAM")
                 .antMatchers(
                         "/avg/**",
                         "/user/**",

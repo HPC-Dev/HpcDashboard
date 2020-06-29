@@ -2,6 +2,7 @@ package com.results.HpcDashboard.repo;
 
 import com.results.HpcDashboard.models.Result;
 import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -20,7 +21,6 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     public static final String GET_PLATFORM = "select DISTINCT LOWER(platform) from results ORDER BY platform ASC";
     public static final String GET_CPU_GEN = "select DISTINCT LOWER(cpu_gen) from results ORDER BY cpu_gen ASC";
     public static final String GET_RUN_TYPE = "select DISTINCT LOWER(run_type) from results ORDER BY run_type ASC";
-
     public static final String GET_CPU_BASED_GEN = "select DISTINCT cpu from results where cpu_gen=:cpuGen ORDER BY cpu_gen ASC;";
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
