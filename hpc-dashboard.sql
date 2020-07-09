@@ -40,15 +40,13 @@ select job_id, result from results where bm_name="cfx_pump" and cpu="7F72" and n
 
 
 select avg_result from average_result where bm_name="cfx_pump" and cpu_sku="7F72" and nodes=1;
-#13.017
+
 
 
 select * from average_result where app_name="abaqus" and cpu_sku="6248";
 
 
 select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;
-
-select * from average_result;
 
 select * from average_result where app_name="openfoam"  and cpu_sku in( "7F52", "7F32", "7F72") and nodes =1 ORDER BY avg_result DESC;
 

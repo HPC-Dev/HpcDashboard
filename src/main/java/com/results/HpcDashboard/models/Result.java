@@ -2,16 +2,16 @@ package com.results.HpcDashboard.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -62,7 +62,7 @@ public class Result implements Serializable {
     @CsvBindByPosition(position = 8)
     private String os;
 
-    @JsonAlias({"BIOS version", "Bios", "bios version" , "BIOS Version"})
+    @JsonAlias({"BIOS version", "Bios", "bios version" , "BIOS Version","BIOS"})
     @CsvBindByPosition(position = 9)
     private String biosVer;
 
@@ -89,4 +89,16 @@ public class Result implements Serializable {
     @JsonAlias({"Setting", "setting"})
     @CsvBindByPosition(position = 15)
     private String setting;
+
+
+    @JsonAlias({"TimeStamp", "Time Stamp"})
+    @CsvBindByPosition(position = 16)
+    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeStamp;
+
+//    @JsonAlias({"TimeStamp", "Time Stamp"})
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @Transient
+//    private String time;
 }

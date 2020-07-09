@@ -52,12 +52,18 @@ var table = $('table#ajax').DataTable({
         },
         {
             data: 'setting'
+        },
+
+        { data: 'timeStamp',
+        "render": function (data) {
+                var date = new Date(data);
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                return (month.toString().length > 1 ? month : "0" + month) + "/" + (day.toString().length > 1 ? day : "0" + day) + "/" + date.getFullYear();
+                }
         }
-    ]
+]
 });
-
-
-
 
 $('#appDrop').change(
     function() {

@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -92,12 +94,17 @@ public class ResultService {
     }
 
     @Transactional
-    public void insertResultCsv(List<Result> results){
+    public void insertResultCsv(List<Result> results) throws ParseException {
         for(Result result: results) {
 
             if(result.getCpu() != null)
             result.setCpuGen(getCpuGen(result.getCpu().trim()));
 
+//            if(result.getTime() != null)
+//                result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//                    .parse(result.getTime()));
+//            if(result.getTime() != null)
+//                result.setTimeStamp(util.convertTimeStamp(result.getTime().toString().trim()));
             resultRepo.save(result);
             List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);

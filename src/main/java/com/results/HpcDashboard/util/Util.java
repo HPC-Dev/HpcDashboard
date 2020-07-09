@@ -8,10 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Component
@@ -58,6 +57,23 @@ public class Util {
         individualResult = individualResult.substring(0,individualResult.indexOf("["))+individualResult.substring(individualResult.indexOf("["),individualResult.indexOf("]")).replaceAll(",","\\\\,")+individualResult.substring(individualResult.indexOf("]"));
         resultData = individualResult.split(regex);
         return resultData;
+    }
+
+    public Date convertTimeStamp(String str) throws ParseException {
+        String[] a = str.split("-");
+        String[] b = new String[a.length];
+        for(int i=0; i<a.length;i++){
+            if(a[i].length() < 2){
+                b[i] = "0"+a[i];
+            }
+            else{
+                b[i] = a[i];
+            }
+        }
+
+        String date = b[0]+"-"+b[1]+"-"+b[2]+" "+b[3]+":"+b[4]+":"+b[5];
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                .parse(date);
     }
 
     public double round(double value, int places) {

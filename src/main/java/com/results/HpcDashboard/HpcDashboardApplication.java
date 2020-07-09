@@ -21,6 +21,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableSwagger2
 @EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class)
@@ -64,6 +67,11 @@ public class HpcDashboardApplication implements CommandLineRunner {
 				.title("HPC Dashboard Controller")
 				.description("")
 				.build();
+	}
+
+	@PostConstruct
+	public void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("CST"));
 	}
 
 }
