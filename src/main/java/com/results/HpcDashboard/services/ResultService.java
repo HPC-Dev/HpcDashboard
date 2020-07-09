@@ -100,9 +100,9 @@ public class ResultService {
             if(result.getCpu() != null)
             result.setCpuGen(getCpuGen(result.getCpu().trim()));
 
-//            if(result.getTime() != null)
-//                result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//                    .parse(result.getTime()));
+            if(result.getTime() != null)
+                result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .parse(result.getTime()));
 //            if(result.getTime() != null)
 //                result.setTimeStamp(util.convertTimeStamp(result.getTime().toString().trim()));
             resultRepo.save(result);
