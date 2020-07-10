@@ -57,7 +57,7 @@
 
             <h3>Registration</h3>
             <br>
-            <form th:action="@{/register}" th:object="${user}" method="post">
+            <form th:action="@{/register}" th:object="${user}" method="post" onsubmit="if(document.getElementById('agree').checked) { return true; } else { alert('Please agree the terms to not share the contents outside AMD'); return false; }">
 
                 <p class="error-message" style="color: red;" th:if="${#fields.hasGlobalErrors()}"
                    th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
@@ -123,6 +123,13 @@
                        th:each="error : ${#fields.errors('confirmPassword')}"
                        th:text="${error}">Validation error</p>
                 </div>
+
+                <div class="form-group ">
+                    <input type="checkbox" name="checkbox" value="check" id="agree" /> <b> &nbsp I agree not to share the results from this website outside AMD without prior approval from Kevin Mayo's team</b>
+
+                </div>
+
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Register</button>
                     <span>Already registered? <a href="/" th:href="@{/login}">Login
