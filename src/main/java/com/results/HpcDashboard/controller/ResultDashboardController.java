@@ -1,5 +1,7 @@
 package com.results.HpcDashboard.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.results.HpcDashboard.dto.FormCommand;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +28,11 @@ import javax.validation.Valid;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -165,6 +172,7 @@ public class ResultDashboardController {
         List<String> bm_list = null;
         List<Integer> node_list = resultService.getNodes();
         List<String> os_list = resultService.getOS();
+        List<String> bios_list = resultService.getBIOS();
         List<String> cluster_list = resultService.getCluster();
         List<String> user_list = resultService.getUser();
         List<String> platform_list = resultService.getPlatform();
@@ -176,6 +184,7 @@ public class ResultDashboardController {
         model.addAttribute("nodes", node_list);
         model.addAttribute("bms", bm_list);
         model.addAttribute("os", os_list);
+        model.addAttribute("bios", bios_list);
         model.addAttribute("clusters", cluster_list);
         model.addAttribute("users", user_list);
         model.addAttribute("platforms", platform_list);
@@ -194,6 +203,19 @@ public class ResultDashboardController {
         return resultService.getCpu(cpuGen);
     }
 
+
+//    @RequestMapping(value = { "resultListbyStartEndDate" }, method = RequestMethod.GET)
+//    public String listbyStartEndDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, ModelMap model)
+//            throws ParseException {
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date1 = df.parse(startDate);
+//        Date date2 = df.parse(endDate);
+//        List<Result> results = resultService.findByStartEndDate(date1,date2);
+//
+//        return "userlist";
+//    }
+
+
     @GetMapping(value = "/resultsExcel")
     public ResponseEntity<InputStreamResource> excelResults() throws IOException {
         List<Result> results = resultService.getAllResults();
@@ -211,6 +233,26 @@ public class ResultDashboardController {
         String str = "result_"+ LocalDate.now().toString()+".csv";
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=results.csv");
+    }
+
+
+    @RequestMapping("/allresultsJson")
+    public @ResponseBody String getusersJSON() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // Set pretty printing of json
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        List<Result> results = null;
+        @SuppressWarnings("unused")
+        String exception = null;
+        String arrayToJson = null;
+        try {
+            results = resultService.getAllResults();
+            arrayToJson = objectMapper.writeValueAsString(results);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            exception = ex.getMessage();
+        }
+        return arrayToJson;
     }
 
 }

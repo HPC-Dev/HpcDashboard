@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -103,8 +104,9 @@ public class ResultService {
             if(result.getTime() != null)
                 result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                     .parse(result.getTime()));
-//            if(result.getTime() != null)
-//                result.setTimeStamp(util.convertTimeStamp(result.getTime().toString().trim()));
+
+            result.setResult(util.round(result.getResult(),4));
+
             resultRepo.save(result);
             List<Double> list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes());
             double avgResult = util.calculateAverageResult(list);
@@ -196,6 +198,18 @@ public class ResultService {
         return os;
     }
 
+
+    public List<String> getBIOS() {
+
+        List<String> bios = null;
+        bios = resultRepo.getBIOS();
+
+        if(bios ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return bios;
+    }
+
     public List<String> getCluster() {
 
         List<String> cluster = null;
@@ -252,4 +266,12 @@ public class ResultService {
     }
 
 
+    public List<Result> findByStartEndDate(Date date1, Date date2) {
+        List<Result> results = null;
+        results = resultRepo.getResultsStartEndDate(date1,date2);
+        if(results ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return results;
+    }
 }

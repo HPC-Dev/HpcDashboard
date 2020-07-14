@@ -1,7 +1,11 @@
-var table = $('table#ajax').DataTable({
+dataTable();
+var table;
+function dataTable() {
+table = $('table#ajax').DataTable({
     'ajax': '/datatable/dashboard',
     'scrollY': "550px",
     'scrollX': true,
+    'destroy': true,
     'scrollCollapse': true,
     'processing': true,
     'serverSide': true,
@@ -69,6 +73,9 @@ var table = $('table#ajax').DataTable({
         }
 ]
 });
+
+}
+
 
 $('#appDrop').change(
     function() {
@@ -150,6 +157,16 @@ $('select#osDrop').change(function() {
     table.column(8).search(filter).draw();
 });
 
+
+$('select#biosDrop').change(function() {
+    var filter = '';
+    $('select#biosDrop option:selected').each(function() {
+        filter += $(this).text() + "+";
+    });
+    filter = filter.substring(0, filter.length - 1);
+    table.column(9).search(filter).draw();
+});
+
 $('select#clusterDrop').change(function() {
     var filter = '';
     $('select#clusterDrop option:selected').each(function() {
@@ -191,6 +208,37 @@ $('select#runTypeDrop').change(function() {
     $('select#runTypeDrop option:selected').each(function() {
         filter += $(this).text() + "+";
     });
+
     filter = filter.substring(0, filter.length - 1);
     table.column(14).search(filter).draw();
+});
+
+$('#showButton').on('click', function(){
+
+        startDate = $('#startDate').val();
+        endDate = $('#endDate').val();
+
+        if(startDate && endDate){
+        table.clear();
+        table.destroy();
+
+        $.getJSON("/datatable/resultListbyStartEndDate", {
+            startDate: startDate,
+            endDate: endDate,
+            ajax: 'true'
+        }, function(data) {
+                console.log(data);
+        });
+       }
+
+});
+
+$('#clearButton').on('click', function(){
+
+$('select').prop('selectedIndex',0);
+$('#startDate').val('');
+$('#endDate').val('');
+//table.clear();
+//table.destroy();
+dataTable();
 });

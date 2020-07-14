@@ -34,6 +34,9 @@ select * from benchmarks;
 
 select *  from results;
 
+select * from average_result;
+
+
 select DISTINCT app_name from average_result;
 
 select job_id, result from results where bm_name="cfx_pump" and cpu="7F72" and nodes=1;
