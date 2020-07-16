@@ -59,6 +59,7 @@ table = $('table#ajax').DataTable({
         },
 
         { data: 'timeStamp',
+        searchable: false,
         "render": function (data) {
                 if(data != null){
                 var date = new Date(data);
@@ -213,32 +214,24 @@ $('select#runTypeDrop').change(function() {
     table.column(14).search(filter).draw();
 });
 
-$('#showButton').on('click', function(){
+$('#startDate').change(addDateFilter);
+$('#endDate').change(addDateFilter);
 
-        startDate = $('#startDate').val();
-        endDate = $('#endDate').val();
+function addDateFilter() {
+     var startDate = $('#startDate').val();
+     var endDate = $('#endDate').val();
+     table.column(16).search(startDate + ',' + endDate).draw();
+}
 
-        if(startDate && endDate){
-        table.clear();
-        table.destroy();
-
-        $.getJSON("/datatable/resultListbyStartEndDate", {
-            startDate: startDate,
-            endDate: endDate,
-            ajax: 'true'
-        }, function(data) {
-                console.log(data);
-        });
-       }
-
-});
+//$('#showButton').on('click', function(){
+//        $('#ajax').DataTable().destroy();
+//        $('#ajax tbody').empty();
+//});
 
 $('#clearButton').on('click', function(){
 
 $('select').prop('selectedIndex',0);
 $('#startDate').val('');
 $('#endDate').val('');
-//table.clear();
-//table.destroy();
 dataTable();
 });

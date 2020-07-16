@@ -34,7 +34,12 @@ select * from benchmarks;
 
 select *  from results;
 
+select DISTINCT bios_ver from results ORDER BY os ASC;
+
 select * from average_result;
+
+SELECT  * FROM    results WHERE   time_stamp between '2020-01-11 00:00:00' AND  '2020-06-16 00:00:00';	
+
 
 
 select DISTINCT app_name from average_result;

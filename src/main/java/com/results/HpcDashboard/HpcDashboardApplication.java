@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -70,7 +69,7 @@ public class HpcDashboardApplication implements CommandLineRunner {
 	}
 
 	@PostConstruct
-	public void started() {
+	public void dateTimeZone() {
 		TimeZone.setDefault(TimeZone.getTimeZone("CST"));
 	}
 

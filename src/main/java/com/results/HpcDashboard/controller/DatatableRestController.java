@@ -13,15 +13,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
-import org.springframework.ui.ModelMap;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import javax.validation.Valid;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static org.springframework.util.StringUtils.hasText;
 
 
 @RestController
@@ -44,29 +52,55 @@ public class DatatableRestController {
     BenchmarkRepo benchmarkRepo;
 
 
-    @GetMapping(value = "dashboard")
+
+    @GetMapping(value = "/dashboard")
     public DataTablesOutput<Result> listResults(@Valid DataTablesInput input) {
-
-//            Column column = input.getColumn("timeStamp");
-        DataTablesOutput<Result> result = resultRepo.findAll(input);
-        return result;
+        return resultRepo.findAll(input, new DateSpecification(input));
     }
 
-    @RequestMapping(value = { "resultListbyStartEndDate" }, method = RequestMethod.GET)
-    public DataTablesOutput<Result> listbyStartEndDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws ParseException {
-        DataTablesOutput<Result> result = new DataTablesOutput<>();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = df.parse(startDate);
-        Date date2 = df.parse(endDate);
-        List<Result> results = resultService.findByStartEndDate(date1,date2);
-        result.setData(results);
-        result.setRecordsTotal(results.size());
-        result.setRecordsFiltered(results.size());
-        result.setDraw(1);
-        return result;
+    private static class DateSpecification implements Specification<Result> {
+        private final Date startDate;
+        private final Date endDate;
+
+        DateSpecification(DataTablesInput input) {
+            String dateFilter = input.getColumn("timeStamp").getSearch().getValue();
+            if (!hasText(dateFilter)) {
+                startDate = endDate = null;
+                return;
+            }
+            String[] bounds = dateFilter.split(",");
+            startDate = getValue(bounds, 0);
+            endDate = getValue(bounds, 1);
+        }
+
+        private Date getValue(String[] bounds, int index) {
+            if (bounds.length > index && hasText(bounds[index])) {
+                try {
+                    return new SimpleDateFormat("yyyy-MM-dd")
+                            .parse(bounds[index]);
+                } catch (NumberFormatException | ParseException e) {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public javax.persistence.criteria.Predicate toPredicate(Root<Result> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+            Expression<Date> date = root.get("timeStamp").as(Date.class);
+            if (startDate != null && endDate != null) {
+                return criteriaBuilder.between(date, startDate, endDate);
+            }
+             else if (startDate != null) {
+                return criteriaBuilder.greaterThanOrEqualTo(date, startDate);
+            } else if (endDate != null) {
+                return criteriaBuilder.lessThanOrEqualTo(date, endDate);
+            }
+            else {
+                return criteriaBuilder.conjunction();
+            }
+        }
     }
-
-
 
 
     @GetMapping(value = "apps")

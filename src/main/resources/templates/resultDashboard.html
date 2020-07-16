@@ -132,26 +132,23 @@
             </div>
 
 
-<!--            <form action="/datatable/resultListbyStartEndDate">-->
-
-                    <div class="input-group" style="margin-top:10px" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+                    <div class="input-group" style="margin-top:10px" >
                         <label class="font-weight-bold text-right"
                                for="startDate"></label> <input type="date" class="form-control form-control-sm" name="startDate"
                                                                                                    id="startDate" required="required"/>
                     </div>
 
-                    <div class="input-group" style="margin-top:10px" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+                    <div class="input-group" style="margin-top:10px" >
                         <label class="font-weight-bold text-right"
                                for="endDate"></label> <input type="date" class="form-control form-control-sm" name="endDate"
                                                                 id="endDate" required="required"/>
                     </div>
 
-                    <div class="input-group-btn" style="margin-top:8px; margin-left:20px;" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
-								<button class="btn btn-sm btn-danger btn-rounded" id="showButton">Go</button>
+                    <div class="input-group-btn" style="margin-top:8px; margin-left:68px;" >
 
                                 <button class="btn btn-sm btn-info btn-rounded" id="clearButton">Clear</button>
 							</div>
-<!--            </form>-->
+
 
 
 

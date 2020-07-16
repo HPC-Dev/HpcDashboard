@@ -265,13 +265,4 @@ public class ResultService {
         return run_type;
     }
 
-
-    public List<Result> findByStartEndDate(Date date1, Date date2) {
-        List<Result> results = null;
-        results = resultRepo.getResultsStartEndDate(date1,date2);
-        if(results ==null){
-            return Collections.EMPTY_LIST;
-        }
-        return results;
-    }
 }

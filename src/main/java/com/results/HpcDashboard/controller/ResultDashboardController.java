@@ -203,19 +203,6 @@ public class ResultDashboardController {
         return resultService.getCpu(cpuGen);
     }
 
-
-//    @RequestMapping(value = { "resultListbyStartEndDate" }, method = RequestMethod.GET)
-//    public String listbyStartEndDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, ModelMap model)
-//            throws ParseException {
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date1 = df.parse(startDate);
-//        Date date2 = df.parse(endDate);
-//        List<Result> results = resultService.findByStartEndDate(date1,date2);
-//
-//        return "userlist";
-//    }
-
-
     @GetMapping(value = "/resultsExcel")
     public ResponseEntity<InputStreamResource> excelResults() throws IOException {
         List<Result> results = resultService.getAllResults();
