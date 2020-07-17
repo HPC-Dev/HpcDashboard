@@ -1,9 +1,6 @@
 package com.results.HpcDashboard.models;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.*;
@@ -90,8 +87,7 @@ public class Result implements Serializable {
     @CsvBindByPosition(position = 15)
     private String setting;
 
-
-    //@JsonAlias({"TimeStamp", "Time Stamp"})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     @CsvBindByPosition(position = 16)
     @Basic
     @Temporal(TemporalType.TIMESTAMP)

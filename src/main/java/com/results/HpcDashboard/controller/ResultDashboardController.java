@@ -14,6 +14,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -224,22 +225,32 @@ public class ResultDashboardController {
 
 
     @RequestMapping("/allresultsJson")
-    public @ResponseBody String getusersJSON() {
+    public ResponseEntity<InputStreamResource> getusersJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
-        // Set pretty printing of json
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         List<Result> results = null;
-        @SuppressWarnings("unused")
         String exception = null;
-        String arrayToJson = null;
+        //String arrayToJson = null;
+        byte[] buffer = null;
         try {
             results = resultService.getAllResults();
-            arrayToJson = objectMapper.writeValueAsString(results);
+            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            //arrayToJson = objectMapper.writeValueAsString(results);
+            buffer = objectMapper.writeValueAsBytes(results);
         } catch (Exception ex) {
             ex.printStackTrace();
             exception = ex.getMessage();
         }
-        return arrayToJson;
+        //return arrayToJson;
+        String str = "result_"+ LocalDate.now().toString()+".json";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename="+str);
+        return ResponseEntity
+                .ok()
+                .contentLength(buffer.length)
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new InputStreamResource(new ByteArrayInputStream(buffer)));
     }
 
 }

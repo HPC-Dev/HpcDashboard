@@ -132,25 +132,22 @@
             </div>
 
 
-                    <div class="input-group" style="margin-top:10px" >
+             <div class="input-group" style="margin-top:10px" >
                         <label class="font-weight-bold text-right"
                                for="startDate"></label> <input type="date" class="form-control form-control-sm" name="startDate"
                                                                                                    id="startDate" required="required"/>
-                    </div>
+              </div>
 
-                    <div class="input-group" style="margin-top:10px" >
+              <div class="input-group" style="margin-top:10px" >
                         <label class="font-weight-bold text-right"
                                for="endDate"></label> <input type="date" class="form-control form-control-sm" name="endDate"
                                                                 id="endDate" required="required"/>
-                    </div>
+              </div>
 
-                    <div class="input-group-btn" style="margin-top:8px; margin-left:68px;" >
+              <div class="input-group-btn" style="margin-top:8px; margin-left:68px;" >
 
                                 <button class="btn btn-sm btn-info btn-rounded" id="clearButton">Clear</button>
-							</div>
-
-
-
+			 </div>
 
 
             <br>
@@ -185,7 +182,7 @@
                 </div>
             </div>
 
-            <div class="form-inline" style="margin-left:8px; margin-top:5px" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+            <div class="form-inline" style="margin-left:8px; margin-top:5px" th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
                 <p style="font-size:14px;"> Download json &nbsp </p>
                 <div class="input-group" style="margin-top:-12px;">
                     <a th:href="@{/allresultsJson}"
