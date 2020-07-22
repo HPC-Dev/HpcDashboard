@@ -2,8 +2,13 @@ create database results_dashboard;
 
 use results_dashboard;
 
+show tables;
+
 select DISTINCT app_name from average_result;
 
+select * from password_reset_token;
+
+#drop table password_reset_token;
 
 select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER BY cpu_sku ASC;
 
@@ -96,8 +101,8 @@ update role set name="ROLE_TEAM" where id=11;
 
 select app_name from benchmarks;
 
-#delete from users_roles where user_id=5 and role_id=7;
-delete from user where id=5;
+delete from users_roles where user_id=126;
+delete from user where id=126;
 
 
 SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDER BY bm_name;

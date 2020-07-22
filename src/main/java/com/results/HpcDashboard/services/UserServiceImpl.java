@@ -1,14 +1,17 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.UserRegistrationDto;
+import com.results.HpcDashboard.models.PasswordResetToken;
 import com.results.HpcDashboard.models.Role;
 import com.results.HpcDashboard.models.User;
+import com.results.HpcDashboard.repo.PasswordResetTokenRepository;
 import com.results.HpcDashboard.repo.RoleRepository;
 import com.results.HpcDashboard.repo.UserRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.results.HpcDashboard.security.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
+
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -72,6 +79,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String uname) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(uname);
@@ -91,4 +99,40 @@ public class UserServiceImpl implements UserService {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
+
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
+    }
+
+    @Override
+    public PasswordResetToken getPasswordResetToken(final String token) {
+        return passwordResetTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public Optional<User> getUserByPasswordResetToken(final String token) {
+        return Optional.ofNullable(passwordResetTokenRepository.findByToken(token) .getUser());
+    }
+
+    @Override
+    public Optional<User> getUserByID(final long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void changeUserPassword(final User user, final String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+
+
 }

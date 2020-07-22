@@ -63,7 +63,11 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/appJson/**",
                         "/bmJson/**",
                         "/actuator/**",
+                        "/api/**",
+                        "/forgot**",
+                        "/forgot/**",
                         "/js/**",
+                        "/updatePassword/**",
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()

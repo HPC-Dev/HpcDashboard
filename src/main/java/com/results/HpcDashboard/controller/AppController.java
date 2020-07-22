@@ -39,6 +39,12 @@ public class AppController {
      return "login";
     }
 
+    @GetMapping("/forgotPassword")
+    public String showForgetPasswordPage1(){
+        return "forgotPassword";
+    }
+
+
     @GetMapping("/mChartOld")
     public String showMultiCharts(Model model) {
         List<String> app_list = averageResultService.getApp();
