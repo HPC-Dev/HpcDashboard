@@ -14,10 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -37,7 +34,20 @@ public class ResultService {
 
     public String getCpuGen(String cpu) {
         HashMap<String, String> cpuGenMap = util.getCpuGenMap();
-        return cpuGenMap.getOrDefault(cpu, "");
+        String cpuVal = cpuGenMap.getOrDefault(cpu, "");
+        if(cpuVal.equals("") || cpuVal.equals(null))
+        {
+          if(cpu.toLowerCase().startsWith("milan")){
+              cpuVal = "Milan";
+          }
+          else if(cpu.toLowerCase().startsWith("rome")){
+              cpuVal  ="Rome";
+          }
+          else{
+              cpuVal="";
+          }
+        }
+        return cpuVal;
     }
 
     @Transactional
@@ -103,7 +113,7 @@ public class ResultService {
 
             if(result.getTime() != null)
                 result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .parse(result.getTime()));
+                    .parse(result.getTime().trim()));
 
             result.setResult(util.round(result.getResult(),4));
 

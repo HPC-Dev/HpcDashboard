@@ -118,6 +118,7 @@ public class Util {
             appMap.put("lmp", "HIGHER");
             appMap.put("wrf", "LOWER");
             appMap.put("cp2k","LOWER");
+            appMap.put("mechanical","HIGHER");
 
             return appMap;
         }
@@ -125,7 +126,7 @@ public class Util {
     public HashMap<String,String> getMetricMap() {
         metricMap.put("abaqus", "Elapsed Time");
         metricMap.put("acusolve", "Elapsed Time");
-        metricMap.put("cfx","Core Solver Rating");
+        metricMap.put("cfx","Wall clock");
         metricMap.put("fluent","Core Solver Rating");
         metricMap.put("gromacs","ns/day");
         metricMap.put("hpcg","");
@@ -143,7 +144,7 @@ public class Util {
         metricMap.put("stream", "Bandwidth (MB/s)");
         metricMap.put("wrf", "Mean Timer/Step");
         metricMap.put("cp2k","");
-
+        metricMap.put("mechanical","Core Solver Rating");
         return metricMap;
     }
 
@@ -200,6 +201,9 @@ public class Util {
         cpuGenMap.put("8280","Cascade");
         cpuGenMap.put("6246R","Cascade");
         cpuGenMap.put("6258R","Cascade");
+        cpuGenMap.put("milan","Milan");
+        cpuGenMap.put("rome","Rome");
+        cpuGenMap.put("cascade","Cascade");
 
         return cpuGenMap;
     }

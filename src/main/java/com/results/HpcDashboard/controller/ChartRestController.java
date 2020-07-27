@@ -65,6 +65,7 @@ public class ChartRestController {
         appMapCamelCase.put("stream", "STREAM");
         appMapCamelCase.put("wrf", "WRF");
         appMapCamelCase.put("cp2k", "CP2K");
+        appMapCamelCase.put("mechanical", "Mechanical");
 
         return appMapCamelCase.getOrDefault(app, app);
     }

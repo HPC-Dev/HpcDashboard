@@ -62,10 +62,10 @@ table = $('table#ajax').DataTable({
         searchable: false,
         "render": function (data) {
                 if(data != null){
-                var date = new Date(data);
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
-                return (month.toString().length > 1 ? month : "0" + month) + "/" + (day.toString().length > 1 ? day : "0" + day) + "/" + date.getFullYear();
+                 var dateData = data.split(' ');
+                 var date = dateData[0].split('-');
+                return (date[1] + "/" + date[0] + "/" + date[2]);
+                //return (month.toString().length > 1 ? month : "0" + month) + "/" + (day.toString().length > 1 ? day : "0" + day) + "/" + date.getFullYear();
                 }
                 else{
                 return null;
@@ -76,7 +76,6 @@ table = $('table#ajax').DataTable({
 });
 
 }
-
 
 $('#appDrop').change(
     function() {
