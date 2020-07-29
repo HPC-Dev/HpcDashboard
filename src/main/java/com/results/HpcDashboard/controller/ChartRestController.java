@@ -398,6 +398,7 @@ public class ChartRestController {
             if(Double.compare(d.getValue(),0.0 ) > 0)
             temp.put(d.getKey(), "1.0");
         }
+        temp.put("Average", "1.0");
         resListFinal.add(temp);
 
         newResList.remove(0);
@@ -422,9 +423,21 @@ public class ChartRestController {
                     }
 
                 }
-                resListFinal.add(temp);
-                i++;
+
+             int c=0;
+             double sum =0;
+            for (Map.Entry<String, String> entry : temp.entrySet()) {
+                c++;
+                if(c>1) {
+                    sum = sum + Double.valueOf(entry.getValue());
+                }
             }
+            temp.put("Average",String.valueOf(util.round(sum/(c-1),3)));
+            resListFinal.add(temp);
+            i++;
+            }
+
+
 
         List<String> bmlistFinal = new ArrayList<>();
 

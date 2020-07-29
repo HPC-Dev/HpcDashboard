@@ -1,5 +1,7 @@
-var BACKGROUND_COLORS = ['rgba(54, 162, 235, 0.2)',  'rgba(192, 0, 0, 0.2)','rgba(75, 192, 192, 0.2)',  'rgba(255, 206, 86, 0.2)' ,  'rgba(255, 159, 64, 0.2)', 'rgba(255, 206, 86, 0.2)',   'rgba(255, 206, 86, 0.2)' ];
-var BORDER_COLORS = ['rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)',  'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)',  'rgba(255, 159, 64, 1)', 'rgba(255, 206, 86, 1)' ,'rgba(255, 206, 86, 1)'  ];
+//var BACKGROUND_COLORS = ['rgba(54, 162, 235, 0.2)',  'rgba(192, 0, 0, 0.2)','rgba(75, 192, 192, 0.2)',  'rgba(255, 206, 86, 0.2)' ,  'rgba(255, 159, 64, 0.2)', 'rgba(255, 206, 86, 0.2)',   'rgba(255, 206, 86, 0.2)' ];
+//var BORDER_COLORS = ['rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)',  'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)',  'rgba(255, 159, 64, 1)', 'rgba(255, 206, 86, 1)' ,'rgba(255, 206, 86, 1)'  ];
+
+var BACKGROUND_COLORS = ['rgb(19,91,105)','rgb(133,155,163)','rgb(20,116,132)','#8DB9CA','rgb(173,183,191)', 'rgb(21,104,121)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', '#EFEBE9', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#D1C4E9', '#BBDEFB', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
@@ -86,7 +88,7 @@ function getMultiChartData(app, cpu1, cpu2) {
                     return {
                         label: dataset.cpuName,
                         backgroundColor: BACKGROUND_COLORS[index],
-                        borderColor: BORDER_COLORS[index],
+                        //borderColor: BORDER_COLORS[index],
                         borderWidth: 1,
                         data: dataset.value
                     };

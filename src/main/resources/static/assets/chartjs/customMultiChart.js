@@ -48,7 +48,7 @@ $('button').on('click', function() {
 //    var BORDER_COLORS = ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
       var BACKGROUND_COLORS = ['rgb(19,91,105)','rgb(133,155,163)','rgb(20,116,132)','#8DB9CA','rgb(173,183,191)', 'rgb(21,104,121)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', '#EFEBE9', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#D1C4E9', '#BBDEFB', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
-      var BORDER_COLORS = ['','','','','','','rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', '', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
+      //var BORDER_COLORS = ['','','','','','','rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', '', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
 
     function getMultiChartData() {
@@ -57,7 +57,6 @@ $('button').on('click', function() {
         if (app && cpuList.length > 1) {
             $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
                 var label = data.cpus;
-
                 if(data.dataset.length >1){
                 var chartdata = {
                     labels: label,
@@ -225,7 +224,17 @@ $('button').on('click', function() {
             } else {
                 val = '';
             }
-            row.push("<td>" + val + "</td>")
+
+            if(column === "Average")
+            {
+                 row.push('<td bgcolor="#C8E6C9">' + val + '</td>')
+            }
+            else if(column != "" && column != "Average"){
+                row.push("<td>" + val + "</td>")
+            }
+            else{
+                 row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+            }
         });
 
         row.push('</tr>');

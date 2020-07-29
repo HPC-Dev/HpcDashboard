@@ -21,22 +21,22 @@ public class Util {
     private HashMap<String,String> metricMap = new HashMap<>();
     private HashMap<String,String> cpuGenMap = new HashMap<>();
 
-    public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
-        String queryStr = "select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;";
-        try {
-            Query query = entityManager.createNativeQuery(queryStr);
-            List<Object[]> objectList = query.getResultList();
-            List<CPUDto> list = new ArrayList<>();
-            for (Object[] row : objectList) {
-                CPUDto c = new CPUDto(row);
-                list.add(new CPUDto(c.getCpuSku(),c.getCores()));
-            }
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
+//    public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
+//        String queryStr = "select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;";
+//        try {
+//            Query query = entityManager.createNativeQuery(queryStr);
+//            List<Object[]> objectList = query.getResultList();
+//            List<CPUDto> list = new ArrayList<>();
+//            for (Object[] row : objectList) {
+//                CPUDto c = new CPUDto(row);
+//                list.add(new CPUDto(c.getCpuSku(),c.getCores()));
+//            }
+//            return list;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 
 
     public JobDto findJobDetails(EntityManager entityManager, String jobId) {

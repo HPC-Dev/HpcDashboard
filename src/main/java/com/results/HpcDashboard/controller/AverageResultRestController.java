@@ -69,15 +69,15 @@ public class AverageResultRestController {
     }
 
 
-    @GetMapping("/cpus")
-    public List<CPUDto> getAllCPUsCores(){
-        List<CPUDto> list = null;
-        list = cpuService.getAllCPUsCores();
-        if(list ==null){
-            return Collections.emptyList();
-        }
-        return list;
-    }
+//    @GetMapping("/cpus")
+//    public List<CPUDto> getAllCPUsCores(){
+//        List<CPUDto> list = null;
+//        list = cpuService.getAllCPUsCores();
+//        if(list ==null){
+//            return Collections.emptyList();
+//        }
+//        return list;
+//    }
 
     @GetMapping("/resultComparision/{app_name}/{cpu1}/{cpu2}")
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2) {

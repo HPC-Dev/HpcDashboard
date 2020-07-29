@@ -43,9 +43,9 @@ public class CPUService {
         return list;
     }
 
-    public List<CPUDto> getAllCPUsCores(){
-        return util.findAllCPUs(entityManager);
-    }
+//    public List<CPUDto> getAllCPUsCores(){
+//        return util.findAllCPUs(entityManager);
+//    }
 
     public List<String> getAllCPUs(){
         return cpuRepo.findAllCPUs();
