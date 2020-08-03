@@ -68,26 +68,42 @@ function appChange() {
 
     var app = $('#appDrop')[0].value;
     var cpu = $('#cpuDrop')[0].value;
-    if (app != '') {
-        $("#radio").show();
 
-    } else if (app == '') {
-        $("#radio").hide();
-    }
+    if (app && cpu) {
+         $.getJSON("/chart/getNodesCount", {
+                    appName: app,
+                    cpu: cpu,
+                    ajax: 'true'
+                }, function(data) {
+                        if(data > 1)
+                        {
+                            $("#radio").show();
+                            if ($("#option1").is(":checked")) {
+                                    $('#tableNew').html('');
+                                    getNodeChartData();
+                                }
 
-    if ($("#option1").is(":checked")) {
-        $('#tableNew').html('');
-        getNodeChartData();
-    }
-
-    if ($("#option2").is(":checked")) {
-        getBmChartData();
-    }
+                                if ($("#option2").is(":checked")) {
+                                    getBmChartData();
+                                }
+                        }
+                        else{
+                             $("#radio").hide();
+                             $("#multiChart").hide();
+                             $("#nodeChart").show();
+                             $("#noChart").hide();
+                             $('#comment').empty();
+                             $('#tableNew').html('');
+                             getNodeChartData();
+                        }
+                });
+                }
 
     $("#noChart").hide();
     $('#comment').empty();
     $('#tableNew').html('');
     $('#tableNode').html('');
+
 }
 
 $("#option1")

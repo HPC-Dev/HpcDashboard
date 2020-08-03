@@ -10,10 +10,7 @@ import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -778,6 +775,14 @@ public class ChartRestController {
             multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
         }
         return multiChartTableResponse;
+    }
+
+
+    @RequestMapping(value = "/getNodesCount", method = RequestMethod.GET)
+    public @ResponseBody
+    int findNodesCount(
+            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
+        return averageResultService.getNodesCount(appName, cpu);
     }
 
     @GetMapping("/resultApp/{cpu}/{app_name}")

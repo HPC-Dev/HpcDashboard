@@ -20,6 +20,10 @@ select * from cpu_info;
 
 select cpu_sku,cores from average_result group by cpu_sku;
 
+select DISTINCT cpu_sku from average_result where app_name="abaqus" and nodes=1  ;
+
+select count(distinct nodes) from average_result where  app_name="abaqus" and cpu_sku="Milan64_2933"  ;
+
 select DISTINCT bm_name from average_result where app_name="openfoam" and cpu_sku="n1-highcpu-96" ORDER BY nodes ASC;
 
 show tables;

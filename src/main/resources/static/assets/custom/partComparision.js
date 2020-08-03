@@ -1,10 +1,11 @@
-//var BACKGROUND_COLORS = ['rgba(54, 162, 235, 0.2)',  'rgba(192, 0, 0, 0.2)','rgba(75, 192, 192, 0.2)',  'rgba(255, 206, 86, 0.2)' ,  'rgba(255, 159, 64, 0.2)', 'rgba(255, 206, 86, 0.2)',   'rgba(255, 206, 86, 0.2)' ];
-//var BORDER_COLORS = ['rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)',  'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)',  'rgba(255, 159, 64, 1)', 'rgba(255, 206, 86, 1)' ,'rgba(255, 206, 86, 1)'  ];
-
 var BACKGROUND_COLORS = ['rgb(19,91,105)','rgb(133,155,163)','rgb(20,116,132)','#8DB9CA','rgb(173,183,191)', 'rgb(21,104,121)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', '#EFEBE9', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#D1C4E9', '#BBDEFB', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
+
+var cpu1;
+var cpu2;
+var app;
 
 $('#appDrop').on("change", function() {
     var value = $(this).val();
@@ -23,19 +24,6 @@ $('#appDrop').on("change", function() {
             $('#cpuDrop1').html(html);
         });
 
-        $.getJSON("/cpus", {
-            appName: $(this).val(),
-            ajax: 'true'
-        }, function(data) {
-            var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-            var len = data.length;
-            for (var i = 0; i < len; i++) {
-                html += '<option value="' + data[i] + '">' +
-                    data[i] + '</option>';
-            }
-            html += '</option>';
-            $('#cpuDrop2').html(html);
-        });
         $('#cpuDrop1').val('');
         $('#cpuDrop2').val('');
         clearChart();
@@ -43,7 +31,31 @@ $('#appDrop').on("change", function() {
     }
 });
 
-$("#cpu1").on("change", getData);
+$('#cpu1').on("change", function() {
+    app = $('#appDrop')[0].value;
+    cpu1 = $('#cpuDrop1')[0].value;
+  $('#cpuDrop2').val('');
+        clearChart();
+    if (app && cpu1) {
+     $.getJSON("/cpusSelected", {
+                appName: app,
+                cpu: cpu1,
+                ajax: 'true'
+            }, function(data) {
+                var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
+                var len = data.length;
+                for (var i = 0; i < len; i++) {
+                    html += '<option value="' + data[i] + '">' +
+                        data[i] + '</option>';
+                }
+                html += '</option>';
+                $('#cpuDrop2').html(html);
+            });
+            }
+
+getData();
+});
+
 $("#cpu2").on("change", getData);
 
 function clearChart() {
@@ -52,9 +64,9 @@ function clearChart() {
 }
 
 function getData() {
-    var cpu1 = $('#cpuDrop1')[0].value;
-    var cpu2 = $('#cpuDrop2')[0].value;
-    var app = $('#appDrop')[0].value;
+    app = $('#appDrop')[0].value;
+    cpu1 = $('#cpuDrop1')[0].value;
+    cpu2 = $('#cpuDrop2')[0].value;
 
     if (app && cpu1 && cpu2) {
 
@@ -173,9 +185,6 @@ function updateTable(columns, data, comment) {
 
 function getHeaders(columns) {
     var headers = ['<thead><tr>'];
-
-
-    //    headers.push('<th bgcolor="#D3D3D3">' + '</th>')
     columns.forEach(function(column) {
         headers.push('<th bgcolor="#D3D3D3">' + column + '</th>')
     });

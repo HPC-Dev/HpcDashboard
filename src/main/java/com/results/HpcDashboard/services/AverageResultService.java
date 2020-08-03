@@ -153,6 +153,23 @@ public class AverageResultService {
         return cpu_list;
     }
 
+    public List<String> getCpuSelected(String appName, String cpu) {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getCpuSelected(appName, cpu);
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+    public int getNodesCount(String appName, String cpu) {
+       int nodeCount = averageResultRepo.getNodesCount(appName, cpu);
+
+        return nodeCount;
+    }
+
     public List<String> getCpu() {
 
         List<String> cpu_list = null;

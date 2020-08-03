@@ -19,6 +19,8 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_AVG_RESULT_CPU_APP_BM = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and bm_name =:bm_name";
     public static final String GET_AVG_RESULT_CPU_APP_NODE = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name and nodes =:nodes";
     public static final String GET_CPU = "select DISTINCT cpu_sku from average_result where app_name=:appName and nodes=1 ORDER BY cpu_sku ASC";
+    public static final String GET_CPU_SELECTED = "SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = :appName and a.nodes=1  AND a.cpu_sku NOT IN (SELECT b.cpu_sku  FROM average_result AS b WHERE  b.cpu_sku = :cpu) ORDER BY cpu_sku ASC";
+    public static final String NODES_COUNT = "select count(distinct nodes) from average_result where  app_name=:appName and cpu_sku=:cpu ";
     public static final String GET_CPU_RES = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
     public static final String GET_APP = "select DISTINCT LOWER(app_name) from average_result ORDER BY app_name ASC";
     public static final String GET_APP_CPU = "select DISTINCT LOWER(app_name) from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
@@ -61,6 +63,10 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(value = GET_CPU, nativeQuery = true)
     List<String> getCPU(String appName);
 
+    @Query(value = GET_CPU_SELECTED, nativeQuery = true)
+    List<String> getCpuSelected(String appName, String cpu);
+
+
     @Query(value = GET_CPU_RES, nativeQuery = true)
     List<String> getCPU();
 
@@ -75,8 +81,6 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(nativeQuery =true,value = GET_SELECTED_CPU_RES_BY_AVG_New_DESC)
     List<AverageResult> findBySelectedCPUAppDesc(String app_name, List<String> cpus);
 
-
-
     @Query(nativeQuery =true,value = GET_COMP_CPU_RES)
     List<AverageResult> findCompDataBySelectedCPU(String app_name, String cpu);
 
@@ -89,4 +93,6 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(value = Job_EXITS, nativeQuery = true)
     int getJobExists(String jobId);
 
+    @Query(value = NODES_COUNT, nativeQuery = true)
+    int getNodesCount(String appName, String cpu);
 }

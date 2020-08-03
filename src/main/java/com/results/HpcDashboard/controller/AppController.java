@@ -113,6 +113,13 @@ public class AppController {
         return averageResultService.getCpu(appName);
     }
 
+    @RequestMapping(value = "/cpusSelected", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllCpusSelected(
+            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
+        return averageResultService.getCpuSelected(appName, cpu);
+    }
+
     @RequestMapping(value = "/apps", method = RequestMethod.GET)
     public @ResponseBody
     List<String> findAllApps(

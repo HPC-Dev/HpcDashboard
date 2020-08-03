@@ -21,7 +21,6 @@ public class TokensPurgeTask {
     public void purgeExpired() {
 
         Date now = Date.from(Instant.now());
-        System.out.println("Purging password reset tokens");
         passwordTokenRepository.deleteAllExpiredSince(now);
     }
 }
