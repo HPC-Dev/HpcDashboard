@@ -1,6 +1,5 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.partComparision.CompareResult;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.repo.AverageResultRepo;
@@ -8,8 +7,6 @@ import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.CPUService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
