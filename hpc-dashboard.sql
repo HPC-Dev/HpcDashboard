@@ -31,6 +31,7 @@ show tables;
 select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;
 
 select * from results;
+select * from average_result;
 
 select precision_info from applications where app_name="openfoam";
 
@@ -47,7 +48,13 @@ select DISTINCT bios_ver from results ORDER BY os ASC;
 
 select * from average_result;
 
-SELECT  * FROM    results WHERE   time_stamp between '2020-01-11 00:00:00' AND  '2020-06-16 00:00:00';	
+SELECT * FROM results where bm_name="aba-e13" and cpu="Milan64_3200" and nodes=1 and run_type="baseline";
+
+SELECT  * FROM  results WHERE app_name='cfx'and cpu="Milan64_3200" and run_type="freq_2933";
+
+SELECT  DISTINCT (bm_name) FROM  results WHERE app_name='abaqus'and cpu="Rome64_3200" and run_type="freq_2933";
+
+SELECT  DISTINCT (run_type)   FROM  results WHERE app_name='cfx'and cpu="Milan64_2933";
 
 
 
@@ -118,6 +125,7 @@ SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDE
 drop table average_result;
 
 drop table results;
+
 
 
 

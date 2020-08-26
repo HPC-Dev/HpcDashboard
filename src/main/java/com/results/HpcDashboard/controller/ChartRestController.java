@@ -55,6 +55,7 @@ public class ChartRestController {
         appMapCamelCase.put("lsdyna", "LS-DYNA");
         appMapCamelCase.put("namd", "NAMD");
         appMapCamelCase.put("openfoam", "OpenFOAM");
+        appMapCamelCase.put("optistruct", "Optistruct");
         appMapCamelCase.put("pamcrash", "Pam-Crash");
         appMapCamelCase.put("quantum-espresso", "Quantum ESPRESSO");
         appMapCamelCase.put("radioss", "Radioss");
@@ -429,9 +430,12 @@ public class ChartRestController {
                     sum = sum + Double.valueOf(entry.getValue());
                 }
             }
-            temp.put("Average",String.valueOf(util.round(sum/(c-1),3)));
-            resListFinal.add(temp);
-            i++;
+            if(Double.compare(sum, 0.0) > 0){
+                temp.put("Average", String.valueOf(util.round(sum / (c - 1), 3)));
+            }
+                resListFinal.add(temp);
+                i++;
+
             }
 
 

@@ -109,6 +109,7 @@ public class Util {
             appMap.put("lsdyna", "LOWER");
             appMap.put("namd", "HIGHER");
             appMap.put("openfoam", "LOWER");
+            appMap.put("optistruct", "LOWER");
             appMap.put("ofoam", "LOWER");
             appMap.put("pamcrash", "LOWER");
             appMap.put("quantum-espresso", "HIGHER");
@@ -137,6 +138,7 @@ public class Util {
         metricMap.put("lsdyna", "Elapsed Time");
         metricMap.put("namd", "ns/day");
         metricMap.put("openfoam", "Elapsed Time");
+        metricMap.put("optistruct", "Elapsed Time");
         metricMap.put("pamcrash", "Elapsed Time");
         metricMap.put("quantum-espresso", "");
         metricMap.put("radioss", "Elapsed Time");

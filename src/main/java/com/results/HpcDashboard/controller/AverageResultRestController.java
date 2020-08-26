@@ -1,6 +1,5 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.partComparision.CompareResult;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.repo.AverageResultRepo;
@@ -8,8 +7,6 @@ import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.CPUService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -140,7 +137,7 @@ public class AverageResultRestController {
                         double percentage = util.round(d * 100, 2);
                         perfDifference.put(k, "+" + percentage + "%");
                     } else if (Double.compare(val1, val2) > 0) {
-                        double d = (val1 - val2) / Math.abs(val2);
+                        double d = Math.abs(val2 - val1) / Math.abs(val1);
                         double percentage = util.round(d * 100, 2);
                         perfDifference.put(k, "-" + percentage + "%");
                     } else {
@@ -153,7 +150,7 @@ public class AverageResultRestController {
                         double percentage = util.round(d * 100, 2);
                         perfDifference.put(k, "+" + percentage + "%");
                     } else if (Double.compare(val1, val2) < 0) {
-                        double d = (val2 - val1) / Math.abs(val1);
+                        double d = Math.abs(val1 - val2) / Math.abs(val2);
                         double percentage = util.round(d * 100, 2);
                         perfDifference.put(k, "-" + percentage + "%");
                     } else {

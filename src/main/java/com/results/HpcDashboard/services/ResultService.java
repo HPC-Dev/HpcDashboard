@@ -3,13 +3,11 @@ package com.results.HpcDashboard.services;
 import com.results.HpcDashboard.dto.JobDto;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.repo.AverageResultRepo;
 import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.ParseException;
