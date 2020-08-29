@@ -68,18 +68,18 @@ public class ChartRestController {
         return appMapCamelCase.getOrDefault(app, app);
     }
 
-    @GetMapping("/resultApp/{cpu}/{app_name}/{node}")
-    public List<ChartsResponse> getChartResult(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("node") int node) {
+    @GetMapping("/resultApp/{cpu}/{app_name}/{node}/{type}")
+    public List<ChartsResponse> getChartResult(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("node") int node, @PathVariable("type") String type) {
         List<ChartsResponse> listResponse = new ArrayList<>();
         ChartsResponse chartsResponse = null;
         String comment = null;
         List<AverageResult> list = null;
-        list = averageResultService.getAvgResultCPUAppNode(cpu, app_name, node);
+        list = averageResultService.getAvgResultCPUAppNode(cpu, app_name, node, type);
 
         if (list == null || list.size()==0)
             return listResponse;
 
-        String appCpu = cpu + " - " +  getAppName(app_name) ;
+        String appCpu = cpu +  " _ " + type   +  " - " +  getAppName(app_name) ;
         String metric = getMetric(app_name.toLowerCase().trim());
 
         List<String> label = new ArrayList<>();
@@ -105,19 +105,17 @@ public class ChartRestController {
         }
         tableDataset.add(record);
 
-
-
         chartsResponse = ChartsResponse.builder().metric(metric).appCPUName(appCpu).dataset(data).labels(label).comment(comment).tableDataset(tableDataset).labelsTable(labelTable).build();
         listResponse.add(chartsResponse);
         return listResponse;
     }
 
-    @GetMapping("/resultBm/{cpu}/{app_name}")
-    public ScatterChartsResponse getAvgResultCPUBM(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name) {
+    @GetMapping("/resultBm/{cpu}/{app_name}/{type}")
+    public ScatterChartsResponse getAvgResultCPUBM(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("type") String type ) {
         ScatterChartsResponse scatterChartsResponse = null;
         List<AverageResult> list = null;
         String comment = null;
-        list = averageResultService.getAvgResultCPUApp(cpu, app_name);
+        list = averageResultService.getAvgResultCPUAppType(cpu, app_name, type);
 
         if (list == null || list.size()==0)
             return scatterChartsResponse;
@@ -149,7 +147,7 @@ public class ChartRestController {
             listMap.add(res);
         }
 
-        String appCpu = cpu + " - " + getAppName(app_name);
+        String appCpu = cpu + "_" + type + " - " + getAppName(app_name);
 
 
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
@@ -193,16 +191,17 @@ public class ChartRestController {
 }
 
     @GetMapping("/multiCPUResult/{app_name}")
-    public MultiChartResponse getAvgBySelectedCPUChart(@PathVariable("app_name") String app_name, String[] cpuList) {
+    public MultiChartResponse getAvgBySelectedCPUChart(@PathVariable("app_name") String app_name, String[] cpuList, String[] runTypes) {
         MultiChartResponse multiChartResponse = null;
         List<String> cpus = Arrays.asList(cpuList);
+        List<String> runType = Arrays.asList(runTypes);
         List<List<Double>> resListFinal = new ArrayList<>();
         List<AverageResult> list = null;
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus);
+            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
-            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus);
+            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }
 
 
@@ -222,7 +221,6 @@ public class ChartRestController {
 
         Map<String, Double> res = null;
 
-        List<String> cpulist = cpu.stream().collect(Collectors.toList());
         List<String> bmlist = bms.stream().collect(Collectors.toList());
 
         for (String bm : bms) {
@@ -230,11 +228,15 @@ public class ChartRestController {
             for (AverageResult a : list) {
                 if (a.getBmName().equals(bm)) {
 
-                    res.put(a.getCpuSku(), a.getAvgResult());
+                    res.put(a.getCpuSku() + "_" + a.getRunType(), a.getAvgResult());
                 }
             }
             resList.add(res);
         }
+
+        Set<String> cpuKeySet = resList.get(0).keySet();
+
+        List<String> cpulist  = new ArrayList<>(cpuKeySet);
 
         List<Map<String, Double>> newResList = new ArrayList<>();
 
@@ -269,7 +271,7 @@ public class ChartRestController {
           }
 
 
-          cpulist.remove(0);
+        cpulist.remove(0);
 
         int j=0;
           for(Map<String, Double> e : newResList ){
@@ -279,7 +281,6 @@ public class ChartRestController {
               temp.add(1.0);
               int i=0;
               for(Map.Entry<String,Double> m : e.entrySet()) {
-
                     if(Double.compare(e.get(cpulist.get(i)),0.0 )> 0) {
 
                         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
@@ -312,25 +313,26 @@ public class ChartRestController {
               dataset.add(datasetNew);
           }
 
-          multiChartResponse = MultiChartResponse.builder().appName(getAppName(app_name)).cpus(cpu).dataset(dataset).build();
+          multiChartResponse = MultiChartResponse.builder().appName(getAppName(app_name)).cpus(cpuKeySet).dataset(dataset).build();
 
         return multiChartResponse;
     }
 
     @GetMapping("/multiCPUTable/{app_name}")
-    public MultiChartTableResponse getAvgBySelectedCPUTable(@PathVariable("app_name") String app_name, String[] cpuList) {
+    public MultiChartTableResponse getAvgBySelectedCPUTable(@PathVariable("app_name") String app_name, String[] cpuList,String[] runTypes) {
 
        MultiChartTableResponse multiChartTableResponse = null;
         List<String> cpus = Arrays.asList(cpuList);
+        List<String> runType = Arrays.asList(runTypes);
         List<Map<String, String>> resListFinal = new ArrayList<>();
         List<AverageResult> list = null;
 
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus);
+            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
 
-            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus);
+            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }
 
 
@@ -341,7 +343,7 @@ public class ChartRestController {
         Set<String> bms = new LinkedHashSet<>();
 
         for (AverageResult avg : list) {
-            cpu.add(avg.getCpuSku());
+            cpu.add(avg.getCpuSku()+"_"+avg.getRunType());
             bms.add(avg.getBmName());
         }
 
@@ -357,8 +359,8 @@ public class ChartRestController {
             res = new LinkedHashMap<>();
             cpusList.add(c);
             for (AverageResult a : list) {
-                if (a.getCpuSku().equals(c)) {
 
+                if((a.getCpuSku()+"_"+a.getRunType()).equals(c)){
                     res.put(a.getBmName(), a.getAvgResult());
                 }
             }
@@ -381,7 +383,6 @@ public class ChartRestController {
             newResList.add(map);
 
         }
-
 
         resListFinal = new ArrayList<>();
 
@@ -438,8 +439,6 @@ public class ChartRestController {
 
             }
 
-
-
         List<String> bmlistFinal = new ArrayList<>();
 
         for(Map.Entry<String, String> bm : resListFinal.get(0).entrySet())
@@ -452,15 +451,15 @@ public class ChartRestController {
         return multiChartTableResponse;
     }
 
-    @GetMapping("/scalingTable/{cpu}/{app_name}")
-    public MultiChartTableResponse getScalingTable(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu) {
+    @GetMapping("/scalingTable/{cpu}/{app_name}/{runType}")
+    public MultiChartTableResponse getScalingTable(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu, @PathVariable("runType") String runType) {
 
         MultiChartTableResponse multiChartTableResponse = null;
         String comment = null;
         List<Map<String, String>> resListFinal = null;
         List<AverageResult> list = null;
 
-        list = averageResultService.getAvgResultCPUApp(cpu, app_name);
+        list = averageResultService.getAvgResultCPUAppType(cpu, app_name,runType);
 
 
         if (list == null || list.size() == 0 )
@@ -613,14 +612,15 @@ public class ChartRestController {
     }
 
     @GetMapping("/result/{app_name}")
-    public List<TwoPartChartResponse> getTwoPartChartResponse(@PathVariable("app_name") String app_name, String[] cpuList) {
+    public List<TwoPartChartResponse> getTwoPartChartResponse(@PathVariable("app_name") String app_name, String[] cpuList, String[] typeList) {
         List<String> cpus = Arrays.asList(cpuList);
+        List<String> typeLists = Arrays.asList(typeList);
         String metric = getMetric(app_name.toLowerCase().trim());
         String comment = "";
         List<TwoPartChartResponse> resultList = new ArrayList<>();
         TwoPartChartResponse mlr = new TwoPartChartResponse();
         List<AverageResult> list = null;
-        list = averageResultService.getBySelectedCPUApp(app_name, cpus);
+        list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, typeLists);
 
         if (list == null || list.size()==0)
             return resultList;
@@ -628,8 +628,9 @@ public class ChartRestController {
         Set<String> cpu = new LinkedHashSet<>();
         Set<String> bms = new LinkedHashSet<>();
 
+        cpu.add(cpus.get(0));
+        cpu.add(cpus.get(1));
         for (AverageResult avg : list) {
-            cpu.add(avg.getCpuSku());
             bms.add(avg.getBmName());
         }
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
@@ -644,19 +645,42 @@ public class ChartRestController {
         mlr.setAppName(getAppName(list.get(0).getAppName()));
         mlr.setComment(comment);
         List<TwoPartChartDataset> d = new ArrayList<>();
-        for (String c : cpu) {
+        String s=typeLists.get(0);
+        TwoPartChartDataset data;
+        List<Double> res;
+        if(cpu.size()==1)
+        {
+            for(String r : typeLists)
+            {
+                data = new TwoPartChartDataset();
+                res = new ArrayList<>();
+                for (AverageResult avg : list) {
+                    if (avg.getCpuSku().equals(cpus.get(0)) && avg.getRunType().equals(r)  ) {
+                        res.add(avg.getAvgResult());
+                    }
+                }
+                data.setCpuName(cpus.get(0)  +"_"+r);
+                data.setValue(res);
+                d.add(data);
+            }
 
-            TwoPartChartDataset data = new TwoPartChartDataset();
-            List<Double> res = new ArrayList<>();
+        }
+        else{
+            for (String c : cpu) {
+             data = new TwoPartChartDataset();
+             res = new ArrayList<>();
             for (AverageResult avg : list) {
-                if (avg.getCpuSku().equals(c)) {
-
+                if (avg.getCpuSku().equals(c) && avg.getRunType().equals(s)  ) {
                     res.add(avg.getAvgResult());
                 }
             }
-            data.setCpuName(c);
+            data.setCpuName(c+"_"+s);
+            s= typeLists.get(1);
+
             data.setValue(res);
             d.add(data);
+        }
+
         }
         mlr.setDatasets(d);
         resultList.add(mlr);
@@ -665,8 +689,6 @@ public class ChartRestController {
         }
         return resultList;
     }
-
-
 
 
     @GetMapping("/scalingTableOld/{cpu}/{app_name}")
@@ -785,8 +807,8 @@ public class ChartRestController {
     @RequestMapping(value = "/getNodesCount", method = RequestMethod.GET)
     public @ResponseBody
     int findNodesCount(
-            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
-        return averageResultService.getNodesCount(appName, cpu);
+            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu, @RequestParam(value = "type", required = true) String type) {
+        return averageResultService.getNodesCount(appName, cpu, type);
     }
 
     @GetMapping("/resultApp/{cpu}/{app_name}")

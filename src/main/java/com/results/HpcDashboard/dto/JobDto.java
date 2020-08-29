@@ -20,9 +20,13 @@ public class JobDto implements Serializable {
     @JsonProperty("nodes")
     private Integer nodes;
 
+    @JsonProperty("runType")
+    private String runType;
+
     public JobDto(Object[] column) {
         this.bmName = (String) column[0];
         this.cpu = (String) column[1];
         this.nodes = (int) column[2];
+        this.runType = (String) column[3];
     }
 }

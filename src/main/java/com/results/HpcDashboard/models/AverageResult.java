@@ -40,4 +40,7 @@ public class AverageResult implements Serializable {
 
     int runCount;
 
+    @Id
+    String runType;
+
 }

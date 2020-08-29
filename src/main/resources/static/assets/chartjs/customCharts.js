@@ -5,16 +5,44 @@ var BACKGROUND_COLORS = ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', 
 
 var BACKGROUND_COLORS_NEW = ['rgb(19,91,105)','rgb(21,104,121)','rgb(20,116,132)','rgb(133,155,163)','rgb(173,183,191)'   ,'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
-$('#appDrop').change(appChange);
 $('#cpuDrop').change(cpuChange);
+$('#typeDrop').change(typeChange);
+$('#appDrop').change(appChange);
 
 function cpuChange() {
-    var value = $(this).val();
-    var text = $(this).find('option:selected').text();
-    if (value != '') {
+  cpu = $('#cpuDrop')[0].value;
+    if (cpu) {
+        $("#type").show();
+        $.getJSON("/runTypesByCPU", {
+            cpu: cpu,
+            ajax: 'true'
+        }, function(data) {
+            var html = '<option value="" selected="true" disabled="disabled">-- Run Type --</option>';
+            var len = data.length;
+            for (var i = 0; i < len; i++) {
+                html += '<option value="' + data[i] + '">' +
+                    data[i] + '</option>';
+            }
+            html += '</option>';
+            $('#typeDrop').html(html);
+        });
+    }
+
+    $('#typeDrop').val('');
+    clearForm();
+    clearChart();
+}
+
+
+function typeChange() {
+    cpu = $('#cpuDrop')[0].value;
+    type = $('#typeDrop')[0].value;
+
+    if (cpu && type) {
         $("#app").show();
         $.getJSON("/apps", {
-            cpu: value,
+            cpu: cpu,
+            type: type,
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
@@ -38,6 +66,7 @@ function cpuChange() {
         getBmChartData();
     }
 }
+
 
 function clearForm() {
     $('#comment').empty();
@@ -65,14 +94,15 @@ function clearChart() {
 
 function appChange() {
     clearChart();
-
     var app = $('#appDrop')[0].value;
+    var type = $('#typeDrop')[0].value;
     var cpu = $('#cpuDrop')[0].value;
 
-    if (app && cpu) {
-         $.getJSON("/chart/getNodesCount", {
+    if (app && type && cpu) {
+        $.getJSON("/chart/getNodesCount", {
                     appName: app,
                     cpu: cpu,
+                    type: type,
                     ajax: 'true'
                 }, function(data) {
                         if(data > 1)
@@ -142,9 +172,10 @@ $("#option2")
 function getNodeChartData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
+    var type = $('#typeDrop')[0].value;
     var node = 1;
-    if (app && cpu && node) {
-        $.getJSON("/chart/resultApp/" + cpu + "/" + app + "/" + node, function(data) {
+    if (app && cpu && node && type) {
+        $.getJSON("/chart/resultApp/" + cpu + "/" + app + "/" + node + "/" + type, function(data) {
             var label = data[0].labels;
             var result = data[0].dataset;
             if (result.length > 3) {
@@ -254,10 +285,10 @@ function getRandomColorHex() {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
+    var type = $('#appDrop')[0].value;
+    if (app && cpu && type) {
 
-    if (app && cpu) {
-
-        $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+        $.getJSON("/chart/scalingTable/" + cpu + "/" + app + "/" + type, function(data) {
             if(data.scalingResultData.length > 1){
             updateTable(data.nodeLabel, data.scalingResultData);
             }
@@ -365,9 +396,10 @@ function getBmChartData() {
 
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
+    var type = $('#typeDrop')[0].value;
     getData();
-    if (app && cpu) {
-        $.getJSON("/chart/resultBm/" + cpu + "/" + app, function(data) {
+    if (app && cpu && type) {
+        $.getJSON("/chart/resultBm/" + cpu + "/" + app + "/" + type, function(data) {
             var dataPoints = [];
             var point = [];
             $.each(data.dataset, function(key, val) {

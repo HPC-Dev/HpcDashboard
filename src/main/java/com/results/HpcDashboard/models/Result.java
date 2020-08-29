@@ -84,7 +84,8 @@ public class Result implements Serializable {
     private String runType;
 
     @JsonAlias({"Setting", "setting"})
-    @CsvBindByPosition(position = 15)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
     private String setting;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")

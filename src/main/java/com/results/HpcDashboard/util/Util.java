@@ -40,7 +40,7 @@ public class Util {
 
 
     public JobDto findJobDetails(EntityManager entityManager, String jobId) {
-        String queryStr = "select r.bm_name,r.cpu,r.nodes from results r where r.job_id = ?1";
+        String queryStr = "select r.bm_name,r.cpu,r.nodes, r.run_type from results r where r.job_id = ?1";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
             query.setParameter(1, jobId );

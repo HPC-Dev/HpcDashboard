@@ -1,15 +1,51 @@
 var cpus = []
 //getCpuCores();
 $('#cpuDrop').on("change", function() {
-    var value = $(this).val();
-    var text = $(this).find('option:selected').text();
-    if (value != '') {
-      //  $("#core").show();
-//        $("#coreCount").show();
-//        $("#coreValue")[0].value = 'Cores: ' + findCpuCore(text);
+    cpu = $('#cpuDrop')[0].value;
+    if (cpu) {
+        $("#type").show();
+        $.getJSON("/runTypesByCPU", {
+            cpu: cpu,
+            ajax: 'true'
+        }, function(data) {
+            var html = '<option value="" selected="true" disabled="disabled">-- Run Type --</option>';
+            var len = data.length;
+            for (var i = 0; i < len; i++) {
+                html += '<option value="' + data[i] + '">' +
+                    data[i] + '</option>';
+            }
+            html += '</option>';
+            $('#typeDrop').html(html);
+        });
+
+    } else if (value == '') {
+        $("#type").hide();
+        $("#app").hide();
+    }
+
+     $("#p1").hide();
+     $("#p2").hide();
+     $("#p3").hide();
+     $("#p4").hide();
+    $('#typeDrop').val('');
+    $('#appDrop').val('');
+    $('#table').html('');
+    $('#tableScaling').html('');
+    $('#tableCV').html('');
+    $('#tableCount').html('');
+
+});
+
+$('#typeDrop').on("change", function() {
+
+    cpu = $('#cpuDrop')[0].value;
+    type = $('#typeDrop')[0].value;
+
+    if (cpu && type) {
         $("#app").show();
         $.getJSON("/apps", {
-            cpu: value,
+            cpu: cpu,
+            type: type,
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
@@ -23,9 +59,7 @@ $('#cpuDrop').on("change", function() {
         });
         $("#app").on("change", getData);
     } else if (value == '') {
-        //$("#core").hide();
         $("#app").hide();
-       // $("#coreCount").hide();
     }
 
     $('#appDrop').val('');
@@ -33,14 +67,10 @@ $('#cpuDrop').on("change", function() {
     $('#tableScaling').html('');
     $('#tableCV').html('');
     $('#tableCount').html('');
+
     getData();
 });
 
-//function getCpuCores() {
-//    return $.getJSON("/avg/cpus", function(data) {
-//        cpus = data;
-//    });
-//}
 
 function findCpuCore(cpu) {
     return cpus.find(function(eachCpu) {
@@ -51,9 +81,10 @@ function findCpuCore(cpu) {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
+    var runType = $('#typeDrop')[0].value;
     var comment;
-    if (app && cpu) {
-        $.getJSON("/avg/result/" + cpu + "/" + app, function(data) {
+    if (app && cpu && runType) {
+        $.getJSON("/avg/result/" + cpu + "/" + app + "/" + runType, function(data) {
             var transformedData = [];
             var columnNames = ['Nodes', 'Cores'];
             data.forEach((item, index) => {
@@ -80,9 +111,10 @@ function getData() {
 
             });
             updateTable(columnNames, transformedData);
+
         });
 
-        $.getJSON("/chart/scalingTable/" + cpu + "/" + app, function(data) {
+        $.getJSON("/chart/scalingTable/" + cpu + "/" + app + "/" + runType, function(data) {
                     comment = data.comment;
                     if(data.scalingResultData.length >1) {
                     updateTableScaling(data.nodeLabel, data.scalingResultData);

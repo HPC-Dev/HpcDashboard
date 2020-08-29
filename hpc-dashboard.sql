@@ -22,16 +22,30 @@ select cpu_sku,cores from average_result group by cpu_sku;
 
 select DISTINCT cpu_sku from average_result where app_name="abaqus" and nodes=1  ;
 
-select count(distinct nodes) from average_result where  app_name="abaqus" and cpu_sku="Milan64_2933"  ;
-
-select DISTINCT bm_name from average_result where app_name="openfoam" and cpu_sku="n1-highcpu-96" ORDER BY nodes ASC;
-
 show tables;
 
-select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;
+#drop table heat_map;
 
+select * from heat_map;
+select * from app_category;
 select * from results;
 select * from average_result;
+
+select DISTINCT isv from heat_map where category="Computational Fluid Dynamics" and cpu_sku="Rome64" and run_type="freq_2933";	
+
+select DISTINCT app_name from app_category where isv="ansys";
+
+select * from heat_map where cpu_sku="Rome64" and run_type="baseline" and nodes=1 and category is not NULL;
+
+select DISTINCT ISV from heat_map where cpu_sku="Rome64" and run_type="freq_2933" and nodes=1 and category="Computational Fluid Dynamics";
+
+select DISTINCT app_name from heat_map where cpu_sku="Milan64" and run_type="freq_2933" and isv="Ansys";
+
+select bm_name from heat_map where cpu_sku="Milan64" and run_type="freq_2933" and nodes=1 and category is not NULL;
+
+select bm_name from heat_map where cpu_sku="Rome64" and run_type="freq_2933" and nodes=1 and category is not NULL;
+
+select * from heat_map where cpu_sku in ("Milan64","Rome64") and run_type in ("baseline","freq_2933") and category is not NULL;
 
 select precision_info from applications where app_name="openfoam";
 
@@ -54,23 +68,17 @@ SELECT  * FROM  results WHERE app_name='cfx'and cpu="Milan64_3200" and run_type=
 
 SELECT  DISTINCT (bm_name) FROM  results WHERE app_name='abaqus'and cpu="Rome64_3200" and run_type="freq_2933";
 
-SELECT  DISTINCT (run_type)   FROM  results WHERE app_name='cfx'and cpu="Milan64_2933";
+SELECT  DISTINCT LOWER(run_type) FROM  results WHERE app_name='cfx' ORDER BY run_type ASC;
+
+select * from average_result where app_name= 'cfx' and cpu_sku like "Milan64%" and nodes =1 and run_type="freq_2933" ORDER BY bm_name;
+
+select * from average_result where cpu_sku in ( "Milan64_3200", "Milan64_2933", "Rome64_2933") and run_type in("baseline","freq_2933");
+
+select * from average_result where app_name= 'abaqus' and cpu_sku IN ("Milan64_3200", "Milan64_2933", "Rome64_2933") and run_type in("baseline","freq_2933") and nodes =1 ORDER BY bm_name,avg_result DESC;
 
 
 
-select DISTINCT app_name from average_result;
-
-select job_id, result from results where bm_name="cfx_pump" and cpu="7F72" and nodes=1;
-
-
-select avg_result from average_result where bm_name="cfx_pump" and cpu_sku="7F72" and nodes=1;
-
-
-
-select * from average_result where app_name="abaqus" and cpu_sku="6248";
-
-
-select DISTINCT app_name from average_result where cpu_sku="7F32" ORDER BY app_name ASC;
+select DISTINCT cpu_sku from average_result where run_type in("baseline","freq_2933");
 
 select * from average_result where app_name="openfoam"  and cpu_sku in( "7F52", "7F32", "7F72") and nodes =1 ORDER BY avg_result DESC;
 
@@ -125,6 +133,8 @@ SELECT * from average_result where cpu_sku ="7F52" and app_name ="openfoam" ORDE
 drop table average_result;
 
 drop table results;
+
+drop table heat_map;
 
 
 

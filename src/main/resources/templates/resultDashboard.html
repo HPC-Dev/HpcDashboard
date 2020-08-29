@@ -144,7 +144,7 @@
                                                                 id="endDate" required="required"/>
               </div>
 
-              <div class="input-group-btn" style="margin-top:8px; margin-left:68px;" >
+              <div class="input-group-btn" style="margin-top:8px; margin-left:52px;" >
 
                                 <button class="btn btn-sm btn-info btn-rounded" id="clearButton">Clear</button>
 			 </div>
@@ -172,7 +172,7 @@
                 </div>
             </div>
 
-            <div class="form-inline" style="margin-left:8px; margin-top:5px" th:if="${#httpServletRequest.isUserInRole('ROLE_TEAM')}">
+            <div class="form-inline" style="margin-left:8px; margin-top:5px" >
                 <p style="font-size:14px;"> Download excel &nbsp </p>
                 <div class="input-group" style="margin-top:-12px;">
                     <a th:href="@{/resultsExcel}"
@@ -214,7 +214,7 @@
                     <th>Platform</th>
                     <th>CPU gen</th>
                     <th>Run type</th>
-                    <th>Setting</th>
+<!--                    <th>Setting</th>-->
                     <th>Run Date</th>
                 </tr>
                 </thead>

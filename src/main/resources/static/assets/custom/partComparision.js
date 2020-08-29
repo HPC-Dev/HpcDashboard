@@ -10,6 +10,38 @@ var app;
 $('#appDrop').on("change", function() {
     var value = $(this).val();
     if (value != '') {
+
+        $.getJSON("/runTypes", {
+                    appName: $(this).val(),
+                    ajax: 'true'
+                }, function(data) {
+                    var html = '<option value="" selected="true" disabled="disabled">-- RunType1 --</option>';
+                    var len = data.length;
+
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    html += '</option>';
+                    $('#typeDrop1').html(html);
+                });
+
+
+          $.getJSON("/runTypes", {
+                              appName: $(this).val(),
+                              ajax: 'true'
+                          }, function(data) {
+                              var html = '<option value="" selected="true" disabled="disabled">-- RunType2 --</option>';
+                              var len = data.length;
+                              for (var i = 0; i < len; i++) {
+                                  html += '<option value="' + data[i] + '">' +
+                                      data[i] + '</option>';
+                              }
+                              html += '</option>';
+                              $('#typeDrop2').html(html);
+                          });
+
+
         $.getJSON("/cpus", {
             appName: $(this).val(),
             ajax: 'true'
@@ -24,37 +56,36 @@ $('#appDrop').on("change", function() {
             $('#cpuDrop1').html(html);
         });
 
+
+         $.getJSON("/cpus", {
+                    appName: $(this).val(),
+                    ajax: 'true'
+                }, function(data) {
+                    var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
+                    var len = data.length;
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    html += '</option>';
+                    $('#cpuDrop2').html(html);
+                });
+
         $('#cpuDrop1').val('');
         $('#cpuDrop2').val('');
+        $('#typeDrop1').val('');
+        $('#typeDrop2').val('');
         clearChart();
         getData();
     }
 });
 
-$('#cpu1').on("change", function() {
-    app = $('#appDrop')[0].value;
-    cpu1 = $('#cpuDrop1')[0].value;
-  $('#cpuDrop2').val('');
-        clearChart();
-    if (app && cpu1) {
-     $.getJSON("/cpusSelected", {
-                appName: app,
-                cpu: cpu1,
-                ajax: 'true'
-            }, function(data) {
-                var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-                var len = data.length;
-                for (var i = 0; i < len; i++) {
-                    html += '<option value="' + data[i] + '">' +
-                        data[i] + '</option>';
-                }
-                html += '</option>';
-                $('#cpuDrop2').html(html);
-            });
-            }
 
-getData();
-});
+$("#type1").on("change", getData);
+
+$("#type2").on("change", getData);
+
+$("#cpu1").on("change", getData);
 
 $("#cpu2").on("change", getData);
 
@@ -67,10 +98,12 @@ function getData() {
     app = $('#appDrop')[0].value;
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
+    type1 = $('#typeDrop1')[0].value;
+    type2 = $('#typeDrop2')[0].value;
 
-    if (app && cpu1 && cpu2) {
+    if (app && cpu1 && cpu2 && type1 && type2) {
 
-        $.getJSON("/avg/resultComparision/" + app + "/" + cpu1 + "/" + cpu2, function(data) {
+        $.getJSON("/avg/resultComparision/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
             var columnNames = [];
             var transformedData = [];
             data.bmName.forEach(element => columnNames.push(element));
@@ -80,17 +113,22 @@ function getData() {
     } else {
         $('#tableNew').html('');
     }
-    getMultiChartData(app, cpu1, cpu2);
+    getMultiChartData(app, cpu1, cpu2, type1, type2);
 }
 
-function getMultiChartData(app, cpu1, cpu2) {
+function getMultiChartData(app, cpu1, cpu2, type1, type2) {
     var cpuList = [];
+    var typeList = [];
     cpuList.push(cpu1);
     cpuList.push(cpu2);
+    typeList.push(type1);
+    typeList.push(type2);
     var params = {};
     params.cpuList = cpuList;
+    params.typeList = typeList;
     if (app && cpu1 && cpu2) {
-        $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
+        $.getJSON("/chart/result/" + app , $.param(params, true) , function(data) {
+
             if(data.length >0){
             var label = data[0].labels;
 

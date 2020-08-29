@@ -1,6 +1,7 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.models.AverageResult;
+import com.results.HpcDashboard.models.HeatMap;
 import com.results.HpcDashboard.repo.AverageResultRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +20,17 @@ public class AverageResultService {
 
 
     @Transactional
-    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg, double cv, int count) {
+    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg, double cv, int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,cv,count);
+        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,cv,count, runType);
     }
 
     @Transactional
-    public void deleteAverageResult(String cpu_sku, int nodes, String bm_name) {
+    public void deleteAverageResult(String cpu_sku, int nodes, String bm_name, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null) )
             return;
-        averageResultRepo.deleteAverageResult(bm_name,cpu_sku,nodes);
+        averageResultRepo.deleteAverageResult(bm_name,cpu_sku,nodes, runType);
     }
 
     @Transactional
@@ -37,7 +38,7 @@ public class AverageResultService {
         if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert CV below
-        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount()).build();
+        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount()).runType(averageResult.getRunType()).build();
         averageResultRepo.save(averageResult);
     }
 
@@ -53,10 +54,10 @@ public class AverageResultService {
         return list;
     }
 
-    public AverageResult getSingleAvgResult(String bm_name, String cpu_sku, int nodes) {
+    public AverageResult getSingleAvgResult(String bm_name, String cpu_sku, int nodes, String runType) {
 
         AverageResult list = null;
-        list = averageResultRepo.getAverageResult(bm_name,cpu_sku,nodes);
+        list = averageResultRepo.getAverageResult(bm_name,cpu_sku,nodes,runType);
 
         if(list ==null){
             return null;
@@ -76,6 +77,17 @@ public class AverageResultService {
         return list;
     }
 
+    public List<AverageResult> getAvgResultCPUAppType(String cpu_sku,String app_name, String type) {
+
+        List<AverageResult> list = null;
+        list = averageResultRepo.getAverageResultCPUAppType(cpu_sku,app_name, type);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
     public List<AverageResult> getAvgResultCPUAppBm(String cpu_sku,String app_name, String bm_name) {
 
         List<AverageResult> list = null;
@@ -87,10 +99,10 @@ public class AverageResultService {
         return list;
     }
 
-    public List<AverageResult> getAvgResultCPUAppNode(String cpu_sku,String app_name, int node) {
+    public List<AverageResult> getAvgResultCPUAppNode(String cpu_sku,String app_name, int node, String type) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.getAverageResultCPUAppNode(cpu_sku,app_name,node);
+        list = averageResultRepo.getAverageResultCPUAppNode(cpu_sku,app_name,node, type);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -113,6 +125,17 @@ public class AverageResultService {
 
         List<String> app_list = null;
         app_list = averageResultRepo.getAPP(cpu);
+
+        if(app_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return app_list;
+    }
+
+    public List<String> getAppByType(String cpu, String type) {
+
+        List<String> app_list = null;
+        app_list = averageResultRepo.getAppByType(cpu, type);
 
         if(app_list ==null){
             return Collections.EMPTY_LIST;
@@ -153,6 +176,40 @@ public class AverageResultService {
         return cpu_list;
     }
 
+    public List<String> getJustCpu() {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getJustCPU();
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+    public List<String> getRunTypes(String appName) {
+
+        List<String> runType_list = null;
+        runType_list = averageResultRepo.getRunTypes(appName);
+
+        if(runType_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return runType_list;
+    }
+
+    public List<String> getRunTypesByCPU(String cpu) {
+
+        List<String> runType_list = null;
+        runType_list = averageResultRepo.getRunTypesByCPU(cpu);
+
+        if(runType_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return runType_list;
+    }
+
+
     public List<String> getCpuSelected(String appName, String cpu) {
 
         List<String> cpu_list = null;
@@ -164,8 +221,8 @@ public class AverageResultService {
         return cpu_list;
     }
 
-    public int getNodesCount(String appName, String cpu) {
-       int nodeCount = averageResultRepo.getNodesCount(appName, cpu);
+    public int getNodesCount(String appName, String cpu, String type) {
+       int nodeCount = averageResultRepo.getNodesCount(appName, cpu, type);
 
         return nodeCount;
     }
@@ -194,11 +251,10 @@ public class AverageResultService {
     }
 
 
-
-    public List<AverageResult> getBySelectedCPUAppAsc(String app_name,List<String> cpus) {
+    public List<AverageResult> getBySelectedCPUAppAsc(String app_name,List<String> cpus, List<String> runTypes) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.findBySelectedCPUAppAsc(app_name,cpus);
+        list = averageResultRepo.findBySelectedCPUAppAsc(app_name,cpus, runTypes);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -208,10 +264,10 @@ public class AverageResultService {
 
 
 
-    public List<AverageResult> getBySelectedCPUAppDesc(String app_name,List<String> cpus) {
+    public List<AverageResult> getBySelectedCPUAppDesc(String app_name,List<String> cpus, List<String> runTypes) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.findBySelectedCPUAppDesc(app_name,cpus);
+        list = averageResultRepo.findBySelectedCPUAppDesc(app_name,cpus, runTypes);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -220,10 +276,10 @@ public class AverageResultService {
     }
 
 
-    public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu) {
+    public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu, String type) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.findCompDataBySelectedCPU(app_name,cpu);
+        list = averageResultRepo.findCompDataBySelectedCPU(app_name,cpu,type);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -236,4 +292,5 @@ public class AverageResultService {
 
         return averageResultRepo.getJobExists(jobId);
     }
+
 }

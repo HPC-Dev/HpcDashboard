@@ -1,8 +1,41 @@
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
+
+
+$('#clearButton').on('click', function(){
+
+$('input[type=checkbox]').prop('checked',false);
+
+clearChart();
+$('#tableNew').html('');
+$("#clear").hide();
+
+});
+
+
+
 $('#appDrop').on("change", function() {
     var value = $(this).val();
     $('#checkbox').empty();
+    $('#typeCheckBox').empty();
+     $.getJSON("/runTypes", {
+            appName: value,
+            ajax: 'true'
+        }, function(data) {
+            var len = data.length;
+            var html = '';
+            for (var i = 0; i < len; i++) {
+                html += ' <div id="typeCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+                html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="runTypeCheckBoxChange()"/>' +
+                    '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+                html += '</div>';
+            }
+
+            $('#typeCheckBox').append(html);
+            $("#typeCheckBox").show();
+        });
+
+
     $.getJSON("/cpus", {
         appName: value,
         ajax: 'true'
@@ -11,14 +44,13 @@ $('#appDrop').on("change", function() {
         var html = '';
         for (var i = 0; i < len; i++) {
             html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
-            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange(this)"/>' +
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
                 '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
             html += '</div>';
         }
 
         $('#checkbox').append(html);
-        $("#checkbox").show();
-        $("#button").show();
+
     });
     clearChart();
     $('#tableNew').html('');
@@ -26,16 +58,45 @@ $('#appDrop').on("change", function() {
 });
 
 
-function checkBoxChange(obj) {
+
+function runTypeCheckBoxChange() {
+var runTypes =[];
+$("#typeCheckBox input:checked").each(function() {
+            runTypes.push($(this).val());
+        });
+
+  if(runTypes.length >= 1)
+  {
+  $("#checkbox").show();
+  $("#clear").show();
+  }
+  else{
+  $("#checkbox").hide();
+  $("#clear").hide();
+  }
+
+checkBoxChange();
+}
+
+
+function checkBoxChange() {
  var cpuList = [];
- $("input:checked").each(function() {
+ var runTypes =[];
+ $("#cpuCheckBox input:checked").each(function() {
             cpuList.push($(this).val());
         });
 
-    if(cpuList.length > 1)
+$("#typeCheckBox input:checked").each(function() {
+            runTypes.push($(this).val());
+        });
+
+    if( (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1) )
     {
         var params = {};
         params.cpuList = cpuList;
+
+        var typeParams = {};
+        params.runTypes = runTypes;
 
         if ($("#appDrop").val() === null) {
             console.log("empty");
@@ -48,13 +109,14 @@ function checkBoxChange(obj) {
           var BACKGROUND_COLORS = ['rgb(19,91,105)','rgb(133,155,163)','rgb(20,116,132)','#8DB9CA','rgb(173,183,191)', 'rgb(21,104,121)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', '#EFEBE9', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#D1C4E9', '#BBDEFB', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
           //var BORDER_COLORS = ['','','','','','','rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', '', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
-
         function getMultiChartData() {
             getData();
             var app = $('#appDrop')[0].value;
-            if (app && cpuList.length > 1) {
+            if (app && (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1)) {
+
                 $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
                     var label = data.cpus;
+                    if(data.dataset[0].value.length >1 ){
                     if(data.dataset.length >1){
                     var chartdata = {
                         labels: label,
@@ -100,6 +162,7 @@ function checkBoxChange(obj) {
 
 
                     }
+
                     var chartOptions = {
                         title: {
                             display: true,
@@ -162,8 +225,14 @@ function checkBoxChange(obj) {
                         data: chartdata,
                         options: chartOptions
                     });
+                }
+                else{
+                  clearChart();
+                   $('#tableNew').html('');
 
+                }
                 });
+
             }
             else{
                clearChart();
@@ -173,20 +242,30 @@ function checkBoxChange(obj) {
 
         function getData() {
             var app = $('#appDrop')[0].value;
-
             var cpuList = [];
-                $("input:checked").each(function() {
-                    cpuList.push($(this).val());
-                });
+            var runTypes =[];
+            $("#cpuCheckBox input:checked").each(function() {
+                cpuList.push($(this).val());
+            });
+
+            $("#typeCheckBox input:checked").each(function() {
+                runTypes.push($(this).val());
+            });
 
                 var params = {};
                 params.cpuList = cpuList;
 
-            if (app && cpuList.length > 1) {
+            if( (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1) )
+                {
+                    var params = {};
+                    params.cpuList = cpuList;
+                    params.runTypes = runTypes;
 
                 $.getJSON("/chart/multiCPUTable/" + app, $.param(params, true), function(data) {
-                    updateTable(data.nodeLabel, data.scalingResultData);
 
+                 if(data.scalingResultData.length >1){
+                    updateTable(data.nodeLabel, data.scalingResultData);
+                 }
                 });
             } else {
                 $('#tableNew').html('');

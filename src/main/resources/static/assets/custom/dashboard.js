@@ -54,9 +54,9 @@ table = $('table#ajax').DataTable({
         {
             data: 'runType'
         },
-        {
-            data: 'setting'
-        },
+//        {
+//            data: 'setting'
+//        },
 
         { data: 'timeStamp',
         searchable: false,
