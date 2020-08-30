@@ -230,7 +230,11 @@ public class Util {
 
         double sd = Math.sqrt(standardDeviation/length);
 
-        double CV = (sd/mean)*100;
+        double CV = 0;
+
+
+            if(Double.compare(sd,0.0 ) > 0 )
+                CV = (sd/mean)*100;
 
         return round(CV,2);
     }

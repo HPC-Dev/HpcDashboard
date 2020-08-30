@@ -126,7 +126,7 @@ public class ResultService {
                 result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                     .parse(result.getTime().trim()));
 
-            if(result.getRunType() != null && result.getSetting() !=null)
+            if(!(result.getRunType().equals("baseline")) &&  result.getRunType() != null && result.getSetting() !=null)
             {
                 result.setRunType(result.getRunType()+"_"+result.getSetting());
             }

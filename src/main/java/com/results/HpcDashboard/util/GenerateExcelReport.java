@@ -18,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class GenerateExcelReport {
 
     public static ByteArrayInputStream resultsToExcel(List<Result> results) throws IOException {
-        String[] COLUMNS = { "Job Id", "App Name", "Benchmark", "Nodes", "Cores", "Node Name", "Metric", "CPU","OS", "BIOS version", "Cluster", "User", "Platform", "CPU generation", "Run type", "Setting"  };
+        String[] COLUMNS = { "Job Id", "App Name", "Benchmark", "Nodes", "Cores", "Node Name", "Result", "CPU","OS", "BIOS version", "Cluster", "User", "Platform", "CPU generation", "Run type", "Setting"  };
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             Sheet sheet = workbook.createSheet("Results");
 
