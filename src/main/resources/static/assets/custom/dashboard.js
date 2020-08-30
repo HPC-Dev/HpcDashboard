@@ -219,7 +219,7 @@ $('#endDate').change(addDateFilter);
 function addDateFilter() {
      var startDate = $('#startDate').val();
      var endDate = $('#endDate').val();
-     table.column(16).search(startDate + ',' + endDate).draw();
+     table.column(15).search(startDate + ',' + endDate).draw();
 }
 
 //$('#showButton').on('click', function(){

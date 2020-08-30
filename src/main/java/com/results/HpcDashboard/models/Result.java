@@ -89,7 +89,7 @@ public class Result implements Serializable {
     private String setting;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    @CsvBindByPosition(position = 16)
+    @CsvBindByPosition(position = 15)
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStamp;
