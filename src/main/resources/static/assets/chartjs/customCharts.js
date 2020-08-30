@@ -285,7 +285,8 @@ function getRandomColorHex() {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
-    var type = $('#appDrop')[0].value;
+    var type = $('#typeDrop')[0].value;
+
     if (app && cpu && type) {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app + "/" + type, function(data) {
