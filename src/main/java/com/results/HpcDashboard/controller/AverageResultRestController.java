@@ -323,6 +323,9 @@ public class AverageResultRestController {
 
             Set<ISV> isvList = new LinkedHashSet<>();
 
+            double aAvg =0;
+            int aCount =0;
+
             for(String i: isv)
             {
                 ISV isv1 = new ISV();
@@ -341,9 +344,6 @@ public class AverageResultRestController {
                 {
                     continue;
                 }
-
-                double aAvg =0;
-                int aCount =0;
 
                 Set<App> appList = new LinkedHashSet<>();
 
