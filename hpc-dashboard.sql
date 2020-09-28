@@ -24,7 +24,7 @@ select DISTINCT cpu_sku from average_result where app_name="abaqus" and nodes=1 
 
 show tables;
 
-#drop table heat_map;
+#drop table app_category;
 
 select * from heat_map;
 select * from app_category;
@@ -53,8 +53,11 @@ select * from average_result where app_name="openfoam" and cpu_sku in ("7F52","7
 
 select DISTINCT cpu from results where cpu_gen="rome" ORDER BY cpu ASC;
 
+SET SQL_SAFE_UPDATES = 0;
 
 select * from benchmarks;
+
+select *  from results where run_type like "%scaling%";
 
 select *  from results;
 
@@ -137,7 +140,10 @@ drop table results;
 drop table heat_map;
 
 
+SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = "wrf" and a.nodes=1 and a.run_type IN ("freq_2933") ORDER BY cpu_sku ASC;
+SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = "wrf" and a.nodes=1 and a.run_type IN ("freq_2933") ORDER BY cpu_sku ASC;
 
+SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = "wrf" and a.nodes=1  AND a.cpu_sku NOT IN (SELECT b.cpu_sku  FROM average_result AS b WHERE  b.cpu_sku = '7742') ORDER BY cpu_sku ASC;
 
 #drop table benchmarks;
 

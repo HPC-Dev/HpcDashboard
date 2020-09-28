@@ -1,6 +1,7 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.FormCommand;
+import com.results.HpcDashboard.dto.multichart.MultiChartResponse;
 import com.results.HpcDashboard.models.User;
 import com.results.HpcDashboard.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -137,11 +139,10 @@ public class AppController {
         return averageResultService.getRunTypesByCPU(cpu);
     }
 
-    @RequestMapping(value = "/cpusSelected", method = RequestMethod.GET)
-    public @ResponseBody
-    List<String> findAllCpusSelected(
-            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
-        return averageResultService.getCpuSelected(appName, cpu);
+    @GetMapping("/cpusSelected/{app_name}")
+        public  @ResponseBody List<String> findAllCpusSelected(@PathVariable("app_name") String app_name,  String[] runTypes) {
+        List<String> runType = Arrays.asList(runTypes);
+            return averageResultService.getCpuSelected(app_name,runType);
     }
 
     @RequestMapping(value = "/apps", method = RequestMethod.GET)

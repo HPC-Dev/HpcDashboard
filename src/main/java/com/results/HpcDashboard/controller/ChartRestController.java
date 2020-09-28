@@ -234,7 +234,15 @@ public class ChartRestController {
             resList.add(res);
         }
 
-        Set<String> cpuKeySet = resList.get(0).keySet();
+        Set<String> cpuKeySet = new HashSet<>();
+        for(int i=0; i< resList.size();i++)
+        {
+            for(String s : resList.get(i).keySet()) {
+                 cpuKeySet.add(s);
+            }
+
+
+        }
 
         List<String> cpulist  = new ArrayList<>(cpuKeySet);
 

@@ -20,7 +20,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
     private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources/**",
+            "/r-resources/**",
             "/swagger-ui.html",
             "/v2/api-docs",
             "/webjars/**"

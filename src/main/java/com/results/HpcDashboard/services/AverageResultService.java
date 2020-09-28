@@ -210,10 +210,10 @@ public class AverageResultService {
     }
 
 
-    public List<String> getCpuSelected(String appName, String cpu) {
+    public List<String> getCpuSelected(String appName,  List<String> runTypes) {
 
         List<String> cpu_list = null;
-        cpu_list = averageResultRepo.getCpuSelected(appName, cpu);
+        cpu_list = averageResultRepo.getCpuSelected(appName,  runTypes);
 
         if(cpu_list ==null){
             return Collections.EMPTY_LIST;

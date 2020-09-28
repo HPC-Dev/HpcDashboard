@@ -1,6 +1,8 @@
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
 
+var typeVal;
+var flag;
 
 $('#clearButton').on('click', function(){
 
@@ -9,12 +11,11 @@ $('input[type=checkbox]').prop('checked',false);
 clearChart();
 $('#tableNew').html('');
 $("#clear").hide();
-
 });
 
-
-
 $('#appDrop').on("change", function() {
+    $('#checkbox').empty();
+    $("#typeCheckBox").empty();
     var value = $(this).val();
     $('#checkbox').empty();
     $('#typeCheckBox').empty();
@@ -23,6 +24,18 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var len = data.length;
+
+            if(len > 1)
+            {
+                 flag=1;
+                 $("#typeCheckBox").show();
+            }
+             else{
+                 flag=0;
+                 typeVal = data[0];
+                 $("#typeCheckBox").hide();
+                 }
+            runTypeCheckBoxChange();
             var html = '';
             for (var i = 0; i < len; i++) {
                 html += ' <div id="typeCheckBox" class="custom-control custom-checkbox custom-control-inline">';
@@ -30,51 +43,77 @@ $('#appDrop').on("change", function() {
                     '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
                 html += '</div>';
             }
-
-            $('#typeCheckBox').append(html);
-            $("#typeCheckBox").show();
-        });
+              $('#typeCheckBox').append(html);
+         });
 
 
-    $.getJSON("/cpus", {
-        appName: value,
-        ajax: 'true'
-    }, function(data) {
-        var len = data.length;
-        var html = '';
-        for (var i = 0; i < len; i++) {
-            html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
-            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
-                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
-            html += '</div>';
-        }
+//    var runTypes =[];
+//    $("#typeCheckBox input:checked").each(function() {
+//                runTypes.push($(this).val());
+//    });
+//
+//     var typeParams = {};
+//     params.runTypes = runTypes;
 
-        $('#checkbox').append(html);
+//    $.getJSON("/cpus", {
+//        appName: value,
+//        ajax: 'true'
+//    }, function(data) {
+//        var len = data.length;
+//        var html = '';
+//        for (var i = 0; i < len; i++) {
+//            html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+//            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
+//                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+//            html += '</div>';
+//        }
+//        $('#checkbox').append(html);
+//
+//    });
 
-    });
     clearChart();
     $('#tableNew').html('');
-
 });
 
 
-
 function runTypeCheckBoxChange() {
-var runTypes =[];
-$("#typeCheckBox input:checked").each(function() {
-            runTypes.push($(this).val());
-        });
+ $('#checkbox').empty();
+ var app = $('#appDrop')[0].value;
+ var runTypes =[];
+    if(flag == 1)
+    {
+         $("#typeCheckBox input:checked").each(function() {
+         runTypes.push($(this).val());
+    });
+    }
+    else{
+         runTypes.push(typeVal);
+    }
+
+     var params = {};
+     params.runTypes = runTypes;
 
   if(runTypes.length >= 1)
   {
   $("#checkbox").show();
   $("#clear").show();
+  $.getJSON("/cpusSelected/" + app, $.param(params, true), function(data) {
+                          var len = data.length;
+                           var html = '';
+                           for (var i = 0; i < len; i++) {
+                               html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+                               html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
+                                   '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+                               html += '</div>';
+                           }
+                           $('#checkbox').append(html);
+
+                       });
   }
   else{
   $("#checkbox").hide();
   $("#clear").hide();
   }
-
 checkBoxChange();
 }
 
@@ -86,9 +125,15 @@ function checkBoxChange() {
             cpuList.push($(this).val());
         });
 
-$("#typeCheckBox input:checked").each(function() {
+       if(flag === 1)
+        {
+            $("#typeCheckBox input:checked").each(function() {
             runTypes.push($(this).val());
         });
+        }
+        else{
+            runTypes.push(typeVal);
+        }
 
     if( (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1) )
     {
@@ -115,6 +160,7 @@ $("#typeCheckBox input:checked").each(function() {
             if (app && (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1)) {
 
                 $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
+                    console.log(data);
                     var label = data.cpus;
                     if(data.dataset[0].value.length >1 ){
                     if(data.dataset.length >1){
@@ -248,9 +294,15 @@ $("#typeCheckBox input:checked").each(function() {
                 cpuList.push($(this).val());
             });
 
-            $("#typeCheckBox input:checked").each(function() {
-                runTypes.push($(this).val());
-            });
+                 if(flag === 1)
+                   {
+                       $("#typeCheckBox input:checked").each(function() {
+                       runTypes.push($(this).val());
+                   });
+                   }
+                   else{
+                       runTypes.push(typeVal);
+                   }
 
                 var params = {};
                 params.cpuList = cpuList;

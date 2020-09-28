@@ -24,7 +24,7 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_CPU_APP = "select DISTINCT cpu_sku from average_result where app_name=:appName and nodes=1 ORDER BY cpu_sku ASC";
     public static final String GET_RUN_TYPES = "SELECT  DISTINCT LOWER(run_type) FROM  average_result WHERE app_name=:appName ORDER BY run_type ASC";
     public static final String GET_RUN_TYPES_BY_CPU = "SELECT  DISTINCT LOWER(run_type) FROM  average_result WHERE cpu_sku=:cpu ORDER BY run_type ASC";
-    public static final String GET_CPU_SELECTED = "SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = :appName and a.nodes=1  AND a.cpu_sku NOT IN (SELECT b.cpu_sku  FROM average_result AS b WHERE  b.cpu_sku = :cpu) ORDER BY cpu_sku ASC";
+    public static final String GET_CPU_SELECTED = "SELECT DISTINCT a.cpu_sku FROM  average_result AS a WHERE  a.app_name = :appName and a.nodes=1 and a.run_type IN (:runTypes) ORDER BY cpu_sku ASC";
     public static final String NODES_COUNT = "select count(distinct nodes) from average_result where  app_name=:appName and cpu_sku=:cpu and run_type=:type";
     public static final String GET_CPU_RES = "select DISTINCT cpu_sku from average_result ORDER BY cpu_sku ASC";
     public static final String GET_APP = "select DISTINCT LOWER(app_name) from average_result ORDER BY app_name ASC";
@@ -83,9 +83,8 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     @Query(value = GET_RUN_TYPES_BY_CPU, nativeQuery = true)
     List<String> getRunTypesByCPU(String cpu);
 
-    @Query(value = GET_CPU_SELECTED, nativeQuery = true)
-    List<String> getCpuSelected(String appName, String cpu);
-
+    @Query(nativeQuery =true,value = GET_CPU_SELECTED)
+    List<String> getCpuSelected(String appName,  List<String> runTypes);
 
     @Query(value = GET_CPU_RES, nativeQuery = true)
     List<String> getCPU();

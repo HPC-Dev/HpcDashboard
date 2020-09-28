@@ -130,8 +130,12 @@ public class ResultService {
             {
                 result.setRunType(result.getRunType()+"_"+result.getSetting());
             }
+            else if(result.getRunType() != null){
+                result.setRunType(result.getRunType());
+            }
             else{
                 result.setRunType("baseline");
+
             }
 
             result.setResult(util.round(result.getResult(),4));
