@@ -234,7 +234,7 @@ public class ChartRestController {
             resList.add(res);
         }
 
-        Set<String> cpuKeySet = new HashSet<>();
+        Set<String> cpuKeySet = new LinkedHashSet<>();
         for(int i=0; i< resList.size();i++)
         {
             for(String s : resList.get(i).keySet()) {

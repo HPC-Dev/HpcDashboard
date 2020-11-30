@@ -11,36 +11,6 @@ $('#appDrop').on("change", function() {
     var value = $(this).val();
     if (value != '') {
 
-        $.getJSON("/runTypes", {
-                    appName: $(this).val(),
-                    ajax: 'true'
-                }, function(data) {
-                    var html = '<option value="" selected="true" disabled="disabled">-- RunType1 --</option>';
-                    var len = data.length;
-
-                    for (var i = 0; i < len; i++) {
-                        html += '<option value="' + data[i] + '">' +
-                            data[i] + '</option>';
-                    }
-                    html += '</option>';
-                    $('#typeDrop1').html(html);
-                });
-
-
-          $.getJSON("/runTypes", {
-                              appName: $(this).val(),
-                              ajax: 'true'
-                          }, function(data) {
-                              var html = '<option value="" selected="true" disabled="disabled">-- RunType2 --</option>';
-                              var len = data.length;
-                              for (var i = 0; i < len; i++) {
-                                  html += '<option value="' + data[i] + '">' +
-                                      data[i] + '</option>';
-                              }
-                              html += '</option>';
-                              $('#typeDrop2').html(html);
-                          });
-
 
         $.getJSON("/cpus", {
             appName: $(this).val(),
@@ -70,6 +40,37 @@ $('#appDrop').on("change", function() {
                     html += '</option>';
                     $('#cpuDrop2').html(html);
                 });
+
+                $.getJSON("/runTypes", {
+                                    appName: $(this).val(),
+                                    ajax: 'true'
+                                }, function(data) {
+                                    var html = '<option value="" selected="true" disabled="disabled">-- RunType1 --</option>';
+                                    var len = data.length;
+
+                                    for (var i = 0; i < len; i++) {
+                                        html += '<option value="' + data[i] + '">' +
+                                            data[i] + '</option>';
+                                    }
+                                    html += '</option>';
+                                    $('#typeDrop1').html(html);
+                                });
+
+
+                $.getJSON("/runTypes", {
+                                              appName: $(this).val(),
+                                              ajax: 'true'
+                                          }, function(data) {
+                                              var html = '<option value="" selected="true" disabled="disabled">-- RunType2 --</option>';
+                                              var len = data.length;
+                                              for (var i = 0; i < len; i++) {
+                                                  html += '<option value="' + data[i] + '">' +
+                                                      data[i] + '</option>';
+                                              }
+                                              html += '</option>';
+                                              $('#typeDrop2').html(html);
+                                          });
+
 
         $('#cpuDrop1').val('');
         $('#cpuDrop2').val('');

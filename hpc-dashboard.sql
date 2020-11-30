@@ -14,6 +14,9 @@ select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER B
 
 select DISTINCT bm_name from results where app_name="openfoam" ORDER BY nodes ASC;
 
+select * from average_result where app_name= "cfx" and cpu_sku IN ("7F72","7F52") and run_type IN ("baseline") and nodes =1 order by case cpu_sku when "7F72" then 1 when "7F52" then 2 end;
+
+
 select * from cpu_info;
 
 #UPDATE cpu_info SET cpu_sku = LOWER(cpu_sku) where id in (26,27,28,29);
@@ -30,6 +33,10 @@ select * from heat_map;
 select * from app_category;
 select * from results;
 select * from average_result;
+
+#delete from average_result where run_type="v195";
+
+#update average_result set run_type="baseline" where app_name="cfx";
 
 select DISTINCT isv from heat_map where category="Computational Fluid Dynamics" and cpu_sku="Rome64" and run_type="freq_2933";	
 
@@ -71,7 +78,7 @@ SELECT  * FROM  results WHERE app_name='cfx'and cpu="Milan64_3200" and run_type=
 
 SELECT  DISTINCT (bm_name) FROM  results WHERE app_name='abaqus'and cpu="Rome64_3200" and run_type="freq_2933";
 
-SELECT  DISTINCT LOWER(run_type) FROM  results WHERE app_name='cfx' ORDER BY run_type ASC;
+SELECT  DISTINCT LOWER(run_type) FROM  average_result WHERE app_name='cfx' and cpu_sku='6246' ORDER BY run_type ASC;
 
 select * from average_result where app_name= 'cfx' and cpu_sku like "Milan64%" and nodes =1 and run_type="freq_2933" ORDER BY bm_name;
 
