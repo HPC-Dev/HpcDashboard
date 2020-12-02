@@ -101,10 +101,12 @@ function getData() {
     cpu2 = $('#cpuDrop2')[0].value;
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
-
+     clearChart();
+     $('#tableNew').html('');
     if (app && cpu1 && cpu2 && type1 && type2) {
 
         $.getJSON("/avg/resultComparision/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
+
             var columnNames = [];
             var transformedData = [];
             data.bmName.forEach(element => columnNames.push(element));
@@ -127,10 +129,10 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
     var params = {};
     params.cpuList = cpuList;
     params.typeList = typeList;
-    if (app && cpu1 && cpu2) {
+    if (app && cpu1 && cpu2 && type1 && type2) {
         $.getJSON("/chart/result/" + app , $.param(params, true) , function(data) {
 
-            if(data.length >0){
+           if(data[0].datasets[0].value.length > 0 &&  data[0].datasets[1].value.length > 0){
             var label = data[0].labels;
 
             var chartdata = {
@@ -202,6 +204,10 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
                 options: chartOptions
             });
         }
+        else{
+         clearChart();
+         $('#tableNew').html("<p>No comparision data available</p>");
+        }
         });
     } else {
         clearChart();
@@ -212,6 +218,7 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
 
 function updateTable(columns, data, comment) {
     var table;
+    console.log(Object.keys(data).length);
     if (Object.keys(data).length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
         table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + comment + "</p>"

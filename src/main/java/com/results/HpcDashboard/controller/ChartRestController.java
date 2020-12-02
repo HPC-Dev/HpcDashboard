@@ -663,13 +663,14 @@ public class ChartRestController {
                 data = new TwoPartChartDataset();
                 res = new ArrayList<>();
                 for (AverageResult avg : list) {
-                    if (avg.getCpuSku().equals(cpus.get(0)) && avg.getRunType().equals(r)  ) {
+                    if (avg.getCpuSku().toLowerCase().equals(cpus.get(0).toLowerCase()) && avg.getRunType().toLowerCase().equals(r.toLowerCase())  ) {
                         res.add(avg.getAvgResult());
                     }
                 }
                 data.setCpuName(cpus.get(0)  +"_"+r);
                 data.setValue(res);
                 d.add(data);
+                mlr.setDatasets(d);
             }
 
         }
@@ -678,7 +679,7 @@ public class ChartRestController {
              data = new TwoPartChartDataset();
              res = new ArrayList<>();
             for (AverageResult avg : list) {
-                if (avg.getCpuSku().equals(c) && avg.getRunType().equals(s)  ) {
+                if (avg.getCpuSku().toLowerCase().equals(c.toLowerCase()) && avg.getRunType().toLowerCase().equals(s.toLowerCase())  ) {
                     res.add(avg.getAvgResult());
                 }
             }
@@ -687,10 +688,11 @@ public class ChartRestController {
 
             data.setValue(res);
             d.add(data);
+            mlr.setDatasets(d);
         }
 
         }
-        mlr.setDatasets(d);
+
         resultList.add(mlr);
         if (resultList == null) {
             return Collections.emptyList();

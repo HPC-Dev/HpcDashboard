@@ -191,6 +191,12 @@ public class Util {
         cpuGenMap.put("7262","Rome");
         cpuGenMap.put("7252","Rome");
         cpuGenMap.put("7232P","Rome");
+
+        cpuGenMap.put("7713","Milan");
+        cpuGenMap.put("7763","Milan");
+        cpuGenMap.put("7763_32C","Milan");
+
+
         cpuGenMap.put("6148","Skylake");
         cpuGenMap.put("8180","Skylake");
         cpuGenMap.put("6242R","Cascade");
