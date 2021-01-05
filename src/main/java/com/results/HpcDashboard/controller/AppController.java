@@ -99,12 +99,12 @@ public class AppController {
         return "result";
     }
 
-    @GetMapping("/part-comparision")
-    public String showDataComparision(Model model) {
+    @GetMapping("/part-comparison")
+    public String showDataComparison(Model model) {
 
         List<String> app_list = averageResultService.getApp();
         model.addAttribute("apps", app_list );
-        return "partComparision";
+        return "partComparison";
     }
 
     @GetMapping("/heatMap")
@@ -137,6 +137,14 @@ public class AppController {
             @RequestParam(value = "cpu", required = true) String cpu) {
 
         return averageResultService.getRunTypesByCPU(cpu);
+    }
+
+    @RequestMapping(value = "/runTypesByAPPCPU", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllrunTypesByAPPCPU(
+            @RequestParam(value = "appName", required = true) String appName, @RequestParam(value = "cpu", required = true) String cpu) {
+
+        return averageResultService.getRunTypesByAPPCPU(appName,cpu);
     }
 
     @GetMapping("/cpusSelected/{app_name}")

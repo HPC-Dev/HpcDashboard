@@ -1,4 +1,4 @@
-package com.results.HpcDashboard.dto.partComparision;
+package com.results.HpcDashboard.dto.partComparison;
 
 import lombok.Data;
 

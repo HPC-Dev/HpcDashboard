@@ -2,8 +2,8 @@ package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.ChartsResponse;
 import com.results.HpcDashboard.dto.multichart.*;
-import com.results.HpcDashboard.dto.partComparision.TwoPartChartDataset;
-import com.results.HpcDashboard.dto.partComparision.TwoPartChartResponse;
+import com.results.HpcDashboard.dto.partComparison.*;
+
 import com.results.HpcDashboard.dto.scatter.ScatterChartsResponse;
 import com.results.HpcDashboard.dto.scatter.ScatterTableResponse;
 import com.results.HpcDashboard.models.AverageResult;

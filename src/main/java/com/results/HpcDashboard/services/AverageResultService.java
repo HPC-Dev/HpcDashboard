@@ -209,6 +209,19 @@ public class AverageResultService {
         return runType_list;
     }
 
+    public List<String> getRunTypesByAPPCPU(String appName, String cpu) {
+
+        List<String> runType_list = null;
+        runType_list = averageResultRepo.getRunTypesByAPPCPU(appName, cpu);
+
+        if(runType_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return runType_list;
+    }
+
+
+
 
     public List<String> getCpuSelected(String appName,  List<String> runTypes) {
 

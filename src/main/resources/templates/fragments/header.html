@@ -15,34 +15,54 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item" th:classappend="${#request.requestURI == '/application' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/application}">Applications</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/heatMap' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/heatMap}">Heat Map</a></li>
 
-                    <li class="nav-item" th:classappend="${#request.requestURI == '/benchmark' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/benchmark}">Benchmarks</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/mChart' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/mChart}">Multi CPU Charts</a></li>
 
-                    <li class="nav-item" th:classappend="${#request.requestURI == '/cpu' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/cpu}">CPU</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/charts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/charts}">Single CPU Charts</a></li>
 
-                    <li class="nav-item" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="${#request.requestURI == '/result' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/result}">Result Form</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/dashboard' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a></li>
 
-                    <li class="nav-item" th:classappend="${#request.requestURI == '/dashboard' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/dashboard}">Dashboard</a></li>
+                    <!--                    <li class="nav-item" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="${#request.requestURI == '/result' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/result}">Result Form</a></li>-->
 
-                    <li class="nav-item dropdown" th:classappend="|${#request.requestURI == '/data' ? 'active':''} ${#request.requestURI == '/part-comparision' ? 'active':''} ${#request.requestURI == '/heatMap' ? 'active':''}|">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data</a>
+<!--                    <li class="nav-item dropdown" th:classappend="| ${#request.requestURI == '/part-comparison' ? 'active':''} ${#request.requestURI == '/heatMap' ? 'active':''}|">-->
+<!--                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data</a>-->
+<!--                        <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">-->
+
+<!--                            <a class="dropdown-item" href="#" th:href="@{/heatMap}" >Heat Map</a>-->
+<!--                            <a class="dropdown-item" href="#" th:href="@{/part-comparison}" >Part Comparison</a>-->
+<!--                        </div>-->
+<!--                    </li>-->
+
+<!--                    <li class="nav-item dropdown" th:classappend="|${#request.requestURI == '/charts' ? 'active':''} ${#request.requestURI == '/mChart' ? 'active':''}|" >-->
+<!--                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>-->
+<!--                        <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">-->
+<!--                            <a class="dropdown-item" href="#" th:href="@{/charts}" >Single CPU Charts </a>-->
+<!--                            <a class="dropdown-item" href="#" th:href="@{/mChart}" >Multi CPU Charts</a>-->
+<!--                        </div>-->
+<!--                    </li>-->
+
+
+                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                    <li class="nav-item dropdown" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="|${#request.requestURI == '/data' ? 'active':''} ${#request.requestURI == '/part-comparison' ? 'active':''}|" >
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
-                            <a class="dropdown-item" href="#" th:href="@{/heatMap}" >Heat Map</a>
-                            <a class="dropdown-item" href="#" th:href="@{/part-comparision}" >2 Part Comparision</a>
+                            <a class="dropdown-item" href="#" th:href="@{/part-comparison}">Part Comparison</a>
+
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown" th:classappend="|${#request.requestURI == '/charts' ? 'active':''} ${#request.requestURI == '/mChart' ? 'active':''}|" >
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Charts</a>
+                    <li class="nav-item dropdown" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="|${#request.requestURI == '/application' ? 'active':''} ${#request.requestURI == '/benchmark' ? 'active':''} ${#request.requestURI == '/cpu' ? 'active':''}|" >
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">WIP</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
-                            <a class="dropdown-item" href="#" th:href="@{/charts}" >Single CPU Charts </a>
-                            <a class="dropdown-item" href="#" th:href="@{/mChart}" >Multi CPU Charts</a>
+                            <a class="dropdown-item" href="#" th:href="@{/application}">Applications</a>
+                            <a class="dropdown-item" href="#" th:href="@{/benchmark}">Benchmarks</a>
+                            <a class="dropdown-item" href="#" th:href="@{/cpu}">CPU</a>
                         </div>
                     </li>
 
-                  <li class="nav-item" th:classappend="${#request.requestURI == '/logout' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/logout}">Logout</a></li>
+                    <li class="nav-item" th:classappend="${#request.requestURI == '/logout' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/logout}">Logout</a></li>
 
                 </ul>
             </div>

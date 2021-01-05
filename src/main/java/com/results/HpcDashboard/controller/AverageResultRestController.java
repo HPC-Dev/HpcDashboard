@@ -1,7 +1,7 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.heatMap.*;
-import com.results.HpcDashboard.dto.partComparision.CompareResult;
+import com.results.HpcDashboard.dto.partComparison.*;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
 import com.results.HpcDashboard.services.AverageResultService;
@@ -58,7 +58,7 @@ public class AverageResultRestController {
     }
 
 
-    @GetMapping("/resultComparision/{app_name}/{cpu1}/{cpu2}/{type1}/{type2}")
+    @GetMapping("/resultComparison/{app_name}/{cpu1}/{cpu2}/{type1}/{type2}")
     public CompareResult getAvgBySelectedCPU(@PathVariable("app_name") String app_name, @PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2, @PathVariable("type1") String type1, @PathVariable("type2") String type2) {
 
         CompareResult compareResult = null;

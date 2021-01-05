@@ -14,7 +14,7 @@ select DISTINCT LOWER(cpu_sku) from average_result where app_name="namd" ORDER B
 
 select DISTINCT bm_name from results where app_name="openfoam" ORDER BY nodes ASC;
 
-select * from average_result where app_name= "cfx" and cpu_sku IN ("7F72","7F52") and run_type IN ("baseline") and nodes =1 order by case cpu_sku when "7F72" then 1 when "7F52" then 2 end;
+select * from average_result where app_name= "cfx" and cpu_sku IN ("7F72","7F52") and run_type IN ("baseline") and nodes =1 order by case cpu_sku when "7F52" then 1 when "7F72" then 2 end;
 
 
 select * from cpu_info;
@@ -29,10 +29,14 @@ show tables;
 
 #drop table app_category;
 
+
+
 select * from heat_map;
 select * from app_category;
 select * from results;
-select * from average_result;
+select * from average_result;		
+	
+select * from average_result where app_name= "cfx" and cpu_sku IN ("7F52","7F72","8268") and run_type IN ("baseline") and nodes =1 ORDER BY avg_result;
 
 #delete from average_result where run_type="v195";
 
