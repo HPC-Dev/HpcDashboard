@@ -32,11 +32,10 @@ public interface AverageResultRepo extends DataTablesRepository<AverageResult, A
     public static final String GET_APP_CPU = "select DISTINCT LOWER(app_name) from average_result where cpu_sku=:cpu ORDER BY app_name ASC;";
     public static final String GET_APP_TYPE = "select DISTINCT LOWER(app_name) from average_result where cpu_sku=:cpu and run_type=:runType ORDER BY app_name ASC;";
     public static final String GET_SELECTED_CPU_RES_BY_AVG = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and nodes =1 ORDER BY bm_name";
-    public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 and run_type=:runType ORDER BY bm_name";
+    public static final String GET_COMP_CPU_RES = "select * from average_result where app_name= :app_name and cpu_sku =:cpu and nodes =1 and run_type=:runType ORDER BY avg_result";
     public static final String GET_SELECTED_BM_CPU = "select DISTINCT bm_name from average_result where app_name=:app_name and cpu_sku=:cpu ORDER BY bm_name ASC";
     public static final String GET_SELECTED_BM = "select DISTINCT bm_name from average_result where app_name=:app_name ORDER BY bm_name ASC";
     public static final String Job_EXISTS ="select count(*) from results where job_id=:jobId";
-//   public static final String GET_SELECTED_CPU_RES_BY_AVG_New_ASC = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and run_type IN (:runTypes) and nodes =1 ORDER BY bm_name,avg_result";
     public static final String GET_SELECTED_CPU_RES_BY_AVG_New_ASC = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus) and run_type IN (:runTypes) and nodes =1 ORDER BY avg_result";
     public static final String GET_SELECTED_CPU_RES_BY_AVG_New_DESC = "select * from average_result where app_name= :app_name and cpu_sku IN (:cpus)and run_type IN (:runTypes) and nodes =1 ORDER BY avg_result DESC";
 

@@ -66,23 +66,35 @@ public class AverageResultRestController {
         List<AverageResult> list1 = averageResultService.getCompDataBySelectedCPU(app_name, cpu1, type1);
         List<AverageResult> list2 = averageResultService.getCompDataBySelectedCPU(app_name, cpu2 ,type2);
 
+        Set<String> bms = new LinkedHashSet<>();
+        bms.add("");
+        for (int i = 0; i < list1.size(); i++) {
+            for (int j = 0; j < list2.size(); j++) {
+                if (list1.get(i).getBmName().equals(list2.get(j).getBmName())) {
+                    bms.add(list1.get(i).getBmName());
+                }
+            }
+        }
+
+
+
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
             return compareResult;
 
 
-        Set<String> bms = new LinkedHashSet<>();
-        bms.add("");
-
-        if (list2.size() > list1.size()){
-            for (AverageResult avg : list1) {
-                bms.add(avg.getBmName());
-            }
-        }
-        else{
-            for (AverageResult avg : list2) {
-                bms.add(avg.getBmName());
-            }
-        }
+//        Set<String> bms = new LinkedHashSet<>();
+//        bms.add("");
+//
+//        if (list2.size() > list1.size()){
+//            for (AverageResult avg : list1) {
+//                bms.add(avg.getBmName());
+//            }
+//        }
+//        else{
+//            for (AverageResult avg : list2) {
+//                bms.add(avg.getBmName());
+//            }
+//        }
 
         Map<String,Double> result1 = new LinkedHashMap<>();
         Map<String,Double> result2 = new LinkedHashMap<>();

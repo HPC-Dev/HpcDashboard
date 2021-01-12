@@ -213,9 +213,28 @@ public class ChartRestController {
 
         for (AverageResult avg : list) {
             cpu.add(avg.getCpuSku());
-            bms.add(avg.getBmName());
         }
 
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(i).getBmName().equals(list.get(j).getBmName())) {
+                    bms.add(list.get(i).getBmName());
+                }
+            }
+        }
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            if(bms.contains(list.get(i).getBmName()))
+            {
+                continue;
+            }
+            else{
+                list.remove(i);
+                i--;
+            }
+
+        }
 
         List<Map<String, Double>> resList = new ArrayList<>();
 
@@ -267,7 +286,11 @@ public class ChartRestController {
           List<Double> firstResult = new ArrayList<>();
 
           List<Double> temp =null;
-
+//        String firstCPU = null;
+//          if(cpulist.size() >0)
+//              firstCPU = cpulist.get(0);
+//          else
+//              return multiChartResponse;
         String firstCPU = cpulist.get(0);
 
         for(Map<String, Double> e : newResList){
@@ -352,8 +375,30 @@ public class ChartRestController {
 
         for (AverageResult avg : list) {
             cpu.add(avg.getCpuSku()+"_"+avg.getRunType());
-            bms.add(avg.getBmName());
         }
+
+
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(i).getBmName().equals(list.get(j).getBmName())) {
+                    bms.add(list.get(i).getBmName());
+                }
+            }
+        }
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            if(bms.contains(list.get(i).getBmName()))
+            {
+                continue;
+            }
+            else{
+                list.remove(i);
+                i--;
+            }
+
+        }
+
 
         List<String> bmlist = bms.stream().collect(Collectors.toList());
 
@@ -638,9 +683,29 @@ public class ChartRestController {
 
         cpu.add(cpus.get(0));
         cpu.add(cpus.get(1));
-        for (AverageResult avg : list) {
-            bms.add(avg.getBmName());
+
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(i).getBmName().equals(list.get(j).getBmName())) {
+                    bms.add(list.get(i).getBmName());
+                }
+            }
         }
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            if(bms.contains(list.get(i).getBmName()))
+            {
+                continue;
+            }
+            else{
+                list.remove(i);
+                i--;
+            }
+
+        }
+
+
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
         } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
