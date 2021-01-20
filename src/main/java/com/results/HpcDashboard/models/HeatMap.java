@@ -41,5 +41,7 @@ public class HeatMap {
     @Id
     String runType;
 
+    int runCount;
+
 }
 

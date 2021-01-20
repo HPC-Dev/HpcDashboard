@@ -27,20 +27,31 @@ select DISTINCT cpu_sku from average_result where app_name="abaqus" and nodes=1 
 
 show tables;
 
+
 #drop table app_category;
 
+
+select * from average_result where app_name= "lsdyna" and cpu_sku IN ("7742","7763") and run_type IN ("baseline","sles12sp5_300a_edc") and nodes =1 ORDER BY avg_result DESC;
 
 
 select * from heat_map;
 select * from app_category;
 select * from results;
+select * from run_types;
+
 select * from average_result;		
-	
+select * from run_types;
 select * from average_result where app_name= "cfx" and cpu_sku IN ("7F52","7F72","8268") and run_type IN ("baseline") and nodes =1 ORDER BY avg_result;
+
+select * from average_result where cpu_sku="7763" and run_type="sles12sp5_300a_edc" and nodes=1 and category is not NULL;
+
+select * from heat_map where cpu_sku="7763"  and nodes=1 and category is not NULL;
 
 #delete from average_result where run_type="v195";
 
-#update average_result set run_type="baseline" where app_name="cfx";
+#update heat_map set category="FEA Explicit"  where bm_name="ls-odb-10m";
+#update heat_map set isv="LSTC"  where bm_name="ls-odb-10m";
+
 
 select DISTINCT isv from heat_map where category="Computational Fluid Dynamics" and cpu_sku="Rome64" and run_type="freq_2933";	
 

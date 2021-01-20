@@ -57,6 +57,8 @@ public class RunType {
 
     String iommu;
 
+    String edc;
+
     String other;
 
 }

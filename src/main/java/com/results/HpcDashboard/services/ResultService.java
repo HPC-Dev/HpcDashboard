@@ -72,7 +72,7 @@ public class ResultService {
                     double coefficientOfVariation = util.resultCoefficientOfVariation(list);
                     int runCount = list.size();
                     averageResultService.updateAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), avgResult, coefficientOfVariation, runCount, j.getRunType());
-                    heatMapService.updateHeatResult(j.getCpu(), j.getNodes(), j.getBmName().trim().toLowerCase(), avgResult,  j.getRunType());
+                    heatMapService.updateHeatResult(j.getCpu(), j.getNodes(), j.getBmName().trim().toLowerCase(), avgResult,runCount, j.getRunType());
 
                 } else {
                     averageResultService.deleteAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), j.getRunType());
@@ -190,20 +190,20 @@ public class ResultService {
             if(heatMapResult == null){
                 HeatMap heatResult;
                 if(result.getRunType().equals("baseline")) {
-                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).runType("baseline") .build();
+                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType("baseline").build();
                 }
                 else {
-                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).runType(result.getRunType()).build();
+                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cpuSku(result.getCpu()).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType(result.getRunType()).build();
                 }
                 heatMapService.insertHeatResult(heatResult);
             }
 
             else{
                 if(result.getRunType().equals("baseline")) {
-                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult, "baseline");
+                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult, runCount, "baseline");
                 }
                 else{
-                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,  result.getRunType());
+                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult, runCount,  result.getRunType());
                 }
             }
         }
