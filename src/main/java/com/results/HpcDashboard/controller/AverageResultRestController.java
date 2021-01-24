@@ -85,20 +85,6 @@ public class AverageResultRestController {
             return compareResult;
 
 
-//        Set<String> bms = new LinkedHashSet<>();
-//        bms.add("");
-//
-//        if (list2.size() > list1.size()){
-//            for (AverageResult avg : list1) {
-//                bms.add(avg.getBmName());
-//            }
-//        }
-//        else{
-//            for (AverageResult avg : list2) {
-//                bms.add(avg.getBmName());
-//            }
-//        }
-
         Map<String,Double> result1 = new LinkedHashMap<>();
         Map<String,Double> result2 = new LinkedHashMap<>();
 
@@ -180,6 +166,50 @@ public class AverageResultRestController {
 
     }
 
+    public static List<List<HeatMap>> filterLists(List<HeatMap> list1,List<HeatMap> list2)
+    {
+        List<List<HeatMap>> filteredResult = new ArrayList<>();
+        Set<String> bmsList = new LinkedHashSet<>();
+        for (int i = 0; i < list1.size(); i++) {
+            for (int j = 0; j < list2.size(); j++) {
+                if (list1.get(i).getBmName().equals(list2.get(j).getBmName())) {
+                    bmsList.add(list1.get(i).getBmName());
+                }
+            }
+        }
+
+        for (int i = 0; i < list1.size(); i++)
+        {
+            if(bmsList.contains(list1.get(i).getBmName()))
+            {
+                continue;
+            }
+            else{
+                list1.remove(i);
+                i--;
+            }
+
+        }
+
+        for (int i = 0; i < list2.size(); i++)
+        {
+            if(bmsList.contains(list2.get(i).getBmName()))
+            {
+                continue;
+            }
+            else{
+                list2.remove(i);
+                i--;
+            }
+
+        }
+
+        filteredResult.add(list1);
+        filteredResult.add(list2);
+
+    return filteredResult;
+    }
+
 
     @GetMapping("/heatMap/{cpu1}/{cpu2}/{type1}/{type2}")
     public HeatMapOutput getHeatMapData(@PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2, @PathVariable("type1") String type1, @PathVariable("type2") String type2) {
@@ -193,38 +223,14 @@ public class AverageResultRestController {
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0 )
             return heatMapOutput;
 
+        Set<String> bmsList = new LinkedHashSet<>();
 
-        if(list1.size() < list2.size()) {
-            Set<String> bms = list1.stream()
-                    .map(HeatMap::getBmName)
-                    .collect(Collectors.toSet());
-             list2 = list2.stream()
-                    .filter(result -> bms.contains(result.getBmName()))
-                    .collect(Collectors.toList());
+        List<List<HeatMap>> filteredLists = null;
+        filteredLists = filterLists(list1,list2);
 
-            Set<String> bms1 = list2.stream()
-                    .map(HeatMap::getBmName)
-                    .collect(Collectors.toSet());
-            list1 = list1.stream()
-                    .filter(result -> bms1.contains(result.getBmName()))
-                    .collect(Collectors.toList());
-        }
-        else if(list1.size() > list2.size()){
-            Set<String> bms = list2.stream()
-                    .map(HeatMap::getBmName)
-                    .collect(Collectors.toSet());
-            list1 = list1.stream()
-                    .filter(result -> bms.contains(result.getBmName()))
-                    .collect(Collectors.toList());
+        list1 = filteredLists.get(0);
+        list2 = filteredLists.get(1);
 
-            Set<String> bms1 = list1.stream()
-                    .map(HeatMap::getBmName)
-                    .collect(Collectors.toSet());
-            list2 = list2.stream()
-                    .filter(result -> bms1.contains(result.getBmName()))
-                    .collect(Collectors.toList());
-
-   }
 
         LinkedHashSet<String> category = list1.stream()
                 .map(HeatMap::getCategory)
@@ -258,71 +264,74 @@ public class AverageResultRestController {
             List<HeatMap> list3 = heatMapService.getHeatMapData(cpu1,type1,cat);
             List<HeatMap> list4 = heatMapService.getHeatMapData(cpu2,type2,cat);
 
+            filteredLists = filterLists(list3,list4);
 
-            if(list3.size() < list4.size()) {
-                LinkedHashSet<String> isv = list4.stream()
-                        .map(HeatMap::getIsv)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list3 = list3.stream()
-                        .filter(result -> isv.contains(result.getIsv()))
-                        .collect(Collectors.toList());
+            list3 = filteredLists.get(0);
+            list4 = filteredLists.get(1);
 
-                LinkedHashSet<String> isv1 = list4.stream()
-                        .map(HeatMap::getIsv)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list3 = list3.stream()
-                        .filter(result -> isv1.contains(result.getIsv()))
-                        .collect(Collectors.toList());
-            }
-            else if(list3.size() > list4.size()){
-                LinkedHashSet<String> isv = list4.stream()
-                        .map(HeatMap::getIsv)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list3 = list3.stream()
-                        .filter(result -> isv.contains(result.getIsv()))
-                        .collect(Collectors.toList());
-
-                LinkedHashSet<String> isv1 = list3.stream()
-                        .map(HeatMap::getIsv)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list4 = list4.stream()
-                        .filter(result -> isv1.contains(result.getIsv()))
-                        .collect(Collectors.toList());
-
-            }
-
-            if(list3.size() < list4.size()) {
-                LinkedHashSet<String> bms = list3.stream()
-                        .map(HeatMap::getBmName)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list4 = list4.stream()
-                        .filter(result -> bms.contains(result.getBmName()))
-                        .collect(Collectors.toList());
-
-                LinkedHashSet<String> bms1 = list4.stream()
-                        .map(HeatMap::getBmName)
-                        .collect(Collectors.toCollection( LinkedHashSet::new));
-                list3 = list3.stream()
-                        .filter(result -> bms1.contains(result.getBmName()))
-                        .collect(Collectors.toList());
-            }
-            else if(list3.size() > list4.size()){
-                Set<String> bms = list4.stream()
-                        .map(HeatMap::getBmName)
-                        .collect(Collectors.toSet());
-                list3 = list3.stream()
-                        .filter(result -> bms.contains(result.getBmName()))
-                        .collect(Collectors.toList());
-
-                Set<String> bms1 = list3.stream()
-                        .map(HeatMap::getBmName)
-                        .collect(Collectors.toSet());
-                list4 = list4.stream()
-                        .filter(result -> bms1.contains(result.getBmName()))
-                        .collect(Collectors.toList());
-
-            }
-
+//            if(list3.size() < list4.size()) {
+//                LinkedHashSet<String> isv = list4.stream()
+//                        .map(HeatMap::getIsv)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list3 = list3.stream()
+//                        .filter(result -> isv.contains(result.getIsv()))
+//                        .collect(Collectors.toList());
+//
+//                LinkedHashSet<String> isv1 = list4.stream()
+//                        .map(HeatMap::getIsv)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list3 = list3.stream()
+//                        .filter(result -> isv1.contains(result.getIsv()))
+//                        .collect(Collectors.toList());
+//            }
+//            else if(list3.size() > list4.size()){
+//                LinkedHashSet<String> isv = list4.stream()
+//                        .map(HeatMap::getIsv)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list3 = list3.stream()
+//                        .filter(result -> isv.contains(result.getIsv()))
+//                        .collect(Collectors.toList());
+//
+//                LinkedHashSet<String> isv1 = list3.stream()
+//                        .map(HeatMap::getIsv)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list4 = list4.stream()
+//                        .filter(result -> isv1.contains(result.getIsv()))
+//                        .collect(Collectors.toList());
+//
+//            }
+//
+//            if(list3.size() < list4.size()) {
+//                LinkedHashSet<String> bms = list3.stream()
+//                        .map(HeatMap::getBmName)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list4 = list4.stream()
+//                        .filter(result -> bms.contains(result.getBmName()))
+//                        .collect(Collectors.toList());
+//
+//                LinkedHashSet<String> bms1 = list4.stream()
+//                        .map(HeatMap::getBmName)
+//                        .collect(Collectors.toCollection( LinkedHashSet::new));
+//                list3 = list3.stream()
+//                        .filter(result -> bms1.contains(result.getBmName()))
+//                        .collect(Collectors.toList());
+//            }
+//            else if(list3.size() > list4.size()){
+//                Set<String> bms = list4.stream()
+//                        .map(HeatMap::getBmName)
+//                        .collect(Collectors.toSet());
+//                list3 = list3.stream()
+//                        .filter(result -> bms.contains(result.getBmName()))
+//                        .collect(Collectors.toList());
+//
+//                Set<String> bms1 = list3.stream()
+//                        .map(HeatMap::getBmName)
+//                        .collect(Collectors.toSet());
+//                list4 = list4.stream()
+//                        .filter(result -> bms1.contains(result.getBmName()))
+//                        .collect(Collectors.toList());
+//
+//            }
 
             Set<String> isv = new LinkedHashSet<>();
             for (HeatMap heatMap : list3) {
