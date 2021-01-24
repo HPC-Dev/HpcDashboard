@@ -52,7 +52,7 @@ $('#appDrop').on("change", function() {
 //        $("#type1").hide();
 //        $("#type2").hide();
         clearChart();
-        $('#tableNew').html('');
+        clearHtml();
     }
 });
 
@@ -106,7 +106,7 @@ function getRunType1() {
     }
 //    $('#typeDrop1').val('');
     clearChart();
-    $('#tableNew').html('');
+    clearHtml();
 
 }
 
@@ -149,7 +149,8 @@ function getRunType2() {
         });
     }
 //    $('#typeDrop2').val('');
-    $('#tableNew').html('');
+
+    clearHtml();
     clearChart();
 
 }
@@ -157,6 +158,12 @@ function getRunType2() {
 function clearChart() {
     $('#multiBarChart').remove();
     $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
+}
+
+function clearHtml() {
+    $('#tableNew').html('');
+       $('#footnote').hide();
+       $('.collapse').collapse('hide');
 }
 
 function getData() {
@@ -183,8 +190,8 @@ function getData() {
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
     clearChart();
-    $('#tableNew').html('');
-    if (app && cpu1 && cpu2 && type1 && type2) {
+    clearHtml();
+    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1===cpu2 && type1===type2)) {
 
         $.getJSON("/avg/resultComparison/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
 
@@ -194,8 +201,9 @@ function getData() {
             data.resultData.forEach(element => transformedData.push(element));
             updateTable(columnNames, transformedData, data.comment);
         });
-    } else {
-        $('#tableNew').html('');
+    }
+    else {
+        clearHtml();
     }
     getMultiChartData(app, cpu1, cpu2, type1, type2);
 }
@@ -210,10 +218,11 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
     var params = {};
     params.cpuList = cpuList;
     params.typeList = typeList;
-    if (app && cpu1 && cpu2 && type1 && type2) {
+    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1===cpu2 && type1===type2)) {
         $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
 
-            if (data[0].datasets[0].value.length > 0 && data[0].datasets[1].value.length > 0) {
+
+            if (data.length >0 && data[0].datasets[0].value.length > 0 && data[0].datasets[1].value.length > 0) {
                 var label = data[0].labels;
 
                 var chartdata = {
@@ -290,6 +299,8 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
                 });
             } else {
                 clearChart();
+                $('#footnote').hide();
+                $('.collapse').collapse('hide');
                 $('#tableNew').html("<p>No comparison data available</p>");
             }
         });
@@ -305,7 +316,11 @@ function updateTable(columns, data, comment) {
     if (Object.keys(data).length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
         table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" + "*" + comment + "</p>"
+
+        $('#footnote').show();
     } else {
+        $('#footnote').hide();
+        $('.collapse').collapse('hide');
         table = "<p>No data available</p>";
     }
 

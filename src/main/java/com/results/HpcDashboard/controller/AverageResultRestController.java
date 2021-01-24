@@ -76,6 +76,9 @@ public class AverageResultRestController {
             }
         }
 
+        if(bms.size() <2 )
+            return compareResult;
+
 
 
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)

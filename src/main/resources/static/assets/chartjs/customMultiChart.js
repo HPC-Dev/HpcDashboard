@@ -9,8 +9,8 @@ $('#clearButton').on('click', function(){
 $('input[type=checkbox]').prop('checked',false);
 
 clearChart();
-$('#tableNew').html('');
 $("#clear").hide();
+clearHtml();
 });
 
 $('#appDrop').on("change", function() {
@@ -19,6 +19,8 @@ $('#appDrop').on("change", function() {
     var value = $(this).val();
     $('#checkbox').empty();
     $('#typeCheckBox').empty();
+    $('#footnote').hide();
+    $('.collapse').collapse('hide')
      $.getJSON("/runTypes", {
             appName: value,
             ajax: 'true'
@@ -47,37 +49,16 @@ $('#appDrop').on("change", function() {
          });
 
 
-//    var runTypes =[];
-//    $("#typeCheckBox input:checked").each(function() {
-//                runTypes.push($(this).val());
-//    });
-//
-//     var typeParams = {};
-//     params.runTypes = runTypes;
-
-//    $.getJSON("/cpus", {
-//        appName: value,
-//        ajax: 'true'
-//    }, function(data) {
-//        var len = data.length;
-//        var html = '';
-//        for (var i = 0; i < len; i++) {
-//            html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
-//            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
-//                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
-//            html += '</div>';
-//        }
-//        $('#checkbox').append(html);
-//
-//    });
-
     clearChart();
-    $('#tableNew').html('');
+    clearHtml();
+
 });
 
 
 function runTypeCheckBoxChange() {
  $('#checkbox').empty();
+ $('#footnote').hide();
+ $('.collapse').collapse('hide')
  var app = $('#appDrop')[0].value;
  var runTypes =[];
     if(flag == 1)
@@ -113,6 +94,8 @@ function runTypeCheckBoxChange() {
   else{
   $("#checkbox").hide();
   $("#clear").hide();
+  $('#footnote').hide();
+  $('.collapse').collapse('hide')
   }
 checkBoxChange();
 }
@@ -124,6 +107,7 @@ function checkBoxChange() {
  $("#cpuCheckBox input:checked").each(function() {
             cpuList.push($(this).val());
         });
+
 
        if(flag === 1)
         {
@@ -137,7 +121,8 @@ function checkBoxChange() {
 
     if( (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1) )
     {
-        var params = {};
+
+       var params = {};
         params.cpuList = cpuList;
 
         var typeParams = {};
@@ -155,12 +140,11 @@ function checkBoxChange() {
           //var BORDER_COLORS = ['','','','','','','rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', '', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
         function getMultiChartData() {
+
             getData();
             var app = $('#appDrop')[0].value;
             if (app && (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1)) {
-
                 $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
-                    console.log(data);
                     var label = data.cpus;
                     if(data.dataset[0].value.length >1 ){
                     if(data.dataset.length >1){
@@ -205,8 +189,6 @@ function checkBoxChange() {
                                             };
                                         })
                                     };
-
-
                     }
 
                     var chartOptions = {
@@ -280,15 +262,14 @@ function checkBoxChange() {
                 }
                 else{
                   clearChart();
-                   $('#tableNew').html('');
-
+                   clearHtml();
                 }
                 });
 
             }
             else{
                clearChart();
-               $('#tableNew').html('');
+               clearHtml();
             }
         }
 
@@ -323,10 +304,11 @@ function checkBoxChange() {
 
                  if(data.scalingResultData.length >1){
                     updateTable(data.nodeLabel, data.scalingResultData);
+                    $('#footnote').show();
                  }
                 });
             } else {
-                $('#tableNew').html('');
+                clearHtml();
             }
         }
 
@@ -392,10 +374,17 @@ function checkBoxChange() {
     }
     else{
         clearChart();
-        $('#tableNew').html('');
+        clearHtml();
     }
 
 }
+
+function clearHtml() {
+    $('#tableNew').html('');
+    $('#footnote').hide();
+    $('.collapse').collapse('hide');
+}
+
 
 function clearChart() {
     $('#multiBarChart').remove();

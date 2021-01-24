@@ -7,11 +7,18 @@ var cpu1;
 var cpu2;
 var app;
 
+function clearHtml()
+{
+$('#heading').empty();
+ $('#footnote').hide();
+$('.collapse').collapse('hide')
+}
+
 
 $('#cpuDrop1').on("change", function() {
     var value = $(this).val();
 // $("#type1").show();
- $('#heading').empty();
+ clearHtml();
  $('#tableNew').html('');
     if (value != '') {
      $.getJSON("/runTypesByCPU", {
@@ -41,7 +48,7 @@ $('#cpuDrop1').on("change", function() {
 
 $('#cpuDrop2').on("change", function() {
 var value = $(this).val();
- $('#heading').empty();
+ clearHtml();
 // $("#type2").show();
  $('#tableNew').html('');
     if (value != '') {
@@ -72,15 +79,16 @@ $("#type2").on("change", getData);
 
 
 function getData() {
-     $('#heading').empty();
-     $('#tableNew').html('');
+    clearHtml();
+    $('#tableNew').html('');
+
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
 
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
 
-    if (cpu1 && cpu2 && type1 && type2) {
+    if (cpu1 && cpu2 && type1 && type2 && !(cpu1===cpu2 && type1===type2)) {
     $.getJSON("/avg/heatMap/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
         if(data.heatMapResults != null && data.heatMapResults.length > 1){
          updateTable(data.columns, data.heatMapResults);
@@ -91,6 +99,7 @@ function getData() {
         }
     });
     } else {
+    clearHtml();
     $('#tableNew').html('');
     }
 
@@ -105,10 +114,11 @@ function updateTable(columns, data, comment) {
          var heading = "<p style='font-weight: bold;font-size:15px;text-align:left;font-family:verdana;'>" +  cpu1 + '_'+ type1 + ' vs ' + cpu2 + '_' + type2 + "</p>"
          $('#heading').append(heading);
          $('#heading').show();
+         $('#footnote').show();
 
         table = "<table class='table table-responsive '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
     } else {
-     $('#heading').empty();
+        clearHtml();
         table = "<p>No data available</p>";
     }
 

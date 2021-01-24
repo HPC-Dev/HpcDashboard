@@ -223,6 +223,9 @@ public class ChartRestController {
             }
         }
 
+        if(bms.size() <2)
+            return null;
+
         for (int i = 0; i < list.size(); i++)
         {
             if(bms.contains(list.get(i).getBmName()))
@@ -373,11 +376,6 @@ public class ChartRestController {
         Set<String> cpu = new LinkedHashSet<>();
         Set<String> bms = new LinkedHashSet<>();
 
-        for (AverageResult avg : list) {
-            cpu.add(avg.getCpuSku()+"_"+avg.getRunType());
-        }
-
-
         for (int i = 0; i < list.size(); i++) {
             for (int j = i + 1; j < list.size(); j++) {
                 if (list.get(i).getBmName().equals(list.get(j).getBmName())) {
@@ -385,6 +383,9 @@ public class ChartRestController {
                 }
             }
         }
+
+        if(bms.size() <2)
+            return multiChartTableResponse;
 
         for (int i = 0; i < list.size(); i++)
         {
@@ -399,6 +400,9 @@ public class ChartRestController {
 
         }
 
+        for (AverageResult avg : list) {
+            cpu.add(avg.getCpuSku()+"_"+avg.getRunType());
+        }
 
         List<String> bmlist = bms.stream().collect(Collectors.toList());
 
@@ -691,6 +695,11 @@ public class ChartRestController {
                 }
             }
         }
+
+        if(bms.size() <2 )
+            return resultList;
+
+
 
         for (int i = 0; i < list.size(); i++)
         {

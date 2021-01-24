@@ -85,6 +85,55 @@
         </div>
 
 
+    <p id="footnote" style="display:none;">
+        <a  data-toggle="collapse" style="text-decoration:none;color: black;font-weight: bold;" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >
+            <i class="fa fa-fw fa-plus"></i>   Footnotes:
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <p>Configuration information for performance data:</p>
+            <ul>
+                <li> All Rome testing performed on RHEL 7.x with perf determinism.</li>
+                <ul>
+                    <li> Exception:  Abaqus Explicit and All open-source codes (e.g. WRF) are run on RHEL8.3 for 7742.</li>
+                </ul>
+                <ul>
+                <li> Exception:  Fluent, CFX, Star-CCM+, and LS-DYNA were run on SLES 12 SP5 for 7742.</li>
+                </ul>
+            </ul>
+            <ul>
+                <li> All Milan testing performed on SLES 12 SP5 with power determinism.</li>
+                <ul>
+                    <li> Exception:  Abaqus Explicit and All open-source codes (e.g. WRF) are run on RHEL8.3 for all Milan CPUs.</li>
+                </ul>
+            </ul>
+
+            <ul>
+                <li> All Intel testing performed on SLES 12 SP5.</li>
+                <ul>
+                <li> Exception:  WRF was run on RHEL 8.3 for Intel processors.</li>
+                </ul>
+            </ul>
+
+            <ul>
+                <li> All AMD Processors were run at their default TDP.</li>
+                <ul>
+                    <li> Exception:  7742 was configured to 240W.</li>
+                </ul>
+                <ul>
+                    <li>  Exception:  7763 and 75F3 were configured to 300amps.</li>
+                </ul>
+            </ul>
+
+            <ul>
+                <li> Application versions may vary between Naples, Rome, and Milan.</li>
+            </ul>
+
+        </div>
+    </div>
+
+
 </div>
 
 
