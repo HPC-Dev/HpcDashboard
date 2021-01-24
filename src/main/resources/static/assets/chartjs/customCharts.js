@@ -8,30 +8,16 @@ var BACKGROUND_COLORS_NEW = ['rgb(19,91,105)','rgb(21,104,121)','rgb(20,116,132)
 $('#cpuDrop').change(cpuChange);
 $('#typeDrop').change(typeChange);
 $('#appDrop').change(appChange);
-var typeVal;
-var flag;
 
 function cpuChange() {
   cpu = $('#cpuDrop')[0].value;
     if (cpu) {
+        $("#type").show();
 
         $.getJSON("/runTypesByCPU", {
             cpu: cpu,
             ajax: 'true'
         }, function(data) {
-
-            if(data.length > 1)
-            {
-            flag=1;
-            $("#type").show();
-            }
-            else{
-            $("#type").hide();
-            flag=0;
-            typeVal = data[0];
-            typeChange();
-            }
-
             var html = '<option value="" selected="true" disabled="disabled">-- Run Type --</option>';
             var len = data.length;
             for (var i = 0; i < len; i++) {
@@ -51,14 +37,8 @@ function cpuChange() {
 
 function typeChange() {
     cpu = $('#cpuDrop')[0].value;
-
-    if(flag == 1)
-    {
     type = $('#typeDrop')[0].value;
-    }
-    else{
-       type = typeVal;
-       }
+
     if (cpu && type) {
         $("#app").show();
         $.getJSON("/appsByType", {
@@ -116,13 +96,7 @@ function clearChart() {
 function appChange() {
     clearChart();
     var app = $('#appDrop')[0].value;
-    if(flag == 1)
-        {
-        type = $('#typeDrop')[0].value;
-        }
-    else{
-        type = typeVal;
-        }
+    var type = $('#typeDrop')[0].value;
 
     var cpu = $('#cpuDrop')[0].value;
 
@@ -200,14 +174,7 @@ $("#option2")
 function getNodeChartData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
-        if(flag == 1)
-            {
-            type = $('#typeDrop')[0].value;
-            }
-        else{
-            type = typeVal;
-            }
-
+    var type = $('#typeDrop')[0].value;
 
     var node = 1;
     if (app && cpu && node && type) {
@@ -321,14 +288,7 @@ function getRandomColorHex() {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
-        if(flag == 1)
-            {
-            type = $('#typeDrop')[0].value;
-            }
-        else{
-            type = typeVal;
-            }
-
+    var type = $('#typeDrop')[0].value;
 
     if (app && cpu && type) {
 
@@ -440,13 +400,7 @@ function getBmChartData() {
 
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
-        if(flag == 1)
-            {
-            type = $('#typeDrop')[0].value;
-            }
-        else{
-            type = typeVal;
-            }
+    var type = $('#typeDrop')[0].value;
 
     getData();
     if (app && cpu && type) {

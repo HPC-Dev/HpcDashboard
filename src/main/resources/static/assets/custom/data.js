@@ -6,23 +6,11 @@ $('#typeDrop').change(typeChange);
 $('#cpuDrop').on("change", function() {
     cpu = $('#cpuDrop')[0].value;
     if (cpu) {
+     $("#type").show();
         $.getJSON("/runTypesByCPU", {
             cpu: cpu,
             ajax: 'true'
         }, function(data) {
-
-              if(data.length > 1)
-              {
-               flag=1;
-              $("#type").show();
-               }
-               else{
-              $("#type").hide();
-              flag=0;
-              typeVal = data[0];
-              typeChange();
-              }
-
             var html = '<option value="" selected="true" disabled="disabled">-- Run Type --</option>';
             var len = data.length;
             for (var i = 0; i < len; i++) {
@@ -54,13 +42,8 @@ $('#cpuDrop').on("change", function() {
 function typeChange() {
 
     cpu = $('#cpuDrop')[0].value;
-    if(flag == 1)
-       {
-       type = $('#typeDrop')[0].value;
-       }
-       else{
-          type = typeVal;
-          }
+    type = $('#typeDrop')[0].value;
+
     if (cpu && type) {
         $("#app").show();
         $.getJSON("/appsByType", {
@@ -101,13 +84,7 @@ function findCpuCore(cpu) {
 function getData() {
     var cpu = $('#cpuDrop')[0].value;
     var app = $('#appDrop')[0].value;
-     if(flag == 1)
-        {
-        runType = $('#typeDrop')[0].value;
-        }
-        else{
-        runType = typeVal;
-       }
+    var runType = $('#typeDrop')[0].value;
 
     var comment;
     if (app && cpu && runType) {

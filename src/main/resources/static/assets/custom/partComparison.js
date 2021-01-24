@@ -3,7 +3,6 @@ var BACKGROUND_COLORS = ['rgb(19,91,105)', 'rgb(133,155,163)', 'rgb(20,116,132)'
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
 
-
 var cpu1;
 var cpu2;
 var app;
@@ -50,8 +49,8 @@ $('#appDrop').on("change", function() {
         $('#cpuDrop2').val('');
         $('#typeDrop1').val('');
         $('#typeDrop2').val('');
-        $("#type1").hide();
-        $("#type2").hide();
+//        $("#type1").hide();
+//        $("#type2").hide();
         clearChart();
         $('#tableNew').html('');
     }
@@ -85,23 +84,24 @@ function getRunType1() {
             html += '</option>';
             $('#typeDrop1').html(html);
 
-            if (data.length > 1) {
-                flag1 = 1;
-                $("#dummytype1").hide();
-                $("#type1").show();
-                if (!data.includes($('#typeDrop1')[0].value)) {
-                    $('#typeDrop1').val('');
-                } else {
-                    $('#typeDrop1').val($('#typeDrop1')[0].value);
-                    getData();
-                }
-            } else {
-                $("#type1").hide();
-                $("#dummytype1").show();
-                flag1 = 0;
-                typeVal1 = data[0];
-                getData();
-            }
+            type1 = $('#typeDrop1')[0].value;
+//            if (data.length > 1) {
+//                flag1 = 1;
+//                $("#dummytype1").hide();
+//                $("#type1").show();
+//                if (!data.includes($('#typeDrop1')[0].value)) {
+//                    $('#typeDrop1').val('');
+//                } else {
+//                    $('#typeDrop1').val($('#typeDrop1')[0].value);
+//                    getData();
+//                }
+//            } else {
+//                $("#type1").hide();
+//                $("#dummytype1").show();
+//                flag1 = 0;
+//                typeVal1 = data[0];
+//                getData();
+//            }
         });
     }
 //    $('#typeDrop1').val('');
@@ -128,21 +128,23 @@ function getRunType2() {
             }
             html += '</option>';
             $('#typeDrop2').html(html);
-            if (data.length > 1) {
-                flag2 = 1;
-                $("#type2").show();
-                if (!data.includes($('#typeDrop2')[0].value)) {
-                    $('#typeDrop2').val('');
-                } else {
-                    $('#typeDrop2').val($('#typeDrop2')[0].value);
-                    getData();
-                }
-            } else {
-                $("#type2").hide();
-                flag2 = 0;
-                typeVal2 = data[0];
-                getData();
-            }
+            type2 = $('#typeDrop2')[0].value;
+
+//            if (data.length > 1) {
+//                flag2 = 1;
+//                $("#type2").show();
+//                if (!data.includes($('#typeDrop2')[0].value)) {
+//                    $('#typeDrop2').val('');
+//                } else {
+//                    $('#typeDrop2').val($('#typeDrop2')[0].value);
+//                    getData();
+//                }
+//            } else {
+//                $("#type2").hide();
+//                flag2 = 0;
+//                typeVal2 = data[0];
+//                getData();
+//            }
 
         });
     }
@@ -162,24 +164,24 @@ function getData() {
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
 
-    if(flag1 == 1)
-        {
-        type1 = $('#typeDrop1')[0].value;
-        }
-        else{
-           type1 = typeVal1;
-           }
+//    if(flag1 == 1)
+//        {
+//        type1 = $('#typeDrop1')[0].value;
+//        }
+//        else{
+//           type1 = typeVal1;
+//           }
+//
+//        if(flag2 == 1)
+//            {
+//            type2 = $('#typeDrop2')[0].value;
+//            }
+//            else{
+//            type2 = typeVal2;
+//            }
 
-        if(flag2 == 1)
-            {
-            type2 = $('#typeDrop2')[0].value;
-            }
-            else{
-            type2 = typeVal2;
-            }
-
-//    type1 = $('#typeDrop1')[0].value;
-//    type2 = $('#typeDrop2')[0].value;
+    type1 = $('#typeDrop1')[0].value;
+    type2 = $('#typeDrop2')[0].value;
     clearChart();
     $('#tableNew').html('');
     if (app && cpu1 && cpu2 && type1 && type2) {
@@ -227,6 +229,10 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
                     })
                 };
                 var chartOptions = {
+                legend: {
+                          display: true,
+                          position: 'right'
+                        },
                     title: {
                         display: true,
                         text: data[0].appName

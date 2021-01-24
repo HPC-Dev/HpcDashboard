@@ -210,6 +210,12 @@ function checkBoxChange() {
                     }
 
                     var chartOptions = {
+
+                            legend: {
+                                display: true,
+                                position: 'right'
+                            },
+
                         title: {
                             display: true,
                             text: data.appName

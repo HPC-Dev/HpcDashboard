@@ -6,10 +6,7 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 var cpu1;
 var cpu2;
 var app;
-var typeVal1;
-var typeVal2;
-var flag1;
-var flag2;
+
 
 $('#cpuDrop1').on("change", function() {
     var value = $(this).val();
@@ -32,34 +29,10 @@ $('#cpuDrop1').on("change", function() {
                         }
                         html += '</option>';
                         $('#typeDrop1').html(html);
+                       });
 
-
-
-                        if(data.length > 1)
-                        {
-                            flag1=1;
-                            $("#dummytype1").hide();
-                            $("#type1").show();
-                             if(!data.includes($('#typeDrop1')[0].value))
-                             {
-                                 $('#typeDrop1').val('');
-                             }
-                             else{
-                                 $('#typeDrop1').val($('#typeDrop1')[0].value);
-                                 getData();
-                             }
-                        }
-                        else{
-                            $("#type1").hide();
-                            $("#dummytype1").show();
-                            flag1=0;
-                            typeVal1 = data[0];
-                            getData();
-                        }
-
-
-
-                   });
+                    $('#typeDrop1').val('');
+                     getData();
 
 }
 
@@ -85,28 +58,11 @@ var value = $(this).val();
                         }
                         html += '</option>';
                         $('#typeDrop2').html(html);
-
-                        if(data.length > 1)
-                         {
-                                  flag2=1;
-                                  $("#type2").show();
-                                  if(!data.includes($('#typeDrop2')[0].value))
-                                  {
-                                          $('#typeDrop2').val('');
-                                  }
-                                  else{
-                                          $('#typeDrop2').val($('#typeDrop2')[0].value);
-                                          getData();
-                                      }
-                         }
-                         else{
-                                   $("#type2").hide();
-                                   flag2=0;
-                                   typeVal2 = data[0];
+                         });
+                                  $('#typeDrop2').val('');
                                    getData();
-                             }
-                        });
-        }
+                         }
+
 
 });
 
@@ -120,21 +76,9 @@ function getData() {
      $('#tableNew').html('');
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
-    if(flag1 == 1)
-    {
-    type1 = $('#typeDrop1')[0].value;
-    }
-    else{
-       type1 = typeVal1;
-       }
 
-    if(flag2 == 1)
-        {
-        type2 = $('#typeDrop2')[0].value;
-        }
-        else{
-        type2 = typeVal2;
-        }
+    type1 = $('#typeDrop1')[0].value;
+    type2 = $('#typeDrop2')[0].value;
 
     if (cpu1 && cpu2 && type1 && type2) {
     $.getJSON("/avg/heatMap/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
@@ -285,8 +229,6 @@ function generateRow(columns, rowData) {
 
     row.push('</tr>');
     flag=0;
-
-
 
     return row.join('');
 }
