@@ -223,8 +223,6 @@ public class ChartRestController {
             }
         }
 
-        if(bms.size() <2)
-            return null;
 
         for (int i = 0; i < list.size(); i++)
         {
@@ -383,9 +381,6 @@ public class ChartRestController {
                 }
             }
         }
-
-        if(bms.size() <2)
-            return multiChartTableResponse;
 
         for (int i = 0; i < list.size(); i++)
         {
@@ -695,10 +690,6 @@ public class ChartRestController {
                 }
             }
         }
-
-        if(bms.size() <2 )
-            return resultList;
-
 
 
         for (int i = 0; i < list.size(); i++)
