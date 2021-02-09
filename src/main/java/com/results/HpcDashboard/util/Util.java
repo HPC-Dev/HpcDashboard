@@ -120,7 +120,7 @@ public class Util {
             appMap.put("wrf", "LOWER");
             appMap.put("cp2k","LOWER");
             appMap.put("mechanical","HIGHER");
-
+            appMap.put("speccpu","HIGHER");
             return appMap;
         }
 
