@@ -20,10 +20,10 @@ public class AverageResultService {
 
 
     @Transactional
-    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg, double cv, int count, String runType) {
+    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf, double cv, int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,cv,count, runType);
+        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,perCorePerf,cv,count, runType);
     }
 
     @Transactional
@@ -38,7 +38,7 @@ public class AverageResultService {
         if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert CV below
-        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount()).runType(averageResult.getRunType()).build();
+        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).perCorePerf(averageResult.getPerCorePerf()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount()).runType(averageResult.getRunType()).build();
         averageResultRepo.save(averageResult);
     }
 

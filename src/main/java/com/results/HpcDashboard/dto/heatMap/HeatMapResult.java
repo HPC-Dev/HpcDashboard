@@ -14,5 +14,6 @@ public class HeatMapResult {
     String ISV;
     String Application;
     String Benchmark;
-    String Uplift;
+    String perNode;
+    String perCore;
 }

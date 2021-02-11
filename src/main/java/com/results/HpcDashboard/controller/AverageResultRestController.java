@@ -242,15 +242,20 @@ public class AverageResultRestController {
         Map<String, Double> bmResList1 = new LinkedHashMap<>();
         Map<String, Double> bmResList2 = new LinkedHashMap<>();
 
+        Map<String, Double> perCoreList1 = new LinkedHashMap<>();
+        Map<String, Double> perCoreList2 = new LinkedHashMap<>();
+
         for(HeatMap h : list1){
 
             bmResList1.put(h.getBmName(),h.getAvgResult());
+            perCoreList1.put(h.getBmName(),h.getPerCorePerf());
         }
 
 
         for(HeatMap h : list2){
 
             bmResList2.put(h.getBmName(),h.getAvgResult());
+            perCoreList2.put(h.getBmName(),h.getPerCorePerf());
         }
 
         for (String cat:category ) {
@@ -261,6 +266,9 @@ public class AverageResultRestController {
             double catAvg =0;
             double appAvg=0;
 
+            double perCoreCatAvg =0;
+            double perCoreAppAvg=0;
+
             List<HeatMap> list3 = heatMapService.getHeatMapData(cpu1,type1,cat);
             List<HeatMap> list4 = heatMapService.getHeatMapData(cpu2,type2,cat);
 
@@ -268,70 +276,6 @@ public class AverageResultRestController {
 
             list3 = filteredLists.get(0);
             list4 = filteredLists.get(1);
-
-//            if(list3.size() < list4.size()) {
-//                LinkedHashSet<String> isv = list4.stream()
-//                        .map(HeatMap::getIsv)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list3 = list3.stream()
-//                        .filter(result -> isv.contains(result.getIsv()))
-//                        .collect(Collectors.toList());
-//
-//                LinkedHashSet<String> isv1 = list4.stream()
-//                        .map(HeatMap::getIsv)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list3 = list3.stream()
-//                        .filter(result -> isv1.contains(result.getIsv()))
-//                        .collect(Collectors.toList());
-//            }
-//            else if(list3.size() > list4.size()){
-//                LinkedHashSet<String> isv = list4.stream()
-//                        .map(HeatMap::getIsv)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list3 = list3.stream()
-//                        .filter(result -> isv.contains(result.getIsv()))
-//                        .collect(Collectors.toList());
-//
-//                LinkedHashSet<String> isv1 = list3.stream()
-//                        .map(HeatMap::getIsv)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list4 = list4.stream()
-//                        .filter(result -> isv1.contains(result.getIsv()))
-//                        .collect(Collectors.toList());
-//
-//            }
-//
-//            if(list3.size() < list4.size()) {
-//                LinkedHashSet<String> bms = list3.stream()
-//                        .map(HeatMap::getBmName)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list4 = list4.stream()
-//                        .filter(result -> bms.contains(result.getBmName()))
-//                        .collect(Collectors.toList());
-//
-//                LinkedHashSet<String> bms1 = list4.stream()
-//                        .map(HeatMap::getBmName)
-//                        .collect(Collectors.toCollection( LinkedHashSet::new));
-//                list3 = list3.stream()
-//                        .filter(result -> bms1.contains(result.getBmName()))
-//                        .collect(Collectors.toList());
-//            }
-//            else if(list3.size() > list4.size()){
-//                Set<String> bms = list4.stream()
-//                        .map(HeatMap::getBmName)
-//                        .collect(Collectors.toSet());
-//                list3 = list3.stream()
-//                        .filter(result -> bms.contains(result.getBmName()))
-//                        .collect(Collectors.toList());
-//
-//                Set<String> bms1 = list3.stream()
-//                        .map(HeatMap::getBmName)
-//                        .collect(Collectors.toSet());
-//                list4 = list4.stream()
-//                        .filter(result -> bms1.contains(result.getBmName()))
-//                        .collect(Collectors.toList());
-//
-//            }
 
             Set<String> isv = new LinkedHashSet<>();
             for (HeatMap heatMap : list3) {
@@ -349,6 +293,10 @@ public class AverageResultRestController {
 
             double aAvg =0;
             int aCount =0;
+
+            double perCoreAAvg =0;
+            int perCoreACount =0;
+
 
             for(String i: isv)
             {
@@ -390,8 +338,13 @@ public class AverageResultRestController {
 
 
                     Map<String, Double> bmUplift = new LinkedHashMap<>();
+                    Map<String, Double> perCoreBmUplift = new LinkedHashMap<>();
+
                     double bAvg =0;
                     int bCount =0;
+                    double perCoreBAvg =0;
+                    int perCoreBCount =0;
+
                     for (String b : bmName ) {
 
                         double val1 = bmResList1.getOrDefault(b,0.0);
@@ -444,27 +397,95 @@ public class AverageResultRestController {
                         bmUplift.put(b,percentage);
 
                     }
+
+                    for (String b : bmName ) {
+
+                        double val1 = perCoreList1.getOrDefault(b,0.0);
+                        double val2 = perCoreList2.getOrDefault(b,0.0);
+                        double d = 0;
+                        double percentage = 0;
+                        int flag = 0;
+                        if(val1 != 0.0 && val2 != 0.0 ) {
+
+                            if (getLowerHigher(a.trim().toLowerCase()).equals("HIGHER")) {
+                                if (Double.compare(val1, val2) < 0) {
+                                    flag =0;
+                                    d = (val2 - val1) / Math.abs(val1); //+
+                                    percentage = util.round(d * 100, 2);
+
+                                } else if (Double.compare(val1, val2) > 0) {
+                                    flag =1;
+                                    d = Math.abs(val2 - val1) / Math.abs(val1);
+                                    percentage = util.round(d * 100, 2);
+
+                                } else {
+                                    percentage =0;
+                                }
+
+                            } else {
+                                if (Double.compare(val1, val2) > 0) {
+                                    flag =0;
+                                    d = (val1 - val2) / Math.abs(val2);
+                                    percentage = util.round(d * 100, 2); //+
+                                }
+                                else if (Double.compare(val1, val2) < 0) {
+                                    flag =1;
+                                    d = Math.abs(val1 - val2) / Math.abs(val2);
+                                    percentage = util.round(d * 100, 2);  //-
+                                }
+                                else {
+                                    percentage =0;
+                                }
+
+                            }
+                        }
+
+                        if(flag==1)
+                        {
+                            percentage = -1.0 * percentage;
+                        }
+
+                        perCoreBAvg += percentage;
+                        perCoreBCount++;
+                        perCoreBmUplift.put(b,percentage);
+
+                    }
+
                     app.setBmUplift(bmUplift);
+                    app.setPerCoreBmUplift(perCoreBmUplift);
+
 
                      appAvg =  util.round(bAvg/bCount, 2);
 
+                    perCoreAppAvg =  util.round(perCoreBAvg/perCoreBCount, 2);
+
                     app.setUplift(appAvg);
+                    app.setPer_Core_Uplift(perCoreAppAvg);
+
                     aAvg += appAvg;
                     aCount++;
+
+                    perCoreAAvg += perCoreAppAvg;
+                    perCoreACount++;
 
                 appList.add(app);
                 }
 
+
                 catAvg =  util.round(aAvg/aCount, 2);
+                perCoreCatAvg = util.round(perCoreAAvg/perCoreACount, 2);
+
                 isv1.setApp(appList);
                 isvList.add(isv1);
             }
             category1.setIsvList(isvList);
             category1.setUplift(catAvg);
+            category1.setPer_Core_Uplift(perCoreCatAvg);
             categories.add(category1);
             }
 
         HeatMapResult h;
+        HashMap<String,Double> perCorePercentage = new HashMap<>();;
 
         for(Category c : categories)
         {
@@ -474,11 +495,19 @@ public class AverageResultRestController {
 
 
             if(c.getUplift() > 0.0) {
-                h.setUplift("+"+String.valueOf(c.getUplift())+"%");
+                h.setPerNode("+"+String.valueOf(c.getUplift())+"%");
             }
             else{
-                 h.setUplift(String.valueOf(c.getUplift())+"%");
+                 h.setPerNode(String.valueOf(c.getUplift())+"%");
             }
+
+            if(c.getPer_Core_Uplift() > 0.0) {
+                h.setPerCore("+"+String.valueOf(c.getPer_Core_Uplift())+"%");
+            }
+            else{
+                h.setPerCore(String.valueOf(c.getPer_Core_Uplift())+"%");
+            }
+
             resList.add(h);
 
             for(ISV i: c.getIsvList()){
@@ -489,28 +518,56 @@ public class AverageResultRestController {
                       h.setApplication(a.getApplication());
 
                     if(a.getUplift() > 0.0) {
-                        h.setUplift("+"+String.valueOf(a.getUplift())+"%");
+                        h.setPerNode("+"+String.valueOf(a.getUplift())+"%");
                     }
                     else{
-                        h.setUplift(String.valueOf(a.getUplift())+"%");
+                        h.setPerNode(String.valueOf(a.getUplift())+"%");
                     }
 
-                      resList.add(h);
+
+                    if(a.getPer_Core_Uplift() > 0.0) {
+                        h.setPerCore("+"+String.valueOf(a.getPer_Core_Uplift())+"%");
+                    }
+                    else{
+                        h.setPerCore(String.valueOf(a.getPer_Core_Uplift())+"%");
+                    }
+
+
+                    resList.add(h);
+
+
+                    for(Map.Entry<String, Double> b : a.getPerCoreBmUplift().entrySet())
+                    {
+                        perCorePercentage.put(b.getKey(), b.getValue());
+                    }
+
+
+
                       for(Map.Entry<String, Double> b : a.getBmUplift().entrySet())
                       {
                           h = new HeatMapResult();
                           h.setBenchmark(b.getKey());
 
+                          double perCoreUplift = perCorePercentage.get(b.getKey());
+
                           if(b.getValue() > 0.0) {
-                              h.setUplift("+"+String.valueOf(b.getValue())+"%");
+                              h.setPerNode("+"+String.valueOf(b.getValue())+"%");
                           }
                           else{
 
-                              h.setUplift(String.valueOf(b.getValue())+"%");
+                              h.setPerNode(String.valueOf(b.getValue())+"%");
                           }
+
+                          if(perCoreUplift > 0.0) {
+                              h.setPerCore("+"+String.valueOf(perCoreUplift)+"%");
+                          }
+                          else{
+                              h.setPerCore(String.valueOf(perCoreUplift)+"%");
+                          }
+
+
                           resList.add(h);
                       }
-
                 }
 
             }
@@ -525,7 +582,8 @@ public class AverageResultRestController {
         columns.add("isv");
         columns.add("application");
         columns.add("benchmark");
-        columns.add("uplift");
+        columns.add("perNode");
+        columns.add("perCore");
 
         heatMapOutput.setColumns(columns);
 

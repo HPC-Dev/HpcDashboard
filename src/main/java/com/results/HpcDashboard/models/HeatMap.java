@@ -36,12 +36,18 @@ public class HeatMap {
     @Id
     String cpuSku;
 
+    int cores;
+
+    double perCorePerf;
+
     double avgResult;
 
     @Id
     String runType;
 
     int runCount;
+
+
 
 }
 

@@ -14,5 +14,7 @@ public class App {
 
     String application;
     double uplift;
+    double per_Core_Uplift;
     Map<String, Double> bmUplift;
+    Map<String, Double> perCoreBmUplift;
 }

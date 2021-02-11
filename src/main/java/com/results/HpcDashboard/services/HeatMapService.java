@@ -23,10 +23,10 @@ public class HeatMapService {
     HeatMapRepo heatMapRepo;
 
     @Transactional
-    public void updateHeatResult(String cpu_sku, int nodes, String bm_name,double avg,int count, String runType) {
+    public void updateHeatResult(String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        heatMapRepo.updateHeatResult(bm_name,cpu_sku,nodes,avg,count, runType);
+        heatMapRepo.updateHeatResult(bm_name,cpu_sku,nodes,avg, perCorePerf,count, runType);
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class HeatMapService {
     public void insertHeatResult(HeatMap heatResult) {
         if (heatResult== null || heatResult.getCpuSku() == "" || heatResult.getCpuSku().equals(null) || heatResult.getBmName() == "" || heatResult.getBmName().equals(null) )
             return;
-        HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).isv(heatResult.getIsv()).appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim()).cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runType(heatResult.getRunType()).build();
+        HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf()).isv(heatResult.getIsv()).appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim()).cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runType(heatResult.getRunType()).build();
         heatMapRepo.save(heatMap);
     }
 

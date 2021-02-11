@@ -14,5 +14,6 @@ import java.util.Set;
 public class Category {
     String Category;
     double uplift;
+    double per_Core_Uplift;
     Set<ISV> isvList;
 }
