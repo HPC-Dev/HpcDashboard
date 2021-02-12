@@ -245,17 +245,27 @@ public class AverageResultRestController {
         Map<String, Double> perCoreList1 = new LinkedHashMap<>();
         Map<String, Double> perCoreList2 = new LinkedHashMap<>();
 
+        Map<String, PerCore> perCoreListFirst = new LinkedHashMap<>();
+
+        Map<String, PerCore> perCoreListSecond = new LinkedHashMap<>();
+
+
+
+
         for(HeatMap h : list1){
 
             bmResList1.put(h.getBmName(),h.getAvgResult());
-            perCoreList1.put(h.getBmName(),h.getPerCorePerf());
+            perCoreListFirst.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "baseline"));
+
         }
 
 
         for(HeatMap h : list2){
 
             bmResList2.put(h.getBmName(),h.getAvgResult());
-            perCoreList2.put(h.getBmName(),h.getPerCorePerf());
+            perCoreListSecond.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "compartitive"));
+
+
         }
 
         for (String cat:category ) {
@@ -337,13 +347,13 @@ public class AverageResultRestController {
                     }
 
 
-                    Map<String, Double> bmUplift = new LinkedHashMap<>();
-                    Map<String, Double> perCoreBmUplift = new LinkedHashMap<>();
-
                     double bAvg =0;
                     int bCount =0;
                     double perCoreBAvg =0;
                     int perCoreBCount =0;
+
+                    Map<String, Double> bmUplift = new LinkedHashMap<>();
+                    Map<String, Double> perCoreBmUplift = new LinkedHashMap<>();
 
                     for (String b : bmName ) {
 
@@ -400,44 +410,39 @@ public class AverageResultRestController {
 
                     for (String b : bmName ) {
 
-                        double val1 = perCoreList1.getOrDefault(b,0.0);
-                        double val2 = perCoreList2.getOrDefault(b,0.0);
+                        PerCore v1 = perCoreListFirst.getOrDefault(b,new PerCore());
+
+                        PerCore v2 = perCoreListSecond.getOrDefault(b,new PerCore());
                         double d = 0;
                         double percentage = 0;
                         int flag = 0;
-                        if(val1 != 0.0 && val2 != 0.0 ) {
+                        double d1 =0;
+                        double d2 =0;
+                        int core1 = Integer.valueOf(v1.getCores());
+                        int core2 = Integer.valueOf(v2.getCores());
+
+                        double val1 = v1.getResult();
+                        double val2 = v2.getResult();
+
+
+                        if(v1.getResult() != 0.0 && v2.getResult() != 0.0 ) {
 
                             if (getLowerHigher(a.trim().toLowerCase()).equals("HIGHER")) {
-                                if (Double.compare(val1, val2) < 0) {
-                                    flag =0;
-                                    d = (val2 - val1) / Math.abs(val1); //+
-                                    percentage = util.round(d * 100, 2);
 
-                                } else if (Double.compare(val1, val2) > 0) {
-                                    flag =1;
-                                    d = Math.abs(val2 - val1) / Math.abs(val1);
-                                    percentage = util.round(d * 100, 2);
-
-                                } else {
-                                    percentage =0;
-                                }
+                                d1 = val2/val1;
+                                d2 = (double)core1/core2;
+                                d = d1 * d2;
+                                d = d -1;
 
                             } else {
-                                if (Double.compare(val1, val2) > 0) {
-                                    flag =0;
-                                    d = (val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2); //+
-                                }
-                                else if (Double.compare(val1, val2) < 0) {
-                                    flag =1;
-                                    d = Math.abs(val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2);  //-
-                                }
-                                else {
-                                    percentage =0;
-                                }
 
+                                d1 = val1/val2;
+                                d2 = (double)core1/core2;
+                                d = d1 * d2;
+                                d = d - 1;
                             }
+
+                            percentage =  (util.round(d * 100, 2));
                         }
 
                         if(flag==1)
