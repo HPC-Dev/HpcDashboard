@@ -162,7 +162,7 @@ public class ChartRestController {
 
         Map<Integer, Double> temp = null;
 
-        if(listMap.get(0).size() >2) {
+        if(listMap.get(0).size() >= 2) {
             for (Map<Integer, Double> m : listMap) {
                 double firstResult = m.entrySet().iterator().next().getValue();
                 temp = new LinkedHashMap<>();

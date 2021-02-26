@@ -201,6 +201,7 @@ public class Util {
         cpuGenMap.put("7B13","Milan");
         cpuGenMap.put("7J13","Milan");
         cpuGenMap.put("7V13","Milan");
+        cpuGenMap.put("74F3","Milan");
 
 
 
