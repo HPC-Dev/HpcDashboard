@@ -6,6 +6,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.results.HpcDashboard.dto.FormCommand;
 import com.results.HpcDashboard.models.Result;
+import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.ResultService;
 import com.results.HpcDashboard.util.GenerateCSVReport;
 import com.results.HpcDashboard.util.GenerateExcelReport;
@@ -42,6 +43,9 @@ import java.util.regex.Pattern;
 public class ResultDashboardController {
     @Autowired
     ResultService resultService;
+
+    @Autowired
+    AverageResultService averageResultService;
 
     @Autowired
     Util util;
@@ -195,6 +199,60 @@ public class ResultDashboardController {
         return "resultDashboard";
     }
 
+
+    @GetMapping("/averageDashboard")
+    public String showaverageDashboard(Model model) {
+
+        List<String> cpu_gen_list = resultService.getCpuGen();
+        List<String> cpu_list = resultService.getCpu();
+        List<String> app_list = resultService.getApp();
+        List<String> bm_list = null;
+        List<Integer> node_list = resultService.getNodes();
+        List<String> run_type_list = resultService.getRunType();
+        List<Integer> run_count_list = averageResultService.getRunCount();
+
+        model.addAttribute("cpus", cpu_list);
+        model.addAttribute("cpugens", cpu_gen_list);
+        model.addAttribute("apps", app_list);
+        model.addAttribute("nodes", node_list);
+        model.addAttribute("bms", bm_list);
+        model.addAttribute("runtypes", run_type_list);
+        model.addAttribute("runCounts", run_count_list);
+
+
+        return "resultAverage";
+    }
+
+
+    @GetMapping("/dashboardO")
+    public String showDashboardN(Model model) {
+
+        List<String> cpu_list = resultService.getCpu();
+        List<String> app_list = resultService.getApp();
+        List<String> bm_list = null;
+        List<Integer> node_list = resultService.getNodes();
+        List<String> os_list = resultService.getOS();
+        List<String> bios_list = resultService.getBIOS();
+        List<String> cluster_list = resultService.getCluster();
+        List<String> user_list = resultService.getUser();
+        List<String> platform_list = resultService.getPlatform();
+        List<String> cpu_gen_list = resultService.getCpuGen();
+        List<String> run_type_list = resultService.getRunType();
+
+        model.addAttribute("cpus", cpu_list);
+        model.addAttribute("apps", app_list);
+        model.addAttribute("nodes", node_list);
+        model.addAttribute("bms", bm_list);
+        model.addAttribute("os", os_list);
+        model.addAttribute("bios", bios_list);
+        model.addAttribute("clusters", cluster_list);
+        model.addAttribute("users", user_list);
+        model.addAttribute("platforms", platform_list);
+        model.addAttribute("cpugens", cpu_gen_list);
+        model.addAttribute("runtypes", run_type_list);
+
+        return "resultDashboardO";
+    }
 
     @RequestMapping(value = "/cpusGen", method = RequestMethod.GET)
     public @ResponseBody

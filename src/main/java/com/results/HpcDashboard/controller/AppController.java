@@ -99,6 +99,16 @@ public class AppController {
         return "result";
     }
 
+    @GetMapping("/scalingComparison")
+    public String showDataCompare(Model model) {
+
+        List<String> app_list = averageResultService.getApp();
+        List<String> cpu_list = averageResultService.getCpu();
+        model.addAttribute("cpus", cpu_list );
+        model.addAttribute("apps", app_list );
+        return "scalingComparison";
+    }
+
     @GetMapping("/part-comparison")
     public String showDataComparison(Model model) {
 

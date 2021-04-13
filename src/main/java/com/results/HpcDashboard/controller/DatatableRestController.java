@@ -1,13 +1,7 @@
 package com.results.HpcDashboard.controller;
 
-import com.results.HpcDashboard.models.Application;
-import com.results.HpcDashboard.models.Benchmark;
-import com.results.HpcDashboard.models.CPU;
-import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.repo.ApplicationRepo;
-import com.results.HpcDashboard.repo.BenchmarkRepo;
-import com.results.HpcDashboard.repo.CPURepo;
-import com.results.HpcDashboard.repo.ResultRepo;
+import com.results.HpcDashboard.models.*;
+import com.results.HpcDashboard.repo.*;
 import com.results.HpcDashboard.services.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.Column;
@@ -40,6 +34,9 @@ public class DatatableRestController {
     ResultRepo resultRepo;
 
     @Autowired
+    AverageResultRepo averageResultRepo;
+
+    @Autowired
     ResultService resultService;
 
     @Autowired
@@ -56,6 +53,11 @@ public class DatatableRestController {
     @GetMapping(value = "/dashboard")
     public DataTablesOutput<Result> listResults(@Valid DataTablesInput input) {
         return resultRepo.findAll(input, new DateSpecification(input));
+    }
+
+    @GetMapping(value = "/averageDashboard")
+    public DataTablesOutput<AverageResult> listAverageResults(@Valid DataTablesInput input) {
+        return averageResultRepo.findAll(input);
     }
 
     private static class DateSpecification implements Specification<Result> {

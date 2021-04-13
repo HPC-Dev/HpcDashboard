@@ -1,7 +1,6 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.models.AverageResult;
-import com.results.HpcDashboard.models.HeatMap;
 import com.results.HpcDashboard.repo.AverageResultRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -251,18 +250,33 @@ public class AverageResultService {
         return cpu_list;
     }
 
-
-    public List<AverageResult> getBySelectedCPUApp(String app_name,List<String> cpus) {
+    public List<AverageResult> getBySelectedCPUApp(String app_name,List<String> cpus,List<String> runTypes) {
 
         List<AverageResult> list = null;
-        list = averageResultRepo.findBySelectedCPUApp(app_name,cpus);
+
+//        StringBuilder generatedString = new StringBuilder();
+//        StringBuilder finalString = new StringBuilder();
+//
+//        finalString = finalString.append("select * from average_result where app_name= \"openfoam\" and cpu_sku IN (\"7543\",\"74F3\") and run_type IN (\"latest\") and nodes =1 ");
+//        for(int i=0; i<cpus.size(); i++)
+//        {
+//            int value = i+1;
+//            StringBuilder s = new StringBuilder();
+//            s.append("\"");
+//            s.append(cpus.get(i));
+//            s.append("\"");
+//
+//            generatedString = generatedString.append(" when "+ s.toString() +" then " + String.valueOf(value));
+//        }
+//        finalString.append("ORDER BY case cpu_sku" + generatedString.toString() +  " else 9999 end");
+
+        list = averageResultRepo.findBySelectedCPUApp(app_name,cpus, runTypes);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
         }
         return list;
     }
-
 
     public List<AverageResult> getBySelectedCPUAppAsc(String app_name,List<String> cpus, List<String> runTypes) {
 
@@ -275,8 +289,6 @@ public class AverageResultService {
         return list;
     }
 
-
-
     public List<AverageResult> getBySelectedCPUAppDesc(String app_name,List<String> cpus, List<String> runTypes) {
 
         List<AverageResult> list = null;
@@ -287,7 +299,6 @@ public class AverageResultService {
         }
         return list;
     }
-
 
     public List<AverageResult> getCompDataBySelectedCPU(String app_name,String cpu, String type) {
 
@@ -300,10 +311,18 @@ public class AverageResultService {
         return list;
     }
 
-
     public int getJobExists(String jobId) {
 
         return averageResultRepo.getJobExists(jobId);
     }
 
+    public List<Integer> getRunCount() {
+        List<Integer> run_count = null;
+        run_count = averageResultRepo.getRunCount();
+
+        if(run_count ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return run_count;
+    }
 }

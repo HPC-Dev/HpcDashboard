@@ -5,7 +5,6 @@ import com.results.HpcDashboard.models.AppCategory;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
 import com.results.HpcDashboard.models.Result;
-import com.results.HpcDashboard.repo.AppCategoryRepo;
 import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,7 +139,7 @@ public class ResultService {
 
             }
 
-            result.setResult(util.round(result.getResult(),4));
+            result.setResult(util.round(result.getResult(),3));
 
             resultRepo.save(result);
 

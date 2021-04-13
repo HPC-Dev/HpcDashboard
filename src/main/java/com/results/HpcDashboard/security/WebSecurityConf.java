@@ -71,6 +71,8 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/updatePassword/**",
                         "/css/**",
                         "/img/**",
+                        "/averageDashboard/**",
+                        "/scalingComparison/**",
                         "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

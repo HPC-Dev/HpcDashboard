@@ -12,9 +12,9 @@ var buttonCommon = {
         }
         };
 
-table = $('table#ajax').DataTable({
-    'ajax': '/datatable/dashboard',
-    'scrollY': "550px",
+table = $('table#average').DataTable({
+    'ajax': '/datatable/averageDashboard',
+    'scrollY': "520px",
     'scrollX': true,
     'destroy': true,
     'scrollCollapse': true,
@@ -34,9 +34,6 @@ table = $('table#ajax').DataTable({
             ],
 
     columns: [{
-            data: 'jobId'
-        },
-        {
             data: 'appName'
         },
         {
@@ -46,51 +43,34 @@ table = $('table#ajax').DataTable({
             data: 'nodes'
         },
         {
+            data: 'cpuSku'
+        },
+        {
             data: 'cores'
         },
         {
-            data: 'nodeName'
+            data: 'avgResult',
+            searchable: false,
+            "render": function (data, type, full) {
+                        return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+            }
         },
         {
-            data: 'result'
+            data: 'perCorePerf',
+            searchable: false,
+             "render": function (data, type, full) {
+                                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+                        }
         },
         {
-            data: 'cpu'
+            data: 'coefficientOfVariation',
+            searchable: false,
         },
         {
-            data: 'os'
-        },
-        {
-            data: 'biosVer'
-        },
-        {
-            data: 'cluster'
-        },
-        {
-            data: 'user'
-        },
-        {
-            data: 'platform'
-        },
-        {
-            data: 'cpuGen'
+            data: 'runCount'
         },
         {
             data: 'runType'
-        },
-        {
-        data: 'timeStamp',
-        searchable: false,
-        "render": function (data) {
-                if(data != null){
-                 var dateData = data.split(' ');
-                 var date = dateData[0].split('-');
-                return (date[1] + "/" + date[0] + "/" + date[2]);
-                }
-                else{
-                return null;
-                }
-            }
         }
 ],
 });
@@ -138,7 +118,7 @@ $('#appDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(1).search(filter).draw();
+    table.column(0).search(filter).draw();
 });
 
 $('select#bmDrop').change(function() {
@@ -147,7 +127,7 @@ $('select#bmDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(2).search(filter).draw();
+    table.column(1).search(filter).draw();
 });
 
 $('select#nodeDrop').change(function() {
@@ -156,7 +136,7 @@ $('select#nodeDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(3).search(filter).draw();
+    table.column(2).search(filter).draw();
 });
 
 $('select#cpuDrop').change(function() {
@@ -165,63 +145,9 @@ $('select#cpuDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(7).search(filter).draw();
+    table.column(3).search(filter).draw();
 });
 
-$('select#osDrop').change(function() {
-    var filter = '';
-    $('select#osDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(8).search(filter).draw();
-});
-
-
-$('select#biosDrop').change(function() {
-    var filter = '';
-    $('select#biosDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(9).search(filter).draw();
-});
-
-$('select#clusterDrop').change(function() {
-    var filter = '';
-    $('select#clusterDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(10).search(filter).draw();
-});
-
-$('select#userDrop').change(function() {
-    var filter = '';
-    $('select#userDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(11).search(filter).draw();
-});
-
-$('select#platformDrop').change(function() {
-    var filter = '';
-    $('select#platformDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(12).search(filter).draw();
-});
-
-$('select#cpuGenDrop').change(function() {
-    var filter = '';
-    $('select#cpuGenDrop option:selected').each(function() {
-        filter += $(this).text() + "+";
-    });
-    filter = filter.substring(0, filter.length - 1);
-    table.column(13).search(filter).draw();
-});
 
 $('select#runTypeDrop').change(function() {
     var filter = '';
@@ -230,27 +156,23 @@ $('select#runTypeDrop').change(function() {
     });
 
     filter = filter.substring(0, filter.length - 1);
-    table.column(14).search(filter).draw();
+    table.column(9).search(filter).draw();
 });
 
-$('#startDate').change(addDateFilter);
-$('#endDate').change(addDateFilter);
+$('select#runCountDrop').change(function() {
+    var filter = '';
+    $('select#runCountDrop option:selected').each(function() {
+        filter += $(this).text() + "+";
+    });
 
-function addDateFilter() {
-     var startDate = $('#startDate').val();
-     var endDate = $('#endDate').val();
-     table.column(15).search(startDate + ',' + endDate).draw();
-}
+    filter = filter.substring(0, filter.length - 1);
+    table.column(8).search(filter).draw();
+});
 
-//$('#showButton').on('click', function(){
-//        $('#ajax').DataTable().destroy();
-//        $('#ajax tbody').empty();
-//});
+
 
 $('#clearButton').on('click', function(){
 
 $('select').prop('selectedIndex',0);
-$('#startDate').val('');
-$('#endDate').val('');
 dataTable();
 });

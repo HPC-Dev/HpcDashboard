@@ -110,12 +110,40 @@ public class ChartRestController {
         return listResponse;
     }
 
+    public List<AverageResult> filterScalingList(List<AverageResult> list){
+
+        HashMap<String,Integer> bmCompleteList = new HashMap<>();
+        for (AverageResult avg : list) {
+
+            if(bmCompleteList.containsKey(avg.getBmName()))
+            {
+                bmCompleteList.put(avg.getBmName(),bmCompleteList.get(avg.getBmName())+1);
+            }else{
+                bmCompleteList.put(avg.getBmName(),1);
+            }
+        }
+
+        for (int i=0; i< list.size();i++) {
+
+            if(bmCompleteList.get(list.get(i).getBmName()) ==1)
+            {
+                list.remove(i);
+                i--;
+
+            }
+        }
+        return list;
+    }
+
+
     @GetMapping("/resultBm/{cpu}/{app_name}/{type}")
     public ScatterChartsResponse getAvgResultCPUBM(@PathVariable("cpu") String cpu, @PathVariable("app_name") String app_name, @PathVariable("type") String type ) {
         ScatterChartsResponse scatterChartsResponse = null;
         List<AverageResult> list = null;
         String comment = null;
         list = averageResultService.getAvgResultCPUAppType(cpu, app_name, type);
+
+        list = filterScalingList(list);
 
         if (list == null || list.size()==0)
             return scatterChartsResponse;
@@ -162,7 +190,7 @@ public class ChartRestController {
 
         Map<Integer, Double> temp = null;
 
-        if(listMap.get(0).size() >= 2) {
+        if(listMap.get(0).size() >=2) {
             for (Map<Integer, Double> m : listMap) {
                 double firstResult = m.entrySet().iterator().next().getValue();
                 temp = new LinkedHashMap<>();
@@ -190,20 +218,190 @@ public class ChartRestController {
         return scatterChartsResponse;
 }
 
+
+    @GetMapping("/scalingTable/{cpu}/{app_name}/{runType}")
+    public MultiChartTableResponse getScalingTable(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu, @PathVariable("runType") String runType) {
+
+        MultiChartTableResponse multiChartTableResponse = null;
+        String comment = null;
+        List<Map<String, String>> resListFinal = null;
+        List<AverageResult> list = null;
+
+        list = averageResultService.getAvgResultCPUAppType(cpu, app_name,runType);
+
+        list = filterScalingList(list);
+
+        if (list == null || list.size() == 0 )
+            return multiChartTableResponse;
+
+        Set<Integer> nodes = new LinkedHashSet<>();
+        Set<String> cores = new LinkedHashSet<>();
+        Set<String> bms = new LinkedHashSet<>();
+
+        for (AverageResult avg : list) {
+            nodes.add(avg.getNodes());
+            bms.add(avg.getBmName());
+            cores.add(String.valueOf(avg.getCores()));
+        }
+
+        List<String> bmlist = bms.stream().collect(Collectors.toList());
+
+        List<Map<String, Double>> resList = new ArrayList<>();
+
+        List<Map<String,Integer>> countData = new ArrayList<>();
+
+        List<Map<String, String>> CVData = new ArrayList<>();
+
+        Map<String, Double> avgRes = null;
+        Map<String, Integer> countMap = null;
+        Map<String, String> CVMap = null;
+
+        List<String> nodesList = new ArrayList<>();
+        List<String> coresList = cores.stream().collect(Collectors.toList());
+
+        for (Integer n : nodes) {
+            avgRes = new LinkedHashMap<>();
+            nodesList.add(n.toString());
+            for (AverageResult a : list) {
+                if (a.getNodes() == n) {
+                    avgRes.put(a.getBmName(), a.getAvgResult());
+                }
+            }
+            resList.add(avgRes);
+        }
+
+        int core=0;
+        for (Integer n : nodes) {
+            countMap = new LinkedHashMap<>();
+            CVMap = new LinkedHashMap<>();
+            nodesList.add(n.toString());
+            countMap.put("Nodes", n);
+            CVMap.put("Nodes", String.valueOf(n));
+            countMap.put("Cores", Integer.valueOf(coresList.get(core)));
+            CVMap.put("Cores", coresList.get(core));
+
+            for (AverageResult a : list) {
+
+                if (a.getNodes() == n) {
+                    countMap.put(a.getBmName(),a.getRunCount());
+                    CVMap.put(a.getBmName(),String.valueOf(a.getCoefficientOfVariation()));
+                }
+            }
+            countData.add(countMap);
+            CVData.add(CVMap);
+            core++;
+        }
+
+
+        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+            comment = "Higher is better";
+        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+            comment = "Lower is better";
+        }
+
+
+        List<Map<String, Double>> newResList = new ArrayList<>();
+
+        for (Map<String, Double> e : resList) {
+
+            Map<String, Double> map = new LinkedHashMap<>();
+            for (String bm : bmlist) {
+                if (!e.containsKey(bm)) {
+                    map.put(bm, 0.0);
+                } else {
+                    map.put(bm, e.get(bm));
+                }
+            }
+            newResList.add(map);
+
+        }
+
+        resListFinal = new ArrayList<>();
+
+        Map<String, Double> firstResult = new LinkedHashMap<>();
+        firstResult.putAll(newResList.get(0));
+
+        Map<String, String> temp = new LinkedHashMap<>();
+        temp.put("Nodes", nodesList.get(0));
+        temp.put("Cores", coresList.get(0));
+
+        for (Map.Entry<String, Double> d : newResList.get(0).entrySet()) {
+
+            if (Double.compare(d.getValue(), 0.0) > 0)
+                temp.put(d.getKey(), "1.0");
+        }
+        resListFinal.add(temp);
+
+        newResList.remove(0);
+
+
+        if(nodesList.size() > 1 && resList.size() > 1 ) {
+            int i = 1;
+
+            for (Map<String, Double> lis : newResList) {
+
+                temp = new LinkedHashMap<>();
+                temp.put("Nodes", nodesList.get(i));
+                temp.put("Cores", coresList.get(i));
+                for (Map.Entry<String, Double> d : lis.entrySet()) {
+                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
+                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                            double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
+                            temp.put(d.getKey(), String.valueOf(d1));
+
+                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                            double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
+                            temp.put(d.getKey(), String.valueOf(d1));
+                        }
+                    }
+
+                }
+                resListFinal.add(temp);
+                i++;
+            }
+        }
+
+        List<String> bmlistFinal = new ArrayList<>();
+        bmlistFinal.add("Nodes");
+        bmlistFinal.add("Cores");
+        for(String s : bmlist){
+            bmlistFinal.add(s);
+        }
+
+
+
+        multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).countData(countData).CVData(CVData).comment(comment).build();
+
+        return multiChartTableResponse;
+    }
+
+
     @GetMapping("/multiCPUResult/{app_name}")
     public MultiChartResponse getAvgBySelectedCPUChart(@PathVariable("app_name") String app_name, String[] cpuList, String[] runTypes) {
         MultiChartResponse multiChartResponse = null;
         List<String> cpus = Arrays.asList(cpuList);
         List<String> runType = Arrays.asList(runTypes);
         List<List<Double>> resListFinal = new ArrayList<>();
-        List<AverageResult> list = null;
+        List<AverageResult> tempList = null;
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
+            tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
-            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
+            tempList = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }
 
+        List<AverageResult> list = new ArrayList<>();
+
+        for(String cpu : cpus)
+        {
+            for (AverageResult a : tempList) {
+                if (a.getCpuSku().equals(cpu)) {
+
+                    list.add(a);
+                }
+            }
+
+        }
 
         if (list == null || list.size()==0)
             return multiChartResponse;
@@ -214,6 +412,7 @@ public class ChartRestController {
         for (AverageResult avg : list) {
             cpu.add(avg.getCpuSku());
         }
+
 
         for (int i = 0; i < list.size(); i++) {
             for (int j = i + 1; j < list.size(); j++) {
@@ -253,6 +452,10 @@ public class ChartRestController {
             }
             resList.add(res);
         }
+
+
+        if(resList.size() <=0)
+            return multiChartResponse;
 
         Set<String> cpuKeySet = new LinkedHashSet<>();
         for(int i=0; i< resList.size();i++)
@@ -357,16 +560,28 @@ public class ChartRestController {
         List<String> cpus = Arrays.asList(cpuList);
         List<String> runType = Arrays.asList(runTypes);
         List<Map<String, String>> resListFinal = new ArrayList<>();
-        List<AverageResult> list = null;
+        List<AverageResult> tempList = null;
 
         if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            list = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
+            tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
 
-            list = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
+            tempList = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }
 
+        List<AverageResult> list = new ArrayList<>();
+
+        for(String cpu : cpus)
+        {
+            for (AverageResult a : tempList) {
+                if (a.getCpuSku().equals(cpu)) {
+
+                    list.add(a);
+                }
+            }
+
+        }
 
         if (list == null || list.size()==0)
             return multiChartTableResponse;
@@ -418,6 +633,9 @@ public class ChartRestController {
             }
             resList.add(res);
         }
+
+        if(resList.size() <=0)
+            return multiChartTableResponse;
 
 
         List<Map<String, Double>> newResList = new ArrayList<>();
@@ -503,166 +721,6 @@ public class ChartRestController {
         return multiChartTableResponse;
     }
 
-    @GetMapping("/scalingTable/{cpu}/{app_name}/{runType}")
-    public MultiChartTableResponse getScalingTable(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu, @PathVariable("runType") String runType) {
-
-        MultiChartTableResponse multiChartTableResponse = null;
-        String comment = null;
-        List<Map<String, String>> resListFinal = null;
-        List<AverageResult> list = null;
-
-        list = averageResultService.getAvgResultCPUAppType(cpu, app_name,runType);
-
-
-        if (list == null || list.size() == 0 )
-            return multiChartTableResponse;
-
-        Set<Integer> nodes = new LinkedHashSet<>();
-        Set<String> cores = new LinkedHashSet<>();
-        Set<String> bms = new LinkedHashSet<>();
-
-        for (AverageResult avg : list) {
-            nodes.add(avg.getNodes());
-            bms.add(avg.getBmName());
-            cores.add(String.valueOf(avg.getCores()));
-        }
-
-        List<String> bmlist = bms.stream().collect(Collectors.toList());
-
-        List<Map<String, Double>> resList = new ArrayList<>();
-
-        List<Map<String,Integer>> countData = new ArrayList<>();
-
-        List<Map<String, String>> CVData = new ArrayList<>();
-
-        Map<String, Double> avgRes = null;
-        Map<String, Integer> countMap = null;
-        Map<String, String> CVMap = null;
-
-        List<String> nodesList = new ArrayList<>();
-        List<String> coresList = cores.stream().collect(Collectors.toList());
-
-        for (Integer n : nodes) {
-            avgRes = new LinkedHashMap<>();
-            nodesList.add(n.toString());
-            for (AverageResult a : list) {
-                if (a.getNodes() == n) {
-                    avgRes.put(a.getBmName(), a.getAvgResult());
-                }
-            }
-            resList.add(avgRes);
-        }
-
-        int core=0;
-        for (Integer n : nodes) {
-            countMap = new LinkedHashMap<>();
-            CVMap = new LinkedHashMap<>();
-            nodesList.add(n.toString());
-            countMap.put("Nodes", n);
-            CVMap.put("Nodes", String.valueOf(n));
-            countMap.put("Cores", Integer.valueOf(coresList.get(core)));
-            CVMap.put("Cores", coresList.get(core));
-
-            for (AverageResult a : list) {
-
-                if (a.getNodes() == n) {
-                    countMap.put(a.getBmName(),a.getRunCount());
-                    CVMap.put(a.getBmName(),String.valueOf(a.getCoefficientOfVariation()));
-                }
-            }
-            countData.add(countMap);
-            CVData.add(CVMap);
-            core++;
-        }
-
-
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-            comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-            comment = "Lower is better";
-        }
-
-
-        List<Map<String, Double>> newResList = new ArrayList<>();
-
-        for (Map<String, Double> e : resList) {
-
-            Map<String, Double> map = new LinkedHashMap<>();
-            for (String bm : bmlist) {
-                if (!e.containsKey(bm)) {
-                    map.put(bm, 0.0);
-                } else {
-                    map.put(bm, e.get(bm));
-                }
-            }
-            newResList.add(map);
-
-        }
-
-        resListFinal = new ArrayList<>();
-
-            Map<String, Double> firstResult = new LinkedHashMap<>();
-            firstResult.putAll(newResList.get(0));
-
-            Map<String, String> temp = new LinkedHashMap<>();
-            temp.put("Nodes", nodesList.get(0));
-            temp.put("Cores", coresList.get(0));
-
-            for (Map.Entry<String, Double> d : newResList.get(0).entrySet()) {
-
-                if (Double.compare(d.getValue(), 0.0) > 0)
-                    temp.put(d.getKey(), "1.0");
-            }
-            resListFinal.add(temp);
-
-            newResList.remove(0);
-
-
-        if(nodesList.size() > 1 && resList.size() > 1 ) {
-            int i = 1;
-
-            for (Map<String, Double> lis : newResList) {
-
-                temp = new LinkedHashMap<>();
-                temp.put("Nodes", nodesList.get(i));
-                temp.put("Cores", coresList.get(i));
-                for (Map.Entry<String, Double> d : lis.entrySet()) {
-                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
-                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-                            double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
-                            temp.put(d.getKey(), String.valueOf(d1));
-
-                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-                            double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
-                            temp.put(d.getKey(), String.valueOf(d1));
-                        }
-                    }
-
-                }
-                resListFinal.add(temp);
-                i++;
-            }
-        }
-
-//        List<String> bmlistFinalOld = new ArrayList<>();
-//
-//            for (Map.Entry<String, String> bm : resListFinal.get(0).entrySet()) {
-//                bmlistFinalOld.add(bm.getKey());
-//            }
-        List<String> bmlistFinal = new ArrayList<>();
-        bmlistFinal.add("Nodes");
-        bmlistFinal.add("Cores");
-        for(String s : bmlist){
-            bmlistFinal.add(s);
-        }
-
-
-
-         multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).countData(countData).CVData(CVData).comment(comment).build();
-
-        return multiChartTableResponse;
-    }
-
     @GetMapping("/result/{app_name}")
     public List<TwoPartChartResponse> getTwoPartChartResponse(@PathVariable("app_name") String app_name, String[] cpuList, String[] typeList) {
         List<String> cpus = Arrays.asList(cpuList);
@@ -691,6 +749,9 @@ public class ChartRestController {
             }
         }
 
+
+        if(bms.size() == 0 || bms.isEmpty())
+            return resultList;
 
         for (int i = 0; i < list.size(); i++)
         {

@@ -3,14 +3,18 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 var BACKGROUND_COLORS = ['#FF9E80', '#03A9F4', '#FFD180', '#9575CD', '#90A4AE', '#F9A825', '#00897B', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
-var BACKGROUND_COLORS_NEW = ['rgb(19,91,105)','rgb(21,104,121)','rgb(20,116,132)','rgb(133,155,163)','rgb(173,183,191)'   ,'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
+var BACKGROUND_COLORS_NEW = ['rgb(19,91,105)', 'rgb(21,104,121)', 'rgb(20,116,132)', 'rgb(133,155,163)', 'rgb(173,183,191)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)', '#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
 
 $('#cpuDrop').change(cpuChange);
 $('#typeDrop').change(typeChange);
 $('#appDrop').change(appChange);
 
 function cpuChange() {
-  cpu = $('#cpuDrop')[0].value;
+
+    var preType = $("#typeDrop option:selected").val();
+    var preApp = $("#appDrop option:selected").val();
+
+    cpu = $('#cpuDrop')[0].value;
     if (cpu) {
         $("#type").show();
 
@@ -26,18 +30,28 @@ function cpuChange() {
             }
             html += '</option>';
             $('#typeDrop').html(html);
+
+            if (data.includes(preType)) {
+                $('#typeDrop').val(preType);
+                typeChange(preApp);
+            } else {
+                $('#typeDrop').val('');
+            }
         });
     }
 
-    $('#typeDrop').val('');
     clearForm();
     clearChart();
 }
 
 
-function typeChange() {
+function typeChange(preApp) {
     cpu = $('#cpuDrop')[0].value;
     type = $('#typeDrop')[0].value;
+    if($("#appDrop option:selected").val())
+    {
+        var preApp = $("#appDrop option:selected").val();
+    }
 
     if (cpu && type) {
         $("#app").show();
@@ -54,6 +68,14 @@ function typeChange() {
             }
             html += '</option>';
             $('#appDrop').html(html);
+
+            if (data.includes(preApp)) {
+                $('#appDrop').val(preApp);
+                appChange();
+            } else {
+                $('#appDrop').val('');
+            }
+
         });
     }
 
@@ -97,39 +119,37 @@ function appChange() {
     clearChart();
     var app = $('#appDrop')[0].value;
     var type = $('#typeDrop')[0].value;
-
     var cpu = $('#cpuDrop')[0].value;
 
     if (app && type && cpu) {
         $.getJSON("/chart/getNodesCount", {
-                    appName: app,
-                    cpu: cpu,
-                    type: type,
-                    ajax: 'true'
-                }, function(data) {
-                        if(data > 1)
-                        {
-                            $("#radio").show();
-                            if ($("#option1").is(":checked")) {
-                                    $('#tableNew').html('');
-                                    getNodeChartData();
-                                }
+            appName: app,
+            cpu: cpu,
+            type: type,
+            ajax: 'true'
+        }, function(data) {
 
-                                if ($("#option2").is(":checked")) {
-                                    getBmChartData();
-                                }
-                        }
-                        else{
-                             $("#radio").hide();
-                             $("#multiChart").hide();
-                             $("#nodeChart").show();
-                             $("#noChart").hide();
-                             $('#comment').empty();
-                             $('#tableNew').html('');
-                             getNodeChartData();
-                        }
-                });
+            if (data > 1) {
+                $("#radio").show();
+                if ($("#option1").is(":checked")) {
+                    $('#tableNew').html('');
+                    getNodeChartData();
                 }
+
+                if ($("#option2").is(":checked")) {
+                    getBmChartData();
+                }
+            } else {
+                $("#radio").hide();
+                $("#multiChart").hide();
+                $("#nodeChart").show();
+                $("#noChart").hide();
+                $('#comment').empty();
+                $('#tableNew').html('');
+                getNodeChartData();
+            }
+        });
+    }
 
     $("#noChart").hide();
     $('#comment').empty();
@@ -293,8 +313,8 @@ function getData() {
     if (app && cpu && type) {
 
         $.getJSON("/chart/scalingTable/" + cpu + "/" + app + "/" + type, function(data) {
-            if(data.scalingResultData.length > 1){
-            updateTable(data.nodeLabel, data.scalingResultData);
+            if (data.scalingResultData.length > 1) {
+                updateTable(data.nodeLabel, data.scalingResultData);
             }
         });
     } else {
@@ -381,11 +401,10 @@ function generateRowSingle(columns, rowData) {
         } else {
             val = '';
         }
-        if(column != ""){
-        row.push("<td>" + val + "</td>")
-        }
-        else{
-        row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+        if (column != "") {
+            row.push("<td>" + val + "</td>")
+        } else {
+            row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
         }
 
     });
@@ -444,7 +463,7 @@ function getBmChartData() {
                         })
                     },
                     options: {
-                        responsive:true,
+                        responsive: true,
                         maintainAspectRatio: false,
 
                         legend: {
@@ -476,13 +495,13 @@ function getBmChartData() {
                                 ticks: {
                                     min: 0,
                                     max: 25,
-                                    stepSize: 5
-                                    ,padding: 10
+                                    stepSize: 5,
+                                    padding: 10
                                 },
                                 gridLines: {
                                     drawOnChartArea: true,
-                                      borderDash: [2],
-                                      zeroLineBorderDash: [2]
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
                                 },
                                 scaleLabel: {
                                     display: true,

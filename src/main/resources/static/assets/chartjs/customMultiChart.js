@@ -3,11 +3,13 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 var typeVal;
 var flag;
+var cpuList = [];
+
 
 $('#clearButton').on('click', function(){
 
 $('input[type=checkbox]').prop('checked',false);
-
+cpuList.length = 0;
 clearChart();
 $("#clear").hide();
 clearHtml();
@@ -56,11 +58,13 @@ $('#appDrop').on("change", function() {
 
 
 function runTypeCheckBoxChange() {
+
  $('#checkbox').empty();
  $('#footnote').hide();
  $('.collapse').collapse('hide')
  var app = $('#appDrop')[0].value;
  var runTypes =[];
+ cpuList.length = 0;
     if(flag == 1)
     {
          $("#typeCheckBox input:checked").each(function() {
@@ -83,7 +87,7 @@ function runTypeCheckBoxChange() {
                            var html = '';
                            for (var i = 0; i < len; i++) {
                                html += ' <div id="cpuCheckBox" class="custom-control custom-checkbox custom-control-inline">';
-                               html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange()"/>' +
+                               html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + '" onchange="checkBoxChange(\'' + data[i] + '\')"/>' +
                                    '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
                                html += '</div>';
                            }
@@ -101,12 +105,24 @@ checkBoxChange();
 }
 
 
-function checkBoxChange() {
- var cpuList = [];
+function checkBoxChange(cpuType) {
+// var cpuList = [];
  var runTypes =[];
- $("#cpuCheckBox input:checked").each(function() {
-            cpuList.push($(this).val());
-        });
+
+ if(cpuType) {
+
+const index = cpuList.indexOf(cpuType);
+if (index > -1) {
+  cpuList.splice(index, 1);
+}
+else{
+ cpuList.push(cpuType);
+}
+ }
+
+// $("#cpuCheckBox input:checked").each(function() {
+//            cpuList.push($(this).val());
+//        });
 
 
        if(flag === 1)
@@ -141,7 +157,7 @@ function checkBoxChange() {
 
         function getMultiChartData() {
 
-            getData();
+            getData(cpuList);
             var app = $('#appDrop')[0].value;
             if (app && (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1)) {
                 $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
@@ -273,13 +289,13 @@ function checkBoxChange() {
             }
         }
 
-        function getData() {
+        function getData(cpuTypes) {
             var app = $('#appDrop')[0].value;
-            var cpuList = [];
             var runTypes =[];
-            $("#cpuCheckBox input:checked").each(function() {
-                cpuList.push($(this).val());
-            });
+            var cpuList = cpuTypes;
+//            $("#cpuCheckBox input:checked").each(function() {
+//                cpuList.push($(this).val());
+//            });
 
                  if(flag === 1)
                    {
@@ -380,6 +396,7 @@ function checkBoxChange() {
 }
 
 function clearHtml() {
+    var cpuList = [];
     $('#tableNew').html('');
     $('#footnote').hide();
     $('.collapse').collapse('hide');
@@ -387,6 +404,7 @@ function clearHtml() {
 
 
 function clearChart() {
+    var cpuList = [];
     $('#multiBarChart').remove();
     $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
 }

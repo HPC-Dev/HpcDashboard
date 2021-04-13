@@ -36,7 +36,8 @@ select * from average_result where app_name= "lsdyna" and cpu_sku IN ("7742","77
 
 select * from heat_map;
 select * from app_category;
-select * from results;
+select * from results where cpu="7763" and app_name="hpl";
+
 select * from run_types;
 
 select * from average_result;		
@@ -44,6 +45,14 @@ select * from run_types;
 select * from average_result where app_name= "cfx" and cpu_sku IN ("7F52","7F72","8268") and run_type IN ("baseline") and nodes =1 ORDER BY avg_result;
 
 select * from average_result where cpu_sku="7763" and run_type="sles12sp5_300a_edc" and nodes=1 and category is not NULL;
+
+select * from average_result where app_name= "openfoam" and cpu_sku IN ("7543","74F3") and run_type IN ("latest") and nodes =1 ORDER BY case cpu_sku when "7543" then 1 when "74F3" then 2 else 9999 end;
+
+set innodb_lock_wait_timeout=200;
+
+show variables like 'innodb_lock_wait_timeout';
+
+select * from average_result where  app_name="openfoam" and cpu_sku="7763" and run_type="latest";
 
 select * from heat_map where cpu_sku="7763"  and nodes=1 and category is not NULL;
 

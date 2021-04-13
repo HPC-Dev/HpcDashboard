@@ -2,9 +2,13 @@ var cpus = []
 var typeVal;
 var flag;
 $('#typeDrop').change(typeChange);
+$("#app").on("change", getData);
 
 $('#cpuDrop').on("change", function() {
     cpu = $('#cpuDrop')[0].value;
+    var preType = $("#typeDrop option:selected").val();
+    var preApp = $("#appDrop option:selected").val();
+
     if (cpu) {
      $("#type").show();
         $.getJSON("/runTypesByCPU", {
@@ -19,6 +23,14 @@ $('#cpuDrop').on("change", function() {
             }
             html += '</option>';
             $('#typeDrop').html(html);
+
+             if (data.includes(preType)) {
+                            $('#typeDrop').val(preType);
+                            typeChange(preApp);
+                        } else {
+                            $('#typeDrop').val('');
+                        }
+            getData();
         });
 
     } else if (value == '') {
@@ -39,10 +51,15 @@ $('#cpuDrop').on("change", function() {
 
 });
 
-function typeChange() {
+function typeChange(preApp) {
 
     cpu = $('#cpuDrop')[0].value;
     type = $('#typeDrop')[0].value;
+
+     if($("#appDrop option:selected").val())
+        {
+            var preApp = $("#appDrop option:selected").val();
+        }
 
     if (cpu && type) {
         $("#app").show();
@@ -59,8 +76,14 @@ function typeChange() {
             }
             html += '</option>';
             $('#appDrop').html(html);
+
+             if (data.includes(preApp)) {
+                  $('#appDrop').val(preApp);
+                      getData();
+                        } else {
+                            $('#appDrop').val('');
+                        }
         });
-        $("#app").on("change", getData);
     } else if (value == '') {
         $("#app").hide();
     }

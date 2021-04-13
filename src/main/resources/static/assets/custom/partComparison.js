@@ -13,6 +13,13 @@ var flag2;
 
 
 $('#appDrop').on("change", function() {
+
+    var preApp = $("#appDrop option:selected").val();
+    var preCpu1 = $("#cpuDrop1 option:selected").val();
+    var preCpu2 = $("#cpuDrop2 option:selected").val();
+    var preType1 = $("#typeDrop1 option:selected").val();
+    var preType2 = $("#typeDrop2 option:selected").val();
+
     var value = $(this).val();
     if (value != '') {
 
@@ -28,6 +35,16 @@ $('#appDrop').on("change", function() {
             }
             html += '</option>';
             $('#cpuDrop1').html(html);
+
+            if (data.includes(preCpu1)) {
+                $('#cpuDrop1').val(preCpu1);
+                getRunType1(preType1);
+            } else {
+                $('#cpuDrop1').val('');
+            }
+            getData();
+
+
         });
 
 
@@ -43,14 +60,20 @@ $('#appDrop').on("change", function() {
             }
             html += '</option>';
             $('#cpuDrop2').html(html);
+
+            if (data.includes(preCpu2)) {
+                $('#cpuDrop2').val(preCpu2);
+                getRunType2(preType2);
+            } else {
+                $('#cpuDrop2').val('');
+            }
+            getData();
+
+
         });
 
-        $('#cpuDrop1').val('');
-        $('#cpuDrop2').val('');
         $('#typeDrop1').val('');
         $('#typeDrop2').val('');
-//        $("#type1").hide();
-//        $("#type2").hide();
         clearChart();
         clearHtml();
     }
@@ -65,9 +88,15 @@ $("#cpu1").on("change", getRunType1);
 
 $("#cpu2").on("change", getRunType2);
 
-function getRunType1() {
+function getRunType1(preType1) {
+
     cpu1 = $('#cpuDrop1')[0].value;
     app = $('#appDrop')[0].value;
+
+    if ($("#typeDrop1 option:selected").val()) {
+        var preType1 = $("#typeDrop1 option:selected").val();
+    }
+
     if (app && cpu1) {
         $.getJSON("/runTypesByAPPCPU", {
             appName: app,
@@ -84,35 +113,34 @@ function getRunType1() {
             html += '</option>';
             $('#typeDrop1').html(html);
 
-            type1 = $('#typeDrop1')[0].value;
-//            if (data.length > 1) {
-//                flag1 = 1;
-//                $("#dummytype1").hide();
-//                $("#type1").show();
-//                if (!data.includes($('#typeDrop1')[0].value)) {
-//                    $('#typeDrop1').val('');
-//                } else {
-//                    $('#typeDrop1').val($('#typeDrop1')[0].value);
-//                    getData();
-//                }
-//            } else {
-//                $("#type1").hide();
-//                $("#dummytype1").show();
-//                flag1 = 0;
-//                typeVal1 = data[0];
-//                getData();
-//            }
+            if (data.includes(preType1)) {
+                $('#typeDrop1').val(preType1);
+            } else {
+                $('#typeDrop1').val('');
+            }
+            getData();
+
+            //            type1 = $('#typeDrop1')[0].value;
+
         });
     }
-//    $('#typeDrop1').val('');
+
     clearChart();
     clearHtml();
 
 }
 
-function getRunType2() {
+function getRunType2(preType2) {
+
+
     cpu2 = $('#cpuDrop2')[0].value;
     app = $('#appDrop')[0].value;
+
+    if ($("#typeDrop2 option:selected").val()) {
+        var preType2 = $("#typeDrop2 option:selected").val();
+    }
+
+
     if (app && cpu2) {
 
         $.getJSON("/runTypesByAPPCPU", {
@@ -128,27 +156,19 @@ function getRunType2() {
             }
             html += '</option>';
             $('#typeDrop2').html(html);
-            type2 = $('#typeDrop2')[0].value;
 
-//            if (data.length > 1) {
-//                flag2 = 1;
-//                $("#type2").show();
-//                if (!data.includes($('#typeDrop2')[0].value)) {
-//                    $('#typeDrop2').val('');
-//                } else {
-//                    $('#typeDrop2').val($('#typeDrop2')[0].value);
-//                    getData();
-//                }
-//            } else {
-//                $("#type2").hide();
-//                flag2 = 0;
-//                typeVal2 = data[0];
-//                getData();
-//            }
+            if (data.includes(preType2)) {
+                $('#typeDrop2').val(preType2);
+            } else {
+                $('#typeDrop2').val('');
+            }
+            getData();
+
+            //            type2 = $('#typeDrop2')[0].value;
 
         });
     }
-//    $('#typeDrop2').val('');
+
 
     clearHtml();
     clearChart();
@@ -162,36 +182,25 @@ function clearChart() {
 
 function clearHtml() {
     $('#tableNew').html('');
-       $('#footnote').hide();
-       $('.collapse').collapse('hide');
+    $('#footnote').hide();
+    $('.collapse').collapse('hide');
 }
 
 function getData() {
+
+
     app = $('#appDrop')[0].value;
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
 
-//    if(flag1 == 1)
-//        {
-//        type1 = $('#typeDrop1')[0].value;
-//        }
-//        else{
-//           type1 = typeVal1;
-//           }
-//
-//        if(flag2 == 1)
-//            {
-//            type2 = $('#typeDrop2')[0].value;
-//            }
-//            else{
-//            type2 = typeVal2;
-//            }
-
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
+
+
+
     clearChart();
     clearHtml();
-    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1===cpu2 && type1===type2)) {
+    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1 === cpu2 && type1 === type2)) {
 
         $.getJSON("/avg/resultComparison/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
 
@@ -201,8 +210,7 @@ function getData() {
             data.resultData.forEach(element => transformedData.push(element));
             updateTable(columnNames, transformedData, data.comment);
         });
-    }
-    else {
+    } else {
         clearHtml();
     }
     getMultiChartData(app, cpu1, cpu2, type1, type2);
@@ -218,11 +226,11 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
     var params = {};
     params.cpuList = cpuList;
     params.typeList = typeList;
-    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1===cpu2 && type1===type2)) {
+    if (app && cpu1 && cpu2 && type1 && type2 && !(cpu1 === cpu2 && type1 === type2)) {
         $.getJSON("/chart/result/" + app, $.param(params, true), function(data) {
 
 
-            if (data.length >0 && data[0].datasets[0].value.length > 0 && data[0].datasets[1].value.length > 0) {
+            if (data.length > 0 && data[0].datasets[0].value.length > 0 && data[0].datasets[1].value.length > 0) {
                 var label = data[0].labels;
 
                 var chartdata = {
@@ -231,17 +239,16 @@ function getMultiChartData(app, cpu1, cpu2, type1, type2) {
                         return {
                             label: dataset.cpuName,
                             backgroundColor: BACKGROUND_COLORS[index],
-                            //borderColor: BORDER_COLORS[index],
                             borderWidth: 1,
                             data: dataset.value
                         };
                     })
                 };
                 var chartOptions = {
-                legend: {
-                          display: true,
-                          position: 'right'
-                        },
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    },
                     title: {
                         display: true,
                         text: data[0].appName

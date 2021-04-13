@@ -18,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class GenerateExcelReport {
 
     public static ByteArrayInputStream resultsToExcel(List<Result> results) throws IOException {
-        String[] COLUMNS = { "Job Id", "App Name", "Benchmark", "Nodes", "Cores", "Node Name", "Result", "CPU","OS", "BIOS version", "Cluster", "User", "Platform", "CPU generation", "Run type", "Setting", "timeStamp"  };
+        String[] COLUMNS = { "Job Id", "App Name", "Benchmark", "Nodes", "Cores", "Node Name", "Result", "CPU","OS", "BIOS version", "Cluster", "User", "Platform", "CPU generation", "Run type",  "timeStamp"  };
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             Sheet sheet = workbook.createSheet("Results");
 
@@ -55,7 +55,6 @@ public class GenerateExcelReport {
                 row.createCell(12).setCellValue(result.getPlatform());
                 row.createCell(13).setCellValue(result.getCpuGen());
                 row.createCell(14).setCellValue(result.getRunType());
-                row.createCell(15).setCellValue(result.getSetting());
                 row.createCell(15).setCellValue(result.getTimeStamp());
              }
 
@@ -75,7 +74,6 @@ public class GenerateExcelReport {
             sheet.autoSizeColumn(13);
             sheet.autoSizeColumn(14);
             sheet.autoSizeColumn(15);
-            sheet.autoSizeColumn(16);
 
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());

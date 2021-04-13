@@ -1,17 +1,90 @@
-th, td { white-space: nowrap; }
-    div.dataTables_wrapper {
-        margin: 0 auto;
-    }
+th,
+td {
+	white-space: nowrap;
+}
 
-   .dropdown-content  {
-       padding: 0;margin:0;
-       }
-       .dropdown-content a {
-       padding-left: 0.8rem;text-align: left; float: none;color: #B5B3B2;display: block;padding-right: 0.1rem;
-       }
-       .dropdown-content a:hover {
-        background-color: #E7E5E3;
-         }
-       .dropdown:hover .dropdown-content {
-        display: block;
-        }
+div.dataTables_wrapper {
+	margin: 0 auto;
+}
+
+.dropdown-content {
+	padding: 0;
+	margin: 0;
+}
+
+.dropdown-content a {
+	padding-left: 0.8rem;
+	text-align: left;
+	float: none;
+	color: #B5B3B2;
+	display: block;
+	padding-right: 0.1rem;
+}
+
+.dropdown-content a:hover {
+	background-color: #E7E5E3;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+div.dataTables_length {
+	margin-right: 1em;
+	display: inline-block;
+}
+
+.custom-select-sm {
+	height: calc(1.5em + .5rem + 2px);
+	padding-top: .25rem;
+	padding-bottom: .25rem;
+	padding-left: .5rem;
+	font-size: .875rem;
+}
+
+.custom-select {
+	padding: .375rem 1.75rem .375rem .75rem !important;
+}
+
+div.dt-buttons.btn-group.flex-wrap {
+	bottom: 1px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 1px;
+	margin-left: 1px;
+	display: inline;
+	border: 1px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	border: none !important;
+	background: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+	border: none !important;
+	background: none !important;
+}
+
+.page-link {
+	border: 2px solid #007bf !important;
+}
+
+a.page-link {
+	color: black !important
+}
+
+.page-item.active .page-link {
+	background-color: black !important;
+	border-color: black !important;
+	color: white !important;
+}
+
+table.dataTable thead .sorting_asc {
+	background-image: none !important;
+}
+
+table.dataTable thead .sorting_desc {
+	background-image: none !important;
+}

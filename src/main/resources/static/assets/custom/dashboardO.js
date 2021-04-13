@@ -1,17 +1,6 @@
 dataTable();
 var table;
 function dataTable() {
-
-var buttonCommon = {
-        exportOptions: {
-            format: {
-                body: function ( data, row, column, node ) {
-                    return data;
-                }
-            }
-        }
-        };
-
 table = $('table#ajax').DataTable({
     'ajax': '/datatable/dashboard',
     'scrollY': "550px",
@@ -20,19 +9,6 @@ table = $('table#ajax').DataTable({
     'scrollCollapse': true,
     'processing': true,
     'serverSide': true,
-    "dom": 'lBfrtip',
-    'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-    'buttons': [
-                {
-                    extend: 'collection',
-                    text: 'Export',
-                    buttons: [
-                        'copy',
-                        'excel'
-                        ,'csv']
-                }
-            ],
-
     columns: [{
             data: 'jobId'
         },
@@ -78,21 +54,25 @@ table = $('table#ajax').DataTable({
         {
             data: 'runType'
         },
-        {
-        data: 'timeStamp',
+//        {
+//            data: 'setting'
+//        },
+
+        { data: 'timeStamp',
         searchable: false,
         "render": function (data) {
                 if(data != null){
                  var dateData = data.split(' ');
                  var date = dateData[0].split('-');
                 return (date[1] + "/" + date[0] + "/" + date[2]);
+                //return (month.toString().length > 1 ? month : "0" + month) + "/" + (day.toString().length > 1 ? day : "0" + day) + "/" + date.getFullYear();
                 }
                 else{
                 return null;
                 }
             }
         }
-],
+]
 });
 
 }
