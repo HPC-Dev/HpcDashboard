@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link rel="icon"
+          th:href="@{assets/favicon.ico}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+
+    <title>Scaling Comparison</title>
+    <style>
+
+    </style>
+
+</head>
+
+<div th:insert="~{fragments/header :: header}">...</div>
+
+<br>
+
+
+<div class="container-fluid" style="max-width:1400px; padding:0;">
+    <div class="row">
+        <div id="app" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="appDrop" name="appDrop">
+                <option value="" selected="true" disabled="disabled">-- App --</option>
+                <option th:each="app : ${apps}"
+                        th:value="${app}"
+                        th:text="${app}"></option>
+            </select>
+        </div>
+
+        <div id="cpu1" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop1" name="cpuDrop1">
+                <option value="" selected="true" disabled="disabled">-- CPU1 --</option>
+            </select>
+        </div>
+
+
+        <div id="cpu2" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop2" name="cpuDrop2">
+                <option value="" selected="true" disabled="disabled">-- CPU2 --</option>
+            </select>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="row"  style="margin-top:20px">
+        <div class="custom-control col-sm-2 custom-control-inline">
+
+        </div>
+
+        <div id="type1" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="typeDrop1" name="typeDrop1">
+                <option value="" selected="true" disabled="disabled">-- RunType1 --</option>
+            </select>
+        </div>
+
+        <div id="dummytype1" class="custom-control col-sm-2 dropdown custom-control-inline" style="display:none;">
+
+        </div>
+
+
+        <div id="type2" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop2" name="typeDrop2">
+                <option value="" selected="true" disabled="disabled">-- RunType2 --</option>
+            </select>
+        </div>
+
+
+    </div>
+
+<!--    <div class="row"  style="margin-top:20px">-->
+<!--        <div class="custom-control col-sm-2 custom-control-inline">-->
+
+<!--        </div>-->
+
+<!--    <div id="radio" class="form-group" style="margin-top: 12px; margin-left: 20px;" >-->
+<!--        <div class="custom-control custom-radio custom-control-inline">-->
+<!--            <input type="radio" id="option1" name="option" class="custom-control-input" value="actual">-->
+<!--            <label class="custom-control-label" for="option1">Actual data</label>-->
+<!--        </div>-->
+<!--        <div class="custom-control custom-radio custom-control-inline">-->
+<!--            <input type="radio" id="option2" name="option" class="custom-control-input" value="relative">-->
+<!--            <label class="custom-control-label" for="option2">Relative data</label>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    </div>-->
+
+</div>
+
+<br>
+<br>
+
+<div class="container-fluid" style="max-width:1300px; overflow-x:auto;padding:0;">
+
+    <h6 style="margin:0px;display:none;" id="p1">Perf Metric</h6>
+    <div class="table-responsive" id="table"></div>
+
+    <h6 style="margin-top:20px;display:none;" id="p2">Perf Metric 1</h6>
+    <div class="table-responsive" id="table1"></div>
+
+    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p3">Relative Scaling</h6>
+    <div class="table-responsive" id="tableScaling" style=""></div>
+
+    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p4">Relative Scaling 1</h6>
+    <div class="table-responsive" id="tableScaling1" style=""></div>
+
+
+</div>
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{assets/custom/scalingComparison.js}"></script>
+
+</body>
+</html>

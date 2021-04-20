@@ -30,9 +30,9 @@
 <div class="container-fluid" style="max-width:1400px; padding:0;">
     <div class="row">
 
-<!--        <div class="custom-control col-sm-4 custom-control-inline">-->
+        <!--        <div class="custom-control col-sm-4 custom-control-inline">-->
 
-<!--        </div>-->
+        <!--        </div>-->
 
         <div id="cpu1" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="cpuDrop1" name="cpuDrop1">
@@ -46,8 +46,26 @@
 
 
         <div id="cpu2" class="custom-control col-sm-2 dropdown custom-control-inline">
-            <select class="form-control form-control-sm" id="cpuDrop2" name="cpuDrop1">
+            <select class="form-control form-control-sm" id="cpuDrop2" name="cpuDrop2">
                 <option selected="true" disabled="disabled">-- CPU2 --</option>
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+            </select>
+        </div>
+
+        <div id="cpu3" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop3" name="cpuDrop3">
+                <option selected="true" disabled="disabled">-- CPU3 --</option>
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+            </select>
+        </div>
+
+        <div id="cpu4" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop4" name="cpuDrop4">
+                <option selected="true" disabled="disabled">-- CPU4 --</option>
                 <option th:each="cpu : ${cpus}"
                         th:value="${cpu}"
                         th:text="${cpu}"></option>
@@ -72,6 +90,18 @@
             </select>
         </div>
 
+        <div id="type3" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop3" name="typeDrop3">
+                <option value="" selected="true" disabled="disabled">-- RunType3 --</option>
+            </select>
+        </div>
+
+        <div id="type4" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop4" name="typeDrop4">
+                <option value="" selected="true" disabled="disabled">-- RunType4 --</option>
+            </select>
+        </div>
+
     </div>
 
 
@@ -80,9 +110,9 @@
     </div>
 
 
-        <div class="table-responsive" id="tableNew" style="margin-left:10px; margin-top:20px">
+    <div class="table-responsive" id="tableNew" style="margin-left:10px; margin-top:20px">
 
-        </div>
+    </div>
 
 
     <p id="footnote" style="display:none;">
@@ -99,7 +129,7 @@
                     <li> Exception:  Abaqus Explicit and All open-source codes (e.g. WRF) are run on RHEL8.3 for 7742.</li>
                 </ul>
                 <ul>
-                <li> Exception:  Fluent, CFX, Star-CCM+, and LS-DYNA were run on SLES 12 SP5 for 7742.</li>
+                    <li> Exception:  Fluent, CFX, Star-CCM+, and LS-DYNA were run on SLES 12 SP5 for 7742.</li>
                 </ul>
             </ul>
             <ul>
@@ -112,7 +142,7 @@
             <ul>
                 <li> All Intel testing performed on SLES 12 SP5.</li>
                 <ul>
-                <li> Exception:  WRF was run on RHEL 8.3 for Intel processors.</li>
+                    <li> Exception:  WRF was run on RHEL 8.3 for Intel processors.</li>
                 </ul>
             </ul>
 
