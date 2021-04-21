@@ -4,6 +4,8 @@ Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';
 
 var app;
+var cpuList = [];
+var typeList = [];
 
 function clearHtml() {
     $('#heading').empty();
@@ -173,6 +175,9 @@ function getData() {
     clearHtml();
     $('#tableNew').html('');
 
+    cpuList = [];
+    typeList = [];
+
     cpu1 = $('#cpuDrop1')[0].value;
     cpu2 = $('#cpuDrop2')[0].value;
     cpu3 = $('#cpuDrop3')[0].value;
@@ -183,9 +188,36 @@ function getData() {
     type3 = $('#typeDrop3')[0].value;
     type4 = $('#typeDrop4')[0].value;
 
+    cpuList.push(cpu1);
+    cpuList.push(cpu2);
+    cpuList.push(cpu3);
+    cpuList.push(cpu4);
 
-    if (cpu1 && cpu2 && cpu3 && cpu4 && type1 && type2 && type3 && type4 && !(cpu1 === cpu2 && type1 === type2)) {
-        $.getJSON("/avg/heatMap/" + cpu1 + "/" + cpu2 + "/" + cpu3 + "/" + cpu4 + "/" +  type1 + "/" + type2 + "/" +  type3 + "/" + type4, function(data) {
+    typeList.push(type1);
+    typeList.push(type2);
+    typeList.push(type3);
+    typeList.push(type4);
+
+    var filteredTypeList = typeList.filter(function(type) {
+        return type != "";
+    });
+
+    typeList = filteredTypeList;
+
+    for (var i = 0; i < cpuList.length; i++) {
+        if (cpuList[i].includes("CPU")) {
+            cpuList.splice(i, 1);
+            i--;
+        }
+    }
+
+    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+
+        var params = {};
+        params.cpuList = cpuList;
+        params.typeList = typeList;
+
+        $.getJSON("/avg/heatMap/", $.param(params, true), function(data) {
             if (data.heatMapResults != null && data.heatMapResults.length > 1) {
                 updateTable(data.columns, data.heatMapResults);
             } else {
@@ -203,14 +235,27 @@ function getData() {
 
 function updateTable(columns, data, comment) {
 
+    var header = "";
+    header += cpu1 + "_" + type1 + " vs ( ";
+
+    for (i = 1; i < cpuList.length; i++) {
+        header += cpuList[i] + "_" + typeList[i];
+        if (i + 1 != cpuList.length)
+            header += ", ";
+    }
+    header += " ) ";
+
+    console.log(header);
+
     var table;
     if (Object.keys(data).length > 0) {
         $('#heading').empty();
-        var heading = "<p style='font-weight: bold;font-size:15px;text-align:left;font-family:verdana;'>" + cpu1 + '_' + type1 + ' vs ' + ' ( ' + cpu2 + '_' + type2 + ' , ' + cpu3 + '_' + type3 + ' , ' + cpu4 + '_' + type4     + ' ) ' + "</p>"
+        var heading = "<p style='font-weight: bold;font-size:15px;text-align:left;font-family:verdana;'>" + header + "</p>"
         $('#heading').append(heading);
         $('#heading').show();
         $('#footnote').show();
 
+        //        table = "<table class='table table-responsive '>" + getHeaders(columns) + getBody(columns, data) + getFooters(columns) + "</table>";
         table = "<table class='table table-responsive '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
     } else {
         clearHtml();
@@ -226,6 +271,12 @@ function getHeaders(columns) {
 
         if (column === 'isv') {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
+        } else if (column === 'perNode1' || column === 'perCore1') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        } else if (column === 'perNode2' || column === 'perCore2') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        } else if (column === 'perNode3' || column === 'perCore3') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         } else {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }
@@ -233,6 +284,29 @@ function getHeaders(columns) {
     headers.push('</tr></thead>');
 
     return headers.join('');
+}
+
+function getFooters(columns) {
+    var footers = ['<tfoot><tr>'];
+    columns.forEach(function(column) {
+
+        if (column === 'isv') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
+        } else if (column === 'perNode1' || column === 'perCore1') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        } else if (column === 'perNode2' || column === 'perCore2') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        } else if (column === 'perNode3' || column === 'perCore3') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        } else {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+        }
+
+
+    });
+    footers.push('</tr></tfoot>');
+
+    return footers.join('');
 }
 
 function getBody(columns, data) {
@@ -301,7 +375,9 @@ function generateRow(columns, rowData) {
             }
 
         } else {
-            row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+            //            row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
+            row.push('<td bgcolor="#FFFFFF"  style="font-weight:bold ; white-space: nowrap">' + val + '</td>')
+
         }
     });
 

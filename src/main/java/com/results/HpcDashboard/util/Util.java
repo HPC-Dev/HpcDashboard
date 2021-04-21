@@ -195,6 +195,9 @@ public class Util {
         cpuGenMap.put("7713","Milan");
         cpuGenMap.put("7763","Milan");
         cpuGenMap.put("7763_32C","Milan");
+        cpuGenMap.put("7663","Milan");
+        cpuGenMap.put("7643","Milan");
+        cpuGenMap.put("7513","Milan");
         cpuGenMap.put("7413","Milan");
         cpuGenMap.put("7543","Milan");
         cpuGenMap.put("75F3","Milan");
@@ -202,6 +205,13 @@ public class Util {
         cpuGenMap.put("7J13","Milan");
         cpuGenMap.put("7V13","Milan");
         cpuGenMap.put("74F3","Milan");
+        cpuGenMap.put("7453","Milan");
+        cpuGenMap.put("7443","Milan");
+        cpuGenMap.put("73F3","Milan");
+        cpuGenMap.put("7343","Milan");
+        cpuGenMap.put("7313","Milan");
+        cpuGenMap.put("72F3","Milan");
+
 
 
 

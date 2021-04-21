@@ -1,6 +1,7 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.heatMap.*;
+import com.results.HpcDashboard.dto.multichart.MultiChartTableResponse;
 import com.results.HpcDashboard.dto.partComparison.*;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
@@ -206,9 +207,16 @@ public class AverageResultRestController {
         Set<String> bmsList3 = filterBmList(list1,list4);
 
         bmsList2.retainAll(bmsList1);
-        bmsList3.retainAll(bmsList2);
-        bmsList1.retainAll(bmsList3);
 
+        if(bmsList2.size()>0)
+        {
+            bmsList1.retainAll(bmsList2);
+        }
+        if(bmsList3.size()>0) {
+            bmsList3.retainAll(bmsList2);
+            bmsList1.retainAll(bmsList3);
+            bmsList2.retainAll(bmsList3);
+        }
         Set<String> bmsList = bmsList1;
 
 
@@ -568,16 +576,41 @@ public class AverageResultRestController {
         return  resList;
     }
 
-    @GetMapping("/heatMap/{cpu1}/{cpu2}/{cpu3}/{cpu4}/{type1}/{type2}/{type3}/{type4}")
-    public HeatMapOutput getHeatMapData(@PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2,@PathVariable("cpu3") String cpu3, @PathVariable("cpu4") String cpu4,  @PathVariable("type1") String type1, @PathVariable("type2") String type2 ,  @PathVariable("type3") String type3, @PathVariable("type4") String type4) {
+//    @GetMapping("/heatMap/{cpu1}/{cpu2}/{cpu3}/{cpu4}/{type1}/{type2}/{type3}/{type4}")
+//    public HeatMapOutput getHeatMapData(@PathVariable("cpu1") String cpu1, @PathVariable("cpu2") String cpu2,@PathVariable("cpu3") String cpu3, @PathVariable("cpu4") String cpu4,  @PathVariable("type1") String type1, @PathVariable("type2") String type2 ,  @PathVariable("type3") String type3, @PathVariable("type4") String type4) {
+
+    @GetMapping("/heatMap")
+public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
         HeatMapOutput heatMapOutput = new HeatMapOutput();
         List<Category> categories = new ArrayList<>();
         List<HeatMapResult> resList = new ArrayList<>();
+        String cpu1 = cpuList[0];
+        String cpu2 = cpuList[1];
+        String type1 = typeList[0];
+        String type2 = typeList[1];
+        String cpu3 = null;
+        String cpu4 = null;
+        String type3 = null;
+        String type4 = null;
+        List<HeatMap> list3 = new ArrayList<>();
+        List<HeatMap> list4 = new ArrayList<>();
+
+        if(cpuList.length > 2 && typeList.length >2 )
+        {
+            cpu3 = cpuList[2];
+            type3 = typeList[2];
+             list3 = heatMapService.getHeatMapData(cpu3,type3);
+
+        }
+        if(cpuList.length > 3 && typeList.length > 3 ) {
+            cpu4 = cpuList[3];
+            type4 = typeList[3];
+            list4 = heatMapService.getHeatMapData(cpu4,type4);
+        }
+
         List<HeatMap> list1 = heatMapService.getHeatMapData(cpu1,type1);
         List<HeatMap> list2 = heatMapService.getHeatMapData(cpu2,type2);
 
-        List<HeatMap> list3 = heatMapService.getHeatMapData(cpu3,type3);
-        List<HeatMap> list4 = heatMapService.getHeatMapData(cpu4,type4);
 
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0 )
             return heatMapOutput;
@@ -655,21 +688,32 @@ public class AverageResultRestController {
         getHetMapNodeResult(cpu1, type1, cpu3, type3, cpu2, type2, cpu4, type4, category,  bmResList1, bmResList3, perCoreListFirst, perCoreListThird, categories1);
         getHetMapNodeResult(cpu1, type1, cpu4, type4, cpu2, type2, cpu3, type3, category,  bmResList1, bmResList4, perCoreListFirst, perCoreListFourth, categories2);
 
-        getConsolidatedResult(categories, resList);
-        getConsolidatedResult(categories1, resList1);
-        getConsolidatedResult(categories2, resList2);
+        resList = getConsolidatedResult(categories, resList);
+        resList1 = getConsolidatedResult(categories1, resList1);
+        resList2 = getConsolidatedResult(categories2, resList2);
 
 
-        for(int i=0,j=0,k=0; i<resList.size() && j<resList1.size() && k<resList2.size(); ++i,++j,++k) {
+        for(int i=0; i<resList.size() ; i++) {
 
             HeatMapResult h = resList.get(i);
-            HeatMapResult h1 = resList1.get(i);
-            HeatMapResult h2 = resList2.get(i);
+            HeatMapResult h1 = new HeatMapResult();
+            HeatMapResult h2 = new HeatMapResult();
+            if(cpuList.length > 2 && typeList.length > 2 ) {
+                 h1 = resList1.get(i);
+            }
+            if(cpuList.length > 3 && typeList.length > 3 ) {
+                 h2 = resList2.get(i);
+            }
 
-            h.setPerCore2(h1.getPerCore1());
-            h.setPerCore3(h2.getPerCore1());
-            h.setPerNode2(h1.getPerNode1());
-            h.setPerNode3(h2.getPerNode1());
+            if(cpuList.length > 2 && typeList.length > 2 ) {
+                h.setPerCore2(h1.getPerCore1());
+                h.setPerNode2(h1.getPerNode1());
+            }
+
+            if(cpuList.length > 3 && typeList.length > 3 ) {
+                h.setPerCore3(h2.getPerCore1());
+                h.setPerNode3(h2.getPerNode1());
+            }
         }
 
         heatMapOutput.setHeatMapResults(resList);
@@ -681,10 +725,22 @@ public class AverageResultRestController {
         columns.add("application");
         columns.add("benchmark");
         columns.add("perNode1");
+
+        if(cpuList.length > 2 && typeList.length > 2 )
         columns.add("perNode2");
+
+        if(cpuList.length > 3 && typeList.length > 3 )
         columns.add("perNode3");
+
+        if(cpuList.length > 2 && typeList.length > 2 )
+        columns.add("");
+
         columns.add("perCore1");
+
+        if(cpuList.length > 2 && typeList.length > 2 )
         columns.add("perCore2");
+
+        if(cpuList.length > 3 && typeList.length > 3 )
         columns.add("perCore3");
 
         heatMapOutput.setColumns(columns);
