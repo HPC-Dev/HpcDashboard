@@ -245,8 +245,6 @@ function updateTable(columns, data, comment) {
     }
     header += " ) ";
 
-    console.log(header);
-
     var table;
     if (Object.keys(data).length > 0) {
         $('#heading').empty();

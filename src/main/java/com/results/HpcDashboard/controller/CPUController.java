@@ -1,6 +1,7 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.models.CPU;
+import com.results.HpcDashboard.models.Processor;
 import com.results.HpcDashboard.services.CPUService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,14 @@ public class CPUController {
         return new ResponseEntity("Success!",HttpStatus.OK);
     }
 
+
+    @PostMapping(value = "/processorJson", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> insertProcessor(@RequestBody List<Processor> processors) {
+        if(processors != null || processors.size() > 0 )
+            cpuService.insertProcessorCSV(processors);
+        return new ResponseEntity("Success!",HttpStatus.OK);
+    }
 
 
     }

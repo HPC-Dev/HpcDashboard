@@ -121,6 +121,8 @@ public class Util {
             appMap.put("cp2k","LOWER");
             appMap.put("mechanical","HIGHER");
             appMap.put("speccpu","HIGHER");
+            appMap.put("spec_cpu2017","HIGHER");
+            appMap.put("spec_jbb2015","HIGHER");
             return appMap;
         }
 

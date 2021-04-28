@@ -2,8 +2,11 @@ package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.models.CPU;
+import com.results.HpcDashboard.models.Processor;
 import com.results.HpcDashboard.repo.CPURepo;
+import com.results.HpcDashboard.repo.ProcessorRepo;
 import com.results.HpcDashboard.util.Util;
+import org.apache.tomcat.jni.Proc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
@@ -17,6 +20,9 @@ import java.util.stream.StreamSupport;
 public class CPUService {
     @Autowired
     CPURepo cpuRepo;
+
+    @Autowired
+    ProcessorRepo processorRepo;
 
     @Autowired
     Util util;
@@ -54,6 +60,12 @@ public class CPUService {
     public void insertCPUCsv(List<CPU> cpus){
         for(CPU cpu: cpus) {
             cpuRepo.save(cpu);
+        }
+    }
+
+    public void insertProcessorCSV(List<Processor> processors){
+        for(Processor processor: processors) {
+            processorRepo.save(processor);
         }
     }
 
