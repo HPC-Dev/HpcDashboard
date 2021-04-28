@@ -1,7 +1,9 @@
 package com.results.HpcDashboard.controller;
 
+import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.Application;
 import com.results.HpcDashboard.models.CPU;
+import com.results.HpcDashboard.models.MetricMap;
 import com.results.HpcDashboard.services.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,20 @@ public class ApplicationController {
         return new ResponseEntity("Success!",HttpStatus.OK);
     }
 
+    @PostMapping(value = "/appMapJson", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> insertappMap(@RequestBody List<AppMap> appMaps) {
+        if(appMaps != null || appMaps.size() > 0 )
+            applicationService.insertAppMapCSV(appMaps);
+        return new ResponseEntity("Success!",HttpStatus.OK);
+    }
 
+    @PostMapping(value = "/metricMapJson", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> insertMetricMap(@RequestBody List<MetricMap> metricMaps) {
+        if(metricMaps != null || metricMaps.size() > 0 )
+            applicationService.insertMetricMapCSV(metricMaps);
+        return new ResponseEntity("Success!",HttpStatus.OK);
+    }
 
 }
