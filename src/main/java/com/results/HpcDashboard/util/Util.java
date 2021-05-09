@@ -123,6 +123,7 @@ public class Util {
             appMap.put("speccpu","HIGHER");
             appMap.put("spec_cpu2017","HIGHER");
             appMap.put("spec_jbb2015","HIGHER");
+            appMap.put("reveal", "LOWER");
             return appMap;
         }
 
@@ -149,6 +150,10 @@ public class Util {
         metricMap.put("wrf", "Mean Timer/Step");
         metricMap.put("cp2k","");
         metricMap.put("mechanical","Core Solver Rating");
+        metricMap.put("reveal","");
+        metricMap.put("speccpu","");
+        metricMap.put("spec_cpu2017","");
+        metricMap.put("spec_jbb2015","");
         return metricMap;
     }
 
@@ -228,6 +233,10 @@ public class Util {
         cpuGenMap.put("milan","Milan");
         cpuGenMap.put("rome","Rome");
         cpuGenMap.put("cascade","Cascade");
+        cpuGenMap.put("MilanX_16","Milan");
+        cpuGenMap.put("MilanX_24","Milan");
+        cpuGenMap.put("MilanX_32","Milan");
+        cpuGenMap.put("MilanX_64","Milan");
 
         return cpuGenMap;
     }

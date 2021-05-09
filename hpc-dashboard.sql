@@ -17,7 +17,9 @@ select DISTINCT bm_name from results where app_name="openfoam" ORDER BY nodes AS
 select * from average_result where app_name= "cfx" and cpu_sku IN ("7F72","7F52") and run_type IN ("baseline") and nodes =1 order by case cpu_sku when "7F52" then 1 when "7F72" then 2 end;
 
 
-select * from cpu_info;
+select * from app_map;
+
+select * from metric_map;
 
 select * from processor_info;
 

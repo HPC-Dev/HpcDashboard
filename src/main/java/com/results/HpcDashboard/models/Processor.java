@@ -24,4 +24,6 @@ public class Processor implements Serializable {
     String cpuSku;
 
     int cores;
+
+    double price;
 }
