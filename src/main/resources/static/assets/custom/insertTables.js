@@ -79,8 +79,14 @@ function getHeaders(columns) {
         headers.push('<th bgcolor="#D3D3D3">  ISV  </th>')
         }
         else if(column == "bmName"){
-                headers.push('<th bgcolor="#D3D3D3">  Benchmark  </th>')
+        headers.push('<th bgcolor="#D3D3D3">  Benchmark  </th>')
                 }
+        else if(column == "price"){
+         headers.push('<th bgcolor="#D3D3D3">  Price ($)  </th>')
+          }
+         else if(column == "tdp"){
+         headers.push('<th bgcolor="#D3D3D3">  TDP (W)  </th>')
+                    }
         else {
             headers.push('<th bgcolor="#D3D3D3">' + column.charAt(0).toUpperCase() + column.slice(1) + '</th>')
         }

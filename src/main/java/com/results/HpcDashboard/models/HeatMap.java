@@ -42,6 +42,10 @@ public class HeatMap {
 
     double avgResult;
 
+    double perfPerDollar;
+
+    double perfPerWatt;
+
     @Id
     String runType;
 

@@ -5,6 +5,7 @@ import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.repo.ProcessorRepo;
 import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +45,22 @@ public class ResultService {
         HashMap<String, String> cpuGenMap = util.getCpuGenMap();
 
         List<Processor> processors = processorRepo.findAllProcessors();
+        String cpuVal="";
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuVal = processors.get(i).getCpuGeneration();
+            }
 
-        String cpuVal = processors.stream()
-                .filter(processor -> cpu.equals(processor.getCpuSku()))
-                .findAny()
-                .orElse(null).getCpuGeneration();
+        }
 
-        //String cpuVal = cpuGenMap.getOrDefault(cpu, "");
+//        if(bool)
+//         cpuVal = processors.stream()
+//                .filter(processor -> cpu.equals(processor.getCpuSku()))
+//                .findAny()
+//                .orElse(null).getCpuGeneration();
+
+
         if(cpuVal.equals("") || cpuVal.equals(null))
         {
           if(cpu.toLowerCase().startsWith("milan")){
@@ -66,6 +76,37 @@ public class ResultService {
         return cpuVal;
     }
 
+    public double getCpuPrice(String cpu) {
+
+          List<Processor> processors = processorRepo.findAllProcessors();
+
+        double cpuPrice=0;
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuPrice = processors.get(i).getPrice();
+            }
+
+        }
+        return cpuPrice;
+    }
+
+    public int getCpuTDP(String cpu) {
+        HashMap<String, String> cpuGenMap = util.getCpuGenMap();
+        int cpuTDP = 0;
+        List<Processor> processors = processorRepo.findAllProcessors();
+
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuTDP = processors.get(i).getTdp();
+            }
+
+        }
+
+        return cpuTDP;
+    }
+
     @Transactional
     public int deleteJobs(String[] jobIds) {
         int count=0;
@@ -78,10 +119,28 @@ public class ResultService {
                 if (list.size() > 0) {
                     double avgResult = util.calculateAverageResult(list);
                     double perCorePerf = util.round(avgResult/j.getCores(),4);
+                    double cpuPrice = getCpuPrice(j.getCpu().trim());
+                    double cpuTDP = getCpuTDP(j.getCpu().trim());
+                    double perfPerDollar;
+                    double perfPerWatt;
+
+                    if (Double.compare(cpuPrice, 0.0) > 0) {
+                        perfPerDollar = util.round(avgResult / getCpuPrice(j.getCpu().trim()), 4);
+                    }
+                    else{
+                        perfPerDollar = 0;
+                    }
+
+                    if (Double.compare(cpuTDP, 0.0) > 0) {
+                        perfPerWatt = util.round(avgResult / getCpuTDP(j.getCpu().trim()), 4);
+                    }
+                    else{
+                        perfPerWatt = 0;
+                    }
                     double coefficientOfVariation = util.resultCoefficientOfVariation(list);
                     int runCount = list.size();
-                    averageResultService.updateAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), avgResult,perCorePerf, coefficientOfVariation, runCount, j.getRunType());
-                    heatMapService.updateHeatResult(j.getCpu(), j.getNodes(), j.getBmName().trim().toLowerCase(), avgResult,perCorePerf,runCount, j.getRunType());
+                    averageResultService.updateAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), avgResult,perCorePerf,perfPerDollar,perfPerWatt, coefficientOfVariation, runCount, j.getRunType());
+                    heatMapService.updateHeatResult(j.getCpu(), j.getNodes(), j.getBmName().trim().toLowerCase(), avgResult,perCorePerf,perfPerDollar,perfPerWatt,runCount, j.getRunType());
 
                 } else {
                     averageResultService.deleteAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), j.getRunType());
@@ -110,17 +169,37 @@ public class ResultService {
         List<Double> list = getResultsForAverage(bm_name,cpu,nodes,"baseline");
         double avgResult = util.calculateAverageResult(list);
         double perCorePerf = util.round(avgResult/cores,4);
+
+        double cpuPrice = getCpuPrice(result.getCpu().trim());
+        double cpuTDP = getCpuTDP(result.getCpu().trim());
+        double perfPerDollar;
+        double perfPerWatt;
+
+        if (Double.compare(cpuPrice, 0.0) > 0) {
+            perfPerDollar = util.round(avgResult / getCpuPrice(result.getCpu().trim()), 4);
+        }
+        else{
+            perfPerDollar = 0;
+        }
+
+        if (Double.compare(cpuTDP, 0.0) > 0) {
+            perfPerWatt = util.round(avgResult / getCpuTDP(result.getCpu().trim()), 4);
+        }
+        else{
+            perfPerWatt = 0;
+        }
+
         double coefficientOfVariation = util.resultCoefficientOfVariation(list);
         int runCount = list.size();
         AverageResult averageResult = averageResultService.getSingleAvgResult(bm_name,cpu,nodes,"baseline");
 
         if(averageResult == null){
             //insert CV
-         AverageResult aResult = AverageResult.builder().appName(app_name).bmName(bm_name).cores(cores).cpuSku(cpu).avgResult(avgResult).perCorePerf(perCorePerf).nodes(nodes).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType("baseline").build();
+         AverageResult aResult = AverageResult.builder().appName(app_name).bmName(bm_name).cores(cores).cpuSku(cpu).avgResult(avgResult).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).nodes(nodes).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType("baseline").build();
          averageResultService.insertAverageResult(aResult);
         }
         else{
-            averageResultService.updateAverageResult(cpu,nodes,bm_name,avgResult,perCorePerf,coefficientOfVariation,runCount,"baseline");
+            averageResultService.updateAverageResult(cpu,nodes,bm_name,avgResult,perCorePerf,perfPerDollar, perfPerWatt, coefficientOfVariation,runCount,"baseline");
         }
 
     }
@@ -129,7 +208,7 @@ public class ResultService {
     public void insertResultCsv(List<Result> results) throws ParseException {
         for(Result result: results) {
 
-            if(result.getCpu() != null)
+            if(result.getCpu() != null && getCpuGen(result.getCpu().trim()) != "")
             result.setCpuGen(getCpuGen(result.getCpu().trim()));
 
             if(result.getTime() != null)
@@ -172,6 +251,25 @@ public class ResultService {
 
             double perCorePerf = util.round(avgResult/result.getCores(),4);
 
+            double cpuPrice = getCpuPrice(result.getCpu().trim());
+            double cpuTDP = getCpuTDP(result.getCpu().trim());
+            double perfPerDollar;
+            double perfPerWatt;
+
+            if (Double.compare(cpuPrice, 0.0) > 0) {
+                 perfPerDollar = util.round(avgResult / getCpuPrice(result.getCpu().trim()), 4);
+            }
+            else{
+                perfPerDollar = 0;
+            }
+
+            if (Double.compare(cpuTDP, 0.0) > 0) {
+                perfPerWatt = util.round(avgResult / getCpuTDP(result.getCpu().trim()), 4);
+            }
+            else{
+                perfPerWatt = 0;
+            }
+
             if(result.getRunType().equals("baseline")) {
                 averageResult = averageResultService.getSingleAvgResult(result.getBmName().trim().toLowerCase(), result.getCpu(), result.getNodes(),"baseline");
                 heatMapResult = heatMapService.getSingleHeatResult(result.getBmName().trim().toLowerCase(), result.getCpu(), result.getNodes(),"baseline");
@@ -186,20 +284,20 @@ public class ResultService {
 
                 AverageResult aResult;
                 if(result.getRunType().equals("baseline")) {
-                    aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).perCorePerf(perCorePerf).nodes(result.getNodes()).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType("baseline").build();
+                    aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).nodes(result.getNodes()).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType("baseline").build();
                 }
                 else {
-                    aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).perCorePerf(perCorePerf).nodes(result.getNodes()).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType(result.getRunType()).build();
+                    aResult = AverageResult.builder().appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).avgResult(avgResult).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).nodes(result.getNodes()).coefficientOfVariation(coefficientOfVariation).runCount(runCount).runType(result.getRunType()).build();
                 }
                     averageResultService.insertAverageResult(aResult);
                 }
 
             else{
                 if(result.getRunType().equals("baseline")) {
-                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, coefficientOfVariation, runCount, "baseline");
+                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, perfPerDollar,perfPerWatt, coefficientOfVariation, runCount, "baseline");
                 }
                 else{
-                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, coefficientOfVariation, runCount, result.getRunType());
+                    averageResultService.updateAverageResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, perfPerDollar, perfPerWatt, coefficientOfVariation, runCount, result.getRunType());
                 }
             }
 
@@ -208,20 +306,20 @@ public class ResultService {
 
                 HeatMap heatResult;
                 if(result.getRunType().equals("baseline")) {
-                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType("baseline").build();
+                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt) .avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType("baseline").build();
                 }
                 else {
-                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType(result.getRunType()).build();
+                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType(result.getRunType()).build();
                 }
                 heatMapService.insertHeatResult(heatResult);
             }
 
             else{
                 if(result.getRunType().equals("baseline")) {
-                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, runCount, "baseline");
+                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf,perfPerDollar, perfPerWatt, runCount, "baseline");
                 }
                 else{
-                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf, runCount,  result.getRunType());
+                    heatMapService.updateHeatResult(result.getCpu(), result.getNodes(), result.getBmName().trim().toLowerCase(), avgResult,perCorePerf,perfPerDollar, perfPerWatt, runCount,  result.getRunType());
                 }
             }
         }

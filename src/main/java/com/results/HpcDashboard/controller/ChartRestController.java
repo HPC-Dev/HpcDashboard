@@ -46,10 +46,16 @@ public class ChartRestController {
     public String getMetric(String app) {
         List<AppMap> metricMaps = appMapRepo.findAllAppMap();
 
-        String appMetric = metricMaps.stream()
-                .filter(metricMap -> app.equals(metricMap.getAppName()))
-                .findAny()
-                .orElse(null).getMetric();
+
+        String appMetric = "";
+
+        for(int i = 0; i < metricMaps.size(); i++)
+        {
+            if(metricMaps.get(i).getAppName().equals(app)){
+                appMetric = metricMaps.get(i).getMetric();
+            }
+
+        }
 
         return appMetric;
     }

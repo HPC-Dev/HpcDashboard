@@ -31,18 +31,6 @@ public class HelperRestController {
     AppCategoryRepo appCategoryRepo;
 
 
-    public String getLowerHigher(String app){
-
-        List<AppMap> appMaps = appMapRepo.findAllAppMap();
-
-        String appStatus = appMaps.stream()
-                .filter(appMap -> app.equals(appMap.getAppName()))
-                .findAny()
-                .orElse(null).getStatus();
-        return appStatus;
-
-    }
-
     @GetMapping("/appMetricStatus")
     public List<AppMap> getAppMap(){
 

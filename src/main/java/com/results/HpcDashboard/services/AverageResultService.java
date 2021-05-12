@@ -19,10 +19,10 @@ public class AverageResultService {
 
 
     @Transactional
-    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf, double cv, int count, String runType) {
+    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt, double cv, int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,perCorePerf,cv,count, runType);
+        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,perCorePerf,perfPerDollar,perfPerWatt,cv,count, runType);
     }
 
     @Transactional

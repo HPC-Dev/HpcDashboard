@@ -23,10 +23,10 @@ public class HeatMapService {
     HeatMapRepo heatMapRepo;
 
     @Transactional
-    public void updateHeatResult(String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,int count, String runType) {
+    public void updateHeatResult(String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        heatMapRepo.updateHeatResult(bm_name,cpu_sku,nodes,avg, perCorePerf,count, runType);
+        heatMapRepo.updateHeatResult(bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType);
     }
 
     @Transactional

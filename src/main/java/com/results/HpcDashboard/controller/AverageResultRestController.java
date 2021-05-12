@@ -42,11 +42,15 @@ public class AverageResultRestController {
         //HashMap<String,String> appMap = util.getAppMap();
 
         List<AppMap> appMaps = appMapRepo.findAllAppMap();
+        String appStatus = "";
 
-        String appStatus = appMaps.stream()
-                .filter(appMap -> app.equals(appMap.getAppName()))
-                .findAny()
-                .orElse(null).getStatus();
+        for(int i = 0; i < appMaps.size(); i++)
+        {
+            if(appMaps.get(i).getAppName().equals(app)){
+                appStatus = appMaps.get(i).getStatus();
+            }
+
+        }
         //return appMap.getOrDefault(app,app);
         return appStatus;
 

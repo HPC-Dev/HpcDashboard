@@ -38,6 +38,10 @@ public class AverageResult implements Serializable {
 
     double perCorePerf;
 
+    double perfPerDollar;
+
+    double perfPerWatt;
+
     double coefficientOfVariation;
 
     int runCount;
