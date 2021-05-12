@@ -1,0 +1,8 @@
+label {
+    width:140px;
+    clear:left;
+    padding-right:10px;
+}
+
+input, label {
+    float:left;

@@ -101,7 +101,7 @@ public class Util {
             appMap.put("cfx","LOWER");
             appMap.put("fluent","HIGHER");
             appMap.put("gromacs","HIGHER");
-            appMap.put("hpcg","LOWER");
+            appMap.put("hpcg","HIGHER");
             appMap.put("hpl","HIGHER");
             appMap.put("hycom","HIGHER");
             appMap.put("lammps","HIGHER");
@@ -112,7 +112,7 @@ public class Util {
             appMap.put("optistruct", "LOWER");
             appMap.put("ofoam", "LOWER");
             appMap.put("pamcrash", "LOWER");
-            appMap.put("quantum-espresso", "HIGHER");
+            appMap.put("quantum-espresso", "LOWER");
             appMap.put("radioss", "LOWER");
             appMap.put("starccm", "LOWER");
             appMap.put("stream", "HIGHER");
@@ -133,8 +133,8 @@ public class Util {
         metricMap.put("cfx","Wall clock");
         metricMap.put("fluent","Core Solver Rating");
         metricMap.put("gromacs","ns/day");
-        metricMap.put("hpcg","");
-        metricMap.put("hpl","TFLOPS");
+        metricMap.put("hpcg","GFLOP/s");
+        metricMap.put("hpl","TFLOP/S");
         metricMap.put("hycom","");
         metricMap.put("lammps","Number of Atoms");
         metricMap.put("liggghts","Elapsed Time");
@@ -143,12 +143,12 @@ public class Util {
         metricMap.put("openfoam", "Elapsed Time");
         metricMap.put("optistruct", "Elapsed Time");
         metricMap.put("pamcrash", "Elapsed Time");
-        metricMap.put("quantum-espresso", "");
+        metricMap.put("quantum-espresso", "Seconds");
         metricMap.put("radioss", "Elapsed Time");
         metricMap.put("starccm", "Elapsed Time");
         metricMap.put("stream", "Bandwidth (MB/s)");
         metricMap.put("wrf", "Mean Timer/Step");
-        metricMap.put("cp2k","");
+        metricMap.put("cp2k","Seconds");
         metricMap.put("mechanical","Core Solver Rating");
         metricMap.put("reveal","");
         metricMap.put("speccpu","");

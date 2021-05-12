@@ -3,7 +3,6 @@ package com.results.HpcDashboard.services;
 import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.repo.ApplicationRepo;
-import com.results.HpcDashboard.repo.MetricMapRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
@@ -18,9 +17,6 @@ public class ApplicationService {
 
     @Autowired
     AppMapRepo appMapRepo;
-
-    @Autowired
-    MetricMapRepo metricMapRepo;
 
     public void insertApplication(String[] resultData){
         Application app = new Application();
@@ -71,10 +67,4 @@ public class ApplicationService {
 
     }
 
-    public void insertMetricMapCSV(List<MetricMap> metricMaps) {
-
-        for(MetricMap metricMap: metricMaps) {
-            metricMapRepo.save(metricMap);
-        }
-    }
 }

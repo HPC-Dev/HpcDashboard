@@ -26,4 +26,6 @@ public class Processor implements Serializable {
     int cores;
 
     double price;
+
+    int tdp;
 }

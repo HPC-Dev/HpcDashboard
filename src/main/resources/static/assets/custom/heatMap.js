@@ -270,11 +270,11 @@ function getHeaders(columns) {
         if (column === 'isv') {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
         } else if (column === 'perNode1' || column === 'perCore1') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else if (column === 'perNode2' || column === 'perCore2') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else if (column === 'perNode3' || column === 'perCore3') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }
@@ -291,11 +291,11 @@ function getFooters(columns) {
         if (column === 'isv') {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
         } else if (column === 'perNode1' || column === 'perCore1') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else if (column === 'perNode2' || column === 'perCore2') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else if (column === 'perNode3' || column === 'perCore3') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
         } else {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }

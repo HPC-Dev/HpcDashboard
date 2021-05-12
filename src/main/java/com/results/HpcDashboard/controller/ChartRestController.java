@@ -6,7 +6,9 @@ import com.results.HpcDashboard.dto.partComparison.*;
 
 import com.results.HpcDashboard.dto.scatter.ScatterChartsResponse;
 import com.results.HpcDashboard.dto.scatter.ScatterTableResponse;
+import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.AverageResult;
+import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +27,37 @@ public class ChartRestController {
     @Autowired
     Util util;
 
+
+    @Autowired
+    AverageResultRestController averageResultRestController;
+
+    @Autowired
+    AppMapRepo appMapRepo;
+
+
     static Map<String, String> appMapCamelCase;
 
 
+//    public String getMetric(String app) {
+//        HashMap<String, String> metricMap = util.getMetricMap();
+//        return metricMap.getOrDefault(app, "");
+//    }
+
     public String getMetric(String app) {
-        HashMap<String, String> metricMap = util.getMetricMap();
-        return metricMap.getOrDefault(app, "");
+        List<AppMap> metricMaps = appMapRepo.findAllAppMap();
+
+        String appMetric = metricMaps.stream()
+                .filter(metricMap -> app.equals(metricMap.getAppName()))
+                .findAny()
+                .orElse(null).getMetric();
+
+        return appMetric;
     }
 
-
-    public String getLowerHigher(String app) {
-        HashMap<String, String> appMap = util.getAppMap();
-        return appMap.getOrDefault(app, "");
-    }
-
+//    public String getLowerHigher(String app) {
+//        HashMap<String, String> appMap = util.getAppMap();
+//        return appMap.getOrDefault(app, "");
+//    }
 
     public static String getAppName(String app) {
         appMapCamelCase = new HashMap<>();
@@ -59,6 +78,7 @@ public class ChartRestController {
         appMapCamelCase.put("pamcrash", "Pam-Crash");
         appMapCamelCase.put("quantum-espresso", "Quantum ESPRESSO");
         appMapCamelCase.put("radioss", "Radioss");
+        appMapCamelCase.put("reveal", "Reveal");
         appMapCamelCase.put("starccm", "STAR-CCM+");
         appMapCamelCase.put("stream", "STREAM");
         appMapCamelCase.put("wrf", "WRF");
@@ -89,9 +109,9 @@ public class ChartRestController {
 
         List<Map<String,String>> tableDataset = new ArrayList<>();
 
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             comment = "Lower is better";
         }
 
@@ -123,13 +143,14 @@ public class ChartRestController {
             }
         }
 
-        for (int i=0; i< list.size();i++) {
+        if(bmCompleteList.size() != list.size()) {
+            for (int i = 0; i < list.size(); i++) {
 
-            if(bmCompleteList.get(list.get(i).getBmName()) ==1)
-            {
-                list.remove(i);
-                i--;
+                if (bmCompleteList.get(list.get(i).getBmName()) == 1) {
+                    list.remove(i);
+                    i--;
 
+                }
             }
         }
         return list;
@@ -178,9 +199,9 @@ public class ChartRestController {
         String appCpu = cpu + "_" + type + " - " + getAppName(app_name);
 
 
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             comment = "Lower is better";
         }
 
@@ -199,11 +220,11 @@ public class ChartRestController {
 
                 for (Map.Entry<Integer, Double> entry : m.entrySet()) {
                     double d1;
-                    if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                    if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                         d1 = util.round(firstResult / entry.getValue(), 3);
                         temp.put(entry.getKey(), d1);
 
-                    } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                    } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                         d1 = util.round(entry.getValue() / firstResult, 3);
                         temp.put(entry.getKey(), d1);
                     }
@@ -293,9 +314,9 @@ public class ChartRestController {
         }
 
 
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             comment = "Lower is better";
         }
 
@@ -345,11 +366,11 @@ public class ChartRestController {
                 temp.put("Cores", coresList.get(i));
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
                     if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
-                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
 
-                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                             double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
                         }
@@ -383,7 +404,7 @@ public class ChartRestController {
         List<String> runType = Arrays.asList(runTypes);
         List<List<Double>> resListFinal = new ArrayList<>();
         List<AverageResult> tempList = null;
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
@@ -518,7 +539,7 @@ public class ChartRestController {
               for(Map.Entry<String,Double> m : e.entrySet()) {
                     if(Double.compare(e.get(cpulist.get(i)),0.0 )> 0) {
 
-                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = 0.0;
 
                             if (e.containsKey(cpulist.get(i))) {
@@ -526,7 +547,7 @@ public class ChartRestController {
                             }
                             temp.add(d1);
 
-                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                             double d1 = util.round(e.getOrDefault(cpulist.get(i), 0.0) / firstResult.get(j), 3);
                             temp.add(d1);
                         }
@@ -562,7 +583,7 @@ public class ChartRestController {
         List<Map<String, String>> resListFinal = new ArrayList<>();
         List<AverageResult> tempList = null;
 
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
         else{
@@ -681,11 +702,11 @@ public class ChartRestController {
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
 
                     if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0 && Double.compare(d.getValue(), 0.0) > 0) {
-                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
 
-                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                             double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
                         }
@@ -767,9 +788,9 @@ public class ChartRestController {
         }
 
 
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             comment = "Lower is better";
         }
 
@@ -913,11 +934,11 @@ public class ChartRestController {
                 temp.put("", nodesList.get(i));
                 for (Map.Entry<String, Double> d : lis.entrySet()) {
                     if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0) {
-                        if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                             double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
 
-                        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                             double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
                             temp.put(d.getKey(), String.valueOf(d1));
                         }
@@ -1002,11 +1023,11 @@ public class ChartRestController {
 
                 for (Map.Entry<Integer, Double> entry : m.entrySet()) {
                     double d1;
-                    if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+                    if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                         d1 = util.round(firstResult / entry.getValue(), 3);
                         temp.put(entry.getKey().toString(), String.valueOf(d1));
 
-                    } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+                    } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                         d1 = util.round(entry.getValue() / firstResult, 3);
                         temp.put(entry.getKey().toString(), String.valueOf(d1));
                     }
@@ -1042,9 +1063,9 @@ public class ChartRestController {
             label.add(avgRes.getNodes() + " Node");
             data.add(avgRes.getAvgResult());
         }
-        if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
             comment = "Higher is better";
-        } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             comment = "Lower is better";
         }
 

@@ -3,8 +3,10 @@ package com.results.HpcDashboard.controller;
 import com.results.HpcDashboard.dto.heatMap.*;
 import com.results.HpcDashboard.dto.multichart.MultiChartTableResponse;
 import com.results.HpcDashboard.dto.partComparison.*;
+import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
+import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.HeatMapService;
 import com.results.HpcDashboard.util.Util;
@@ -31,10 +33,23 @@ public class AverageResultRestController {
     @Autowired
     ChartRestController chartRestController;
 
+    @Autowired
+    AppMapRepo appMapRepo;
+
+
 
     public String getLowerHigher(String app){
-        HashMap<String,String> appMap = util.getAppMap();
-        return appMap.getOrDefault(app,app);
+        //HashMap<String,String> appMap = util.getAppMap();
+
+        List<AppMap> appMaps = appMapRepo.findAllAppMap();
+
+        String appStatus = appMaps.stream()
+                .filter(appMap -> app.equals(appMap.getAppName()))
+                .findAny()
+                .orElse(null).getStatus();
+        //return appMap.getOrDefault(app,app);
+        return appStatus;
+
     }
 
 

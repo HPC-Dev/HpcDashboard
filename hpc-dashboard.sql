@@ -19,10 +19,9 @@ select * from average_result where app_name= "cfx" and cpu_sku IN ("7F72","7F52"
 
 select * from app_map;
 
-select * from metric_map;
+select * from app_category;
 
 select * from processor_info;
-
 
 #UPDATE cpu_info SET cpu_sku = LOWER(cpu_sku) where id in (26,27,28,29);
 

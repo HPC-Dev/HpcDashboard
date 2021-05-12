@@ -1,10 +1,8 @@
 package com.results.HpcDashboard.services;
 
 import com.results.HpcDashboard.dto.JobDto;
-import com.results.HpcDashboard.models.AppCategory;
-import com.results.HpcDashboard.models.AverageResult;
-import com.results.HpcDashboard.models.HeatMap;
-import com.results.HpcDashboard.models.Result;
+import com.results.HpcDashboard.models.*;
+import com.results.HpcDashboard.repo.ProcessorRepo;
 import com.results.HpcDashboard.repo.ResultRepo;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +34,23 @@ public class ResultService {
     @Autowired
     HeatMapService heatMapService;
 
+    @Autowired
+    ProcessorRepo processorRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
     public String getCpuGen(String cpu) {
         HashMap<String, String> cpuGenMap = util.getCpuGenMap();
-        String cpuVal = cpuGenMap.getOrDefault(cpu, "");
+
+        List<Processor> processors = processorRepo.findAllProcessors();
+
+        String cpuVal = processors.stream()
+                .filter(processor -> cpu.equals(processor.getCpuSku()))
+                .findAny()
+                .orElse(null).getCpuGeneration();
+
+        //String cpuVal = cpuGenMap.getOrDefault(cpu, "");
         if(cpuVal.equals("") || cpuVal.equals(null))
         {
           if(cpu.toLowerCase().startsWith("milan")){

@@ -23,5 +23,7 @@ public class AppMap implements Serializable {
     @Id
     String appName;
 
+    String metric;
+
     String status;
 }

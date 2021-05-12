@@ -26,8 +26,8 @@
                     <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/data' ? 'active':''} ${#request.requestURI == '/part-comparison' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Additional views</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
-                            <a class="dropdown-item" href="#" th:href="@{/dashboard}">Dashboard</a>
-                            <a class="dropdown-item" href="#" th:href="@{/averageDashboard}">Average Results</a>
+                            <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
+                            <a class="dropdown-item" href="#" th:href="@{/averageDashboard}">Export aggregated</a>
                             <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
                             <a class="dropdown-item" href="#" th:href="@{/part-comparison}">Part Comparison</a>
 
@@ -40,6 +40,10 @@
                             <a class="dropdown-item" href="#" th:href="@{/application}">Applications</a>
                             <a class="dropdown-item" href="#" th:href="@{/benchmark}">Benchmarks</a>
                             <a class="dropdown-item" href="#" th:href="@{/cpu}">CPU</a>
+
+                            <a class="dropdown-item" href="#" th:href="@{/processorInsert}">Processor Insert</a>
+                            <a class="dropdown-item" href="#" th:href="@{/appCategoryInsert}">App Category Insert </a>
+                            <a class="dropdown-item" href="#" th:href="@{/appMetricInsert}">App Metric Insert </a>
                         </div>
                     </li>
 
