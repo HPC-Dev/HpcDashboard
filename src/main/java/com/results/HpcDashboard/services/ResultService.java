@@ -306,7 +306,7 @@ public class ResultService {
 
                 HeatMap heatResult;
                 if(result.getRunType().equals("baseline")) {
-                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt) .avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType("baseline").build();
+                    heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType("baseline").build();
                 }
                 else {
                     heatResult = HeatMap.builder().category(appCategory.getCategory()).isv(appCategory.getIsv()).appName(result.getAppName().trim().toLowerCase()).bmName(result.getBmName().trim().toLowerCase()).cores(result.getCores()).cpuSku(result.getCpu()).perCorePerf(perCorePerf).perfPerDollar(perfPerDollar).perfPerWatt(perfPerWatt).avgResult(avgResult).nodes(result.getNodes()).runCount(runCount).runType(result.getRunType()).build();

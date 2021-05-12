@@ -1,79 +1,95 @@
 dataTable();
 var table;
+
 function dataTable() {
 
-var buttonCommon = {
+    var buttonCommon = {
         exportOptions: {
             format: {
-                body: function ( data, row, column, node ) {
+                body: function(data, row, column, node) {
                     return data;
                 }
             }
         }
-        };
+    };
 
-table = $('table#average').DataTable({
-    'ajax': '/datatable/averageDashboard',
-    'scrollY': "520px",
-    'scrollX': true,
-    'destroy': true,
-    'scrollCollapse': true,
-    'processing': true,
-    'serverSide': true,
-    "dom": 'lBfrtip',
-    'lengthMenu': [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-    'buttons': [
-                {
-                    extend: 'collection',
-                    text: 'Export',
-                    buttons: [
-                        'copy',
-                        'excel'
-                        ,'csv']
+    table = $('table#average').DataTable({
+        'ajax': '/datatable/averageDashboard',
+        'scrollY': "520px",
+        'scrollX': true,
+        'destroy': true,
+        'scrollCollapse': true,
+        'processing': true,
+        'serverSide': true,
+        "dom": 'lBfrtip',
+        'lengthMenu': [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, "All"]
+        ],
+        'buttons': [{
+            extend: 'collection',
+            text: 'Export',
+            buttons: [
+                'copy',
+                'excel', 'csv'
+            ]
+        }],
+
+        columns: [{
+                data: 'appName'
+            },
+            {
+                data: 'bmName'
+            },
+            {
+                data: 'nodes'
+            },
+            {
+                data: 'cpuSku'
+            },
+            {
+                data: 'cores'
+            },
+            {
+                data: 'avgResult',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
                 }
-            ],
-
-    columns: [{
-            data: 'appName'
-        },
-        {
-            data: 'bmName'
-        },
-        {
-            data: 'nodes'
-        },
-        {
-            data: 'cpuSku'
-        },
-        {
-            data: 'cores'
-        },
-        {
-            data: 'avgResult',
-            searchable: false,
-            "render": function (data, type, full) {
-                        return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+            },
+            {
+                data: 'perCorePerf',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+                }
+            },
+            {
+                data: 'perfPerDollar',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+                }
+            },
+            {
+                data: 'perfPerWatt',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+                }
+            },
+            {
+                data: 'coefficientOfVariation',
+                searchable: false,
+            },
+            {
+                data: 'runCount'
+            },
+            {
+                data: 'runType'
             }
-        },
-        {
-            data: 'perCorePerf',
-            searchable: false,
-             "render": function (data, type, full) {
-                                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
-                        }
-        },
-        {
-            data: 'coefficientOfVariation',
-            searchable: false,
-        },
-        {
-            data: 'runCount'
-        },
-        {
-            data: 'runType'
-        }
-],
-});
+        ],
+    });
 
 }
 
@@ -171,8 +187,8 @@ $('select#runCountDrop').change(function() {
 
 
 
-$('#clearButton').on('click', function(){
+$('#clearButton').on('click', function() {
 
-$('select').prop('selectedIndex',0);
-dataTable();
+    $('select').prop('selectedIndex', 0);
+    dataTable();
 });

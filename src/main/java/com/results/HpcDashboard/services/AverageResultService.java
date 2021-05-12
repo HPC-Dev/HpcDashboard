@@ -37,7 +37,11 @@ public class AverageResultService {
         if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert CV below
-        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult()).perCorePerf(averageResult.getPerCorePerf()).bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim()).nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount()).runType(averageResult.getRunType()).build();
+        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult())
+                .perCorePerf(averageResult.getPerCorePerf()).perfPerDollar(averageResult.getPerfPerDollar()).perfPerWatt(averageResult.getPerfPerWatt())
+                .bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim())
+                .nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount())
+                .runType(averageResult.getRunType()).build();
         averageResultRepo.save(averageResult);
     }
 

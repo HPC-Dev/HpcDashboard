@@ -40,7 +40,10 @@ public class HeatMapService {
     public void insertHeatResult(HeatMap heatResult) {
         if (heatResult== null || heatResult.getCpuSku() == "" || heatResult.getCpuSku().equals(null) || heatResult.getBmName() == "" || heatResult.getBmName().equals(null) )
             return;
-        HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf()).isv(heatResult.getIsv()).appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim()).cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runType(heatResult.getRunType()).build();
+        HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf())
+                .perfPerDollar(heatResult.getPerfPerDollar()).perfPerWatt(heatResult.getPerfPerWatt()).isv(heatResult.getIsv())
+                .appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim())
+                .cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runCount(heatResult.getRunCount()).runType(heatResult.getRunType()).build();
         heatMapRepo.save(heatMap);
     }
 
