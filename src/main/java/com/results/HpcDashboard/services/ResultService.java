@@ -41,71 +41,7 @@ public class ResultService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public String getCpuGen(String cpu) {
-        HashMap<String, String> cpuGenMap = util.getCpuGenMap();
 
-        List<Processor> processors = processorRepo.findAllProcessors();
-        String cpuVal="";
-        for(int i = 0; i < processors.size(); i++)
-        {
-            if(processors.get(i).getCpuSku().equals(cpu)){
-                cpuVal = processors.get(i).getCpuGeneration();
-            }
-
-        }
-
-//        if(bool)
-//         cpuVal = processors.stream()
-//                .filter(processor -> cpu.equals(processor.getCpuSku()))
-//                .findAny()
-//                .orElse(null).getCpuGeneration();
-
-
-        if(cpuVal.equals("") || cpuVal.equals(null))
-        {
-          if(cpu.toLowerCase().startsWith("milan")){
-              cpuVal = "Milan";
-          }
-          else if(cpu.toLowerCase().startsWith("rome")){
-              cpuVal  ="Rome";
-          }
-          else{
-              cpuVal="";
-          }
-        }
-        return cpuVal;
-    }
-
-    public double getCpuPrice(String cpu) {
-
-          List<Processor> processors = processorRepo.findAllProcessors();
-
-        double cpuPrice=0;
-        for(int i = 0; i < processors.size(); i++)
-        {
-            if(processors.get(i).getCpuSku().equals(cpu)){
-                cpuPrice = processors.get(i).getPrice();
-            }
-
-        }
-        return cpuPrice;
-    }
-
-    public int getCpuTDP(String cpu) {
-        HashMap<String, String> cpuGenMap = util.getCpuGenMap();
-        int cpuTDP = 0;
-        List<Processor> processors = processorRepo.findAllProcessors();
-
-        for(int i = 0; i < processors.size(); i++)
-        {
-            if(processors.get(i).getCpuSku().equals(cpu)){
-                cpuTDP = processors.get(i).getTdp();
-            }
-
-        }
-
-        return cpuTDP;
-    }
 
     @Transactional
     public int deleteJobs(String[] jobIds) {
@@ -119,20 +55,20 @@ public class ResultService {
                 if (list.size() > 0) {
                     double avgResult = util.calculateAverageResult(list);
                     double perCorePerf = util.round(avgResult/j.getCores(),4);
-                    double cpuPrice = getCpuPrice(j.getCpu().trim());
-                    double cpuTDP = getCpuTDP(j.getCpu().trim());
+                    double cpuPrice = util.getCpuPrice(j.getCpu().trim());
+                    double cpuTDP = util.getCpuTDP(j.getCpu().trim());
                     double perfPerDollar;
                     double perfPerWatt;
 
                     if (Double.compare(cpuPrice, 0.0) > 0) {
-                        perfPerDollar = util.round(avgResult / getCpuPrice(j.getCpu().trim()), 4);
+                        perfPerDollar = util.round(avgResult / util.getCpuPrice(j.getCpu().trim()), 4);
                     }
                     else{
                         perfPerDollar = 0;
                     }
 
                     if (Double.compare(cpuTDP, 0.0) > 0) {
-                        perfPerWatt = util.round(avgResult / getCpuTDP(j.getCpu().trim()), 4);
+                        perfPerWatt = util.round(avgResult / util.getCpuTDP(j.getCpu().trim()), 4);
                     }
                     else{
                         perfPerWatt = 0;
@@ -170,20 +106,20 @@ public class ResultService {
         double avgResult = util.calculateAverageResult(list);
         double perCorePerf = util.round(avgResult/cores,4);
 
-        double cpuPrice = getCpuPrice(result.getCpu().trim());
-        double cpuTDP = getCpuTDP(result.getCpu().trim());
+        double cpuPrice = util.getCpuPrice(result.getCpu().trim());
+        double cpuTDP = util.getCpuTDP(result.getCpu().trim());
         double perfPerDollar;
         double perfPerWatt;
 
         if (Double.compare(cpuPrice, 0.0) > 0) {
-            perfPerDollar = util.round(avgResult / getCpuPrice(result.getCpu().trim()), 4);
+            perfPerDollar = util.round(avgResult / util.getCpuPrice(result.getCpu().trim()), 4);
         }
         else{
             perfPerDollar = 0;
         }
 
         if (Double.compare(cpuTDP, 0.0) > 0) {
-            perfPerWatt = util.round(avgResult / getCpuTDP(result.getCpu().trim()), 4);
+            perfPerWatt = util.round(avgResult / util.getCpuTDP(result.getCpu().trim()), 4);
         }
         else{
             perfPerWatt = 0;
@@ -208,8 +144,8 @@ public class ResultService {
     public void insertResultCsv(List<Result> results) throws ParseException {
         for(Result result: results) {
 
-            if(result.getCpu() != null && getCpuGen(result.getCpu().trim()) != "")
-            result.setCpuGen(getCpuGen(result.getCpu().trim()));
+            if(result.getCpu() != null && util.getCpuGen(result.getCpu().trim()) != "")
+            result.setCpuGen(util.getCpuGen(result.getCpu().trim()));
 
             if(result.getTime() != null)
                 result.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -251,20 +187,20 @@ public class ResultService {
 
             double perCorePerf = util.round(avgResult/result.getCores(),4);
 
-            double cpuPrice = getCpuPrice(result.getCpu().trim());
-            double cpuTDP = getCpuTDP(result.getCpu().trim());
+            double cpuPrice = util.getCpuPrice(result.getCpu().trim());
+            double cpuTDP = util.getCpuTDP(result.getCpu().trim());
             double perfPerDollar;
             double perfPerWatt;
 
             if (Double.compare(cpuPrice, 0.0) > 0) {
-                 perfPerDollar = util.round(avgResult / getCpuPrice(result.getCpu().trim()), 4);
+                 perfPerDollar = util.round(avgResult / util.getCpuPrice(result.getCpu().trim()), 4);
             }
             else{
                 perfPerDollar = 0;
             }
 
             if (Double.compare(cpuTDP, 0.0) > 0) {
-                perfPerWatt = util.round(avgResult / getCpuTDP(result.getCpu().trim()), 4);
+                perfPerWatt = util.round(avgResult / util.getCpuTDP(result.getCpu().trim()), 4);
             }
             else{
                 perfPerWatt = 0;

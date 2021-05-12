@@ -3,6 +3,9 @@ package com.results.HpcDashboard.util;
 
 import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.JobDto;
+import com.results.HpcDashboard.models.Processor;
+import com.results.HpcDashboard.repo.ProcessorRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -38,6 +41,8 @@ public class Util {
 //        }
 //    }
 
+    @Autowired
+    ProcessorRepo processorRepo;
 
     public JobDto findJobDetails(EntityManager entityManager, String jobId) {
         String queryStr = "select r.bm_name,r.cpu,r.nodes, r.run_type, r.cores from results r where r.job_id = ?1";
@@ -93,6 +98,65 @@ public class Util {
         }
         double average = round(total/len,4);
         return average;
+    }
+
+
+    public String getCpuGen(String cpu) {
+        //HashMap<String, String> cpuGenMap = util.getCpuGenMap();
+
+        List<Processor> processors = processorRepo.findAllProcessors();
+        String cpuVal="";
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuVal = processors.get(i).getCpuGeneration();
+            }
+
+        }
+        if(cpuVal.equals("") || cpuVal.equals(null))
+        {
+            if(cpu.toLowerCase().startsWith("milan")){
+                cpuVal = "Milan";
+            }
+            else if(cpu.toLowerCase().startsWith("rome")){
+                cpuVal  ="Rome";
+            }
+            else{
+                cpuVal="";
+            }
+        }
+        return cpuVal;
+    }
+
+    public double getCpuPrice(String cpu) {
+
+        List<Processor> processors = processorRepo.findAllProcessors();
+
+        double cpuPrice=0;
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuPrice = processors.get(i).getPrice();
+            }
+
+        }
+        return cpuPrice;
+    }
+
+    public int getCpuTDP(String cpu) {
+        //HashMap<String, String> cpuGenMap = util.getCpuGenMap();
+        int cpuTDP = 0;
+        List<Processor> processors = processorRepo.findAllProcessors();
+
+        for(int i = 0; i < processors.size(); i++)
+        {
+            if(processors.get(i).getCpuSku().equals(cpu)){
+                cpuTDP = processors.get(i).getTdp();
+            }
+
+        }
+
+        return cpuTDP;
     }
 
     public HashMap<String,String> getAppMap() {

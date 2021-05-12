@@ -1,19 +1,19 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.heatMap.*;
-import com.results.HpcDashboard.dto.multichart.MultiChartTableResponse;
 import com.results.HpcDashboard.dto.partComparison.*;
 import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
+import com.results.HpcDashboard.models.Processor;
 import com.results.HpcDashboard.repo.AppMapRepo;
+import com.results.HpcDashboard.repo.ProcessorRepo;
 import com.results.HpcDashboard.services.AverageResultService;
 import com.results.HpcDashboard.services.HeatMapService;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,7 +35,6 @@ public class AverageResultRestController {
 
     @Autowired
     AppMapRepo appMapRepo;
-
 
 
     public String getLowerHigher(String app){
@@ -986,6 +985,20 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
         columns.add("benchmark");
         columns.add("perNode1");
 
+
+        double cpuPrice1 = util.getCpuPrice(cpu1.trim());
+        double cpuPrice2 = util.getCpuPrice(cpu2.trim());
+        double cpuPrice3 = 0.0;
+        double cpuPrice4 = 0.0;
+
+        if(cpuList.length > 2 && typeList.length >2 )
+            cpuPrice3 = util.getCpuPrice(cpu3.trim());
+
+        if(cpuList.length > 3 && typeList.length >3 )
+            cpuPrice4 = util.getCpuPrice(cpu4.trim());
+
+
+
         if(cpuList.length > 2 && typeList.length > 2 )
         columns.add("perNode2");
 
@@ -1006,17 +1019,22 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
         if(cpuList.length > 2 && typeList.length > 2 )
             columns.add("");
 
-        columns.add("perDollar1");
+        if (Double.compare(cpuPrice1, 0.0) > 0) {
 
-        if(cpuList.length > 2 && typeList.length > 2 )
-            columns.add("perDollar2");
+            if(Double.compare(cpuPrice2, 0.0) > 0)
+            columns.add("perDollar1");
 
-        if(cpuList.length > 3 && typeList.length > 3 )
-            columns.add("perDollar3");
+            if(cpuList.length > 2 && typeList.length > 2 && Double.compare(cpuPrice3, 0.0) > 0 )
+                columns.add("perDollar2");
+
+            if(cpuList.length > 3 && typeList.length > 3  && Double.compare(cpuPrice4, 0.0) > 0)
+                columns.add("perDollar3");
 
 
-        if(cpuList.length > 2 && typeList.length > 2 )
-            columns.add("");
+            if(cpuList.length > 2 && typeList.length > 2 )
+                columns.add("");
+
+        }
 
         columns.add("perWatt1");
 
