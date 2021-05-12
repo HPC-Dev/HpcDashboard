@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/customForm.css}"/>
+    <link rel="icon" th:href="@{assets/favicon.ico}" />
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+    <title>Reports</title>
+</head>
+
+<body>
+
+<div th:insert="~{fragments/header :: header}">...</div>
+
+
+<div class="container-fluid" style="max-width:1400px">
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <br>  <br>
+            <h3>Reports</h3>
+            <br>
+            <form action="#"  method="post">
+
+
+
+                <p id="agm_report" style="">
+                    <a  data-toggle="collapse" style="text-decoration:none;color: #00ace6;font-weight: bold;" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample" >
+                        <i class="fa fa-fw fa-plus"></i>   AGM Reports:
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample1">
+                    <ul>
+                        <a href="http://10.227.31.115/AGM_Reports/" target="_blank" >AGM_Reports </a>
+                    </ul>
+                </div>
+
+                <br>
+                <br>
+
+
+                <p id="uProf" style="">
+                    <a  data-toggle="collapse" style="text-decoration:none;color: #00ace6;font-weight: bold;" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample" >
+                        <i class="fa fa-fw fa-plus"></i>   uProf Reports:
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample3">
+                    <ul>
+                        <a href="http://10.227.31.115/uProf_Reports/" target="_blank" >uProf_Reports </a>
+                    </ul>
+                </div>
+                <br>
+                <br>
+
+                <p id="multevent" style="">
+                    <a  data-toggle="collapse" style="text-decoration:none;color: #00ace6;font-weight: bold;" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample" >
+                        <i class="fa fa-fw fa-plus"></i>   Multevent Reports:
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample4">
+                    <ul>
+                        <a href="http://10.227.31.115/Multevent_Reports/" target="_blank" >Multevent_Reports </a>
+                    </ul>
+                </div>
+
+                <br>
+                <br>
+
+                <p id="agm_perf_analyzer" style="">
+                    <a  data-toggle="collapse" style="text-decoration:none;color: #00ace6;font-weight: bold;" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample" >
+                        <i class="fa fa-fw fa-plus"></i>   AGM Perf Analyzer:
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample2">
+                    <ul>
+                        <!--                        <a href="http://10.227.31.115/AGM_Reports/" target="_blank" >agm_reports </a>-->
+                    </ul>
+                </div>
+
+                <br>
+                <br>
+
+
+            </form>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

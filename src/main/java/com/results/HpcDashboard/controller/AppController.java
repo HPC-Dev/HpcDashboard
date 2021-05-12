@@ -56,20 +56,20 @@ public class AppController {
         return "multiChartsOld";
     }
 
-    @GetMapping("/mChart")
+    @GetMapping("/multiCPUCharts")
     public String showMultiChartsNew(Model model) {
         List<String> app_list = averageResultService.getApp();
         List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
-        return "multiCharts";
+        return "multiCPUCharts";
     }
 
-    @GetMapping("/charts")
+    @GetMapping("/singleCPUCharts")
     public String showCharts(Model model) {
         List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );
-        return "charts";
+        return "singleCPUCharts";
     }
 
     @RequestMapping(value = "/bms", method = RequestMethod.GET)
@@ -89,14 +89,14 @@ public class AppController {
         return averageResultService.getSelectBm(appName);
     }
 
-    @GetMapping("/data")
+    @GetMapping("/singleCPUResult")
     public String showData(Model model) {
 
         List<String> app_list = averageResultService.getApp();
         List<String> cpu_list = averageResultService.getCpu();
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
-        return "result";
+        return "singleCPUResult";
     }
 
     @GetMapping("/scalingComparison")

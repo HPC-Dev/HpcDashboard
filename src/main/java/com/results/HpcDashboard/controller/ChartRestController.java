@@ -666,20 +666,39 @@ public class ChartRestController {
 
 
         List<Map<String, Double>> newResList = new ArrayList<>();
+        List<Map<String, String>> newResListString = new ArrayList<>();
 
         for(Map<String, Double> e : resList ) {
 
             Map<String, Double> map = new LinkedHashMap<>();
+
+            Map<String, String> mapString = new LinkedHashMap<>();
             for(String bm : bmlist) {
                 if (!e.containsKey(bm)) {
                     map.put(bm, 0.0);
+                    mapString.put(bm,"");
                 }else{
                     map.put(bm,e.get(bm));
+                    mapString.put(bm,e.get(bm).toString());
                 }
             }
             newResList.add(map);
+            newResListString.add(mapString);
 
         }
+
+        List<Map<String, String>> rawResult = new ArrayList<>();
+
+        Map<String, String> helper;
+        for(int i =0; i< cpusList.size(); i++)
+        {
+            helper = new HashMap<>();
+            helper.put("", cpusList.get(i));
+            helper.putAll(newResListString.get(i));
+            rawResult.add(helper);
+
+        }
+
 
         resListFinal = new ArrayList<>();
 
@@ -743,7 +762,7 @@ public class ChartRestController {
             bmlistFinal.add(bm.getKey());
         }
 
-        multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
+        multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).rawResult(rawResult).build();
 
         return multiChartTableResponse;
     }

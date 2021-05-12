@@ -15,6 +15,10 @@ public class App {
     String application;
     double uplift;
     double per_Core_Uplift;
+    double per_Dollar_Uplift;
+    double per_Watt_Uplift;
     Map<String, Double> bmUplift;
     Map<String, Double> perCoreBmUplift;
+    Map<String, Double> perDollarBmUplift;
+    Map<String, Double> perWattBmUplift;
 }

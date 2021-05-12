@@ -3,6 +3,7 @@ package com.results.HpcDashboard.controller;
 import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.repo.AppCategoryRepo;
 import com.results.HpcDashboard.repo.AppMapRepo;
+import com.results.HpcDashboard.services.AppCategoryService;
 import com.results.HpcDashboard.services.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -29,6 +30,9 @@ public class ApplicationController {
 
     @Autowired
     AppCategoryRepo appCategoryRepo;
+
+    @Autowired
+    AppCategoryService appCategoryService;
 
     @GetMapping("/application")
     public String showApplication() {
@@ -82,6 +86,15 @@ public class ApplicationController {
         redirectAttrs.addFlashAttribute("insertSuccess", messages.getMessage("message.insertSuccess", null, locale));
         return "redirect:/appMetricInsert";
 
+    }
+
+    @PostMapping(value = "/appCategoryJson", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> insertAppCategoryJson(@RequestBody List<AppCategory> appCategories) {
+        if(appCategories != null || appCategories.size() > 0 )
+            appCategoryService.insertAppCategory(appCategories);
+
+        return new ResponseEntity("Success!",HttpStatus.OK);
     }
 
 }

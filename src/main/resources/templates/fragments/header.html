@@ -18,17 +18,18 @@
 
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/heatMap' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/heatMap}">Heat Map</a></li>
 
-                    <li class="nav-item"  th:classappend="${#request.requestURI == '/mChart' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/mChart}">Multi CPU Charts</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/multiCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/multiCPUCharts}">Multi CPU Charts</a></li>
 
-                    <li class="nav-item"  th:classappend="${#request.requestURI == '/charts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/charts}">Single CPU Charts</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUCharts}">Single CPU Charts</a></li>
 
                     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
                     <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/data' ? 'active':''} ${#request.requestURI == '/part-comparison' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Additional views</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
-                            <a class="dropdown-item" href="#" th:href="@{/averageDashboard}">Export aggregated</a>
-                            <a class="dropdown-item" href="#" th:href="@{/data}" >Single CPU Data </a>
+                            <a class="dropdown-item" href="#" th:href="@{/averagedResults}">Export aggregated</a>
+                            <a class="dropdown-item" href="#" th:href="@{/reports}">Reports</a>
+                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>
                             <a class="dropdown-item" href="#" th:href="@{/part-comparison}">Part Comparison</a>
 
                         </div>

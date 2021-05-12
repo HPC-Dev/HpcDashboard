@@ -200,8 +200,8 @@ public class ResultDashboardController {
     }
 
 
-    @GetMapping("/averageDashboard")
-    public String showaverageDashboard(Model model) {
+    @GetMapping("/averagedResults")
+    public String showAverageDashboard(Model model) {
 
         List<String> cpu_gen_list = resultService.getCpuGen();
         List<String> cpu_list = resultService.getCpu();

@@ -269,13 +269,33 @@ function getHeaders(columns) {
 
         if (column === 'isv') {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
-        } else if (column === 'perNode1' || column === 'perCore1') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
-        } else if (column === 'perNode2' || column === 'perCore2') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
-        } else if (column === 'perNode3' || column === 'perCore3') {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
-        } else {
+        } else if (column === 'perNode1' || column === 'perCore1' ) {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode2' || column === 'perCore2' ) {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode3' || column === 'perCore3' ) {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        }
+         else if ( column === 'perDollar1') {
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "Per$" + '</font></th>')
+         }
+         else if ( column === 'perDollar2') {
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "Per$" + '</font></th>')
+         }
+         else if ( column === 'perDollar3') {
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "Per$" + '</font></th>')
+         }
+         else if ( column === 'perWatt1') {
+                  headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "PerW" + '</font></th>')
+          }
+          else if ( column === 'perWatt2') {
+          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "PerW" + '</font></th>')
+          }
+          else if ( column === 'perWatt3') {
+          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "PerW" + '</font></th>')
+          }
+
+        else {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }
     });
@@ -290,12 +310,12 @@ function getFooters(columns) {
 
         if (column === 'isv') {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
-        } else if (column === 'perNode1' || column === 'perCore1') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
-        } else if (column === 'perNode2' || column === 'perCore2') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
-        } else if (column === 'perNode3' || column === 'perCore3') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(1, -1) + '</font></th>')
+        } else if (column === 'perNode1' || column === 'perCore1' || column === 'perDollar1' || column === 'perWatt1') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode2' || column === 'perCore2' || column === 'perDollar2' || column === 'perWatt2') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode3' || column === 'perCore3' || column === 'perDollar3' || column === 'perWatt3') {
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
         } else {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }

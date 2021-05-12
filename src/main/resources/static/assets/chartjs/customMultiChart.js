@@ -42,6 +42,8 @@ $('#appDrop').on("change", function() {
     $("#typeCheckBox").empty();
     var value = $(this).val();
     $('#footnote').hide();
+    $("#p1").hide();
+    $("#p2").hide();
     $('.collapse').collapse('hide')
     $.getJSON("/runTypes", {
         appName: value,
@@ -95,6 +97,8 @@ function runTypeCheckBoxChange() {
 
     $('#checkbox').empty();
     $('#footnote').hide();
+    $("#p1").hide();
+    $("#p2").hide();
     $('.collapse').collapse('hide')
     var app = $('#appDrop')[0].value;
     var runTypes = [];
@@ -150,6 +154,8 @@ function runTypeCheckBoxChange() {
         $("#checkbox").hide();
         $("#clear").hide();
         $('#footnote').hide();
+        $("#p1").hide();
+        $("#p2").hide();
         $('.collapse').collapse('hide')
     }
     checkBoxChange();
@@ -352,6 +358,11 @@ function checkBoxChange(cpuType) {
 
                     if (data.scalingResultData.length > 1) {
                         updateTable(data.nodeLabel, data.scalingResultData);
+
+
+                        updateTableRaw(data.nodeLabel.slice(0, -1), data.rawResult);
+                        $("#p1").show();
+                        $("#p2").show();
                         $('#footnote').show();
                     }
                 });
@@ -368,6 +379,16 @@ function checkBoxChange(cpuType) {
             }
 
             $('#tableNew').html(table);
+        }
+
+        function updateTableRaw(columns, data) {
+
+            var table;
+            if (Object.keys(data).length > 0) {
+                table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+            }
+
+            $('#tableRaw').html(table);
         }
 
         function getHeaders(columns) {
@@ -426,7 +447,10 @@ function checkBoxChange(cpuType) {
 function clearHtml() {
     var cpuList = [];
     $('#tableNew').html('');
+    $('#tableRaw').html('');
     $('#footnote').hide();
+    $("#p1").hide();
+    $("#p2").hide();
     $('.collapse').collapse('hide');
 }
 

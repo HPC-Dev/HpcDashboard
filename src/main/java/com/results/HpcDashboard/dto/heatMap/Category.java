@@ -15,5 +15,7 @@ public class Category {
     String Category;
     double uplift;
     double per_Core_Uplift;
+    double per_Dollar_Uplift;
+    double per_Watt_Uplift;
     Set<ISV> isvList;
 }
