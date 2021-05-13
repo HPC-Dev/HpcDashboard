@@ -13,5 +13,10 @@ public class HelperController {
         return "reports";
     }
 
+    @GetMapping("/userList")
+    public String showUsers() {
+        return "userList";
+    }
+
 }
 

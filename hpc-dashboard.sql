@@ -38,7 +38,7 @@ show tables;
 select * from average_result where app_name= "lsdyna" and cpu_sku IN ("7742","7763") and run_type IN ("baseline","sles12sp5_300a_edc") and nodes =1 ORDER BY avg_result DESC;
 
 
-select * from heat_map;
+select * from average_result where cpu_sku="6242" and bm_name="ls-neon";
 select * from app_category;
 select * from results where cpu="7763" and app_name="hpl";
 
@@ -98,7 +98,7 @@ select *  from results;
 
 select DISTINCT bios_ver from results ORDER BY os ASC;
 
-select * from average_result;
+select * from heat_map where cpu_sku="7702" and app_name="openfoam";
 
 SELECT * FROM results where bm_name="aba-e13" and cpu="Milan64_3200" and nodes=1 and run_type="baseline";
 

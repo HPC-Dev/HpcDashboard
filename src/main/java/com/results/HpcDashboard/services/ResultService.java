@@ -55,24 +55,13 @@ public class ResultService {
                 if (list.size() > 0) {
                     double avgResult = util.calculateAverageResult(list);
                     double perCorePerf = util.round(avgResult/j.getCores(),4);
-                    double cpuPrice = util.getCpuPrice(j.getCpu().trim());
-                    double cpuTDP = util.getCpuTDP(j.getCpu().trim());
-                    double perfPerDollar;
-                    double perfPerWatt;
 
-                    if (Double.compare(cpuPrice, 0.0) > 0) {
-                        perfPerDollar = util.round(avgResult / util.getCpuPrice(j.getCpu().trim()), 4);
-                    }
-                    else{
-                        perfPerDollar = 0;
-                    }
 
-                    if (Double.compare(cpuTDP, 0.0) > 0) {
-                        perfPerWatt = util.round(avgResult / util.getCpuTDP(j.getCpu().trim()), 4);
-                    }
-                    else{
-                        perfPerWatt = 0;
-                    }
+                    double perfPerWatt = util.PerfPerWatt(j.getCpu().trim(),avgResult,j.getAppName().trim());
+
+                    double perfPerDollar = util.PerfPerDollar(j.getCpu().trim(),avgResult,j.getAppName().trim());
+
+
                     double coefficientOfVariation = util.resultCoefficientOfVariation(list);
                     int runCount = list.size();
                     averageResultService.updateAverageResult(j.getCpu(), j.getNodes(), j.getBmName(), avgResult,perCorePerf,perfPerDollar,perfPerWatt, coefficientOfVariation, runCount, j.getRunType());
@@ -106,24 +95,11 @@ public class ResultService {
         double avgResult = util.calculateAverageResult(list);
         double perCorePerf = util.round(avgResult/cores,4);
 
-        double cpuPrice = util.getCpuPrice(result.getCpu().trim());
-        double cpuTDP = util.getCpuTDP(result.getCpu().trim());
-        double perfPerDollar;
-        double perfPerWatt;
 
-        if (Double.compare(cpuPrice, 0.0) > 0) {
-            perfPerDollar = util.round(avgResult / util.getCpuPrice(result.getCpu().trim()), 4);
-        }
-        else{
-            perfPerDollar = 0;
-        }
+        double perfPerWatt = util.PerfPerWatt(result.getCpu().trim(),avgResult,result.getAppName().trim());
 
-        if (Double.compare(cpuTDP, 0.0) > 0) {
-            perfPerWatt = util.round(avgResult / util.getCpuTDP(result.getCpu().trim()), 4);
-        }
-        else{
-            perfPerWatt = 0;
-        }
+        double perfPerDollar = util.PerfPerDollar(result.getCpu().trim(),avgResult,result.getAppName().trim());
+
 
         double coefficientOfVariation = util.resultCoefficientOfVariation(list);
         int runCount = list.size();
@@ -187,24 +163,8 @@ public class ResultService {
 
             double perCorePerf = util.round(avgResult/result.getCores(),4);
 
-            double cpuPrice = util.getCpuPrice(result.getCpu().trim());
-            double cpuTDP = util.getCpuTDP(result.getCpu().trim());
-            double perfPerDollar;
-            double perfPerWatt;
-
-            if (Double.compare(cpuPrice, 0.0) > 0) {
-                 perfPerDollar = util.round(avgResult / util.getCpuPrice(result.getCpu().trim()), 4);
-            }
-            else{
-                perfPerDollar = 0;
-            }
-
-            if (Double.compare(cpuTDP, 0.0) > 0) {
-                perfPerWatt = util.round(avgResult / util.getCpuTDP(result.getCpu().trim()), 4);
-            }
-            else{
-                perfPerWatt = 0;
-            }
+            double perfPerDollar = util.PerfPerDollar(result.getCpu().trim(),avgResult,result.getAppName().trim());
+            double perfPerWatt = util.PerfPerWatt(result.getCpu().trim(),avgResult,result.getAppName().trim());
 
             if(result.getRunType().equals("baseline")) {
                 averageResult = averageResultService.getSingleAvgResult(result.getBmName().trim().toLowerCase(), result.getCpu(), result.getNodes(),"baseline");

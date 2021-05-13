@@ -5,7 +5,6 @@ import com.results.HpcDashboard.dto.partComparison.*;
 import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.AverageResult;
 import com.results.HpcDashboard.models.HeatMap;
-import com.results.HpcDashboard.models.Processor;
 import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.repo.ProcessorRepo;
 import com.results.HpcDashboard.services.AverageResultService;
@@ -35,6 +34,7 @@ public class AverageResultRestController {
 
     @Autowired
     AppMapRepo appMapRepo;
+
 
 
     public String getLowerHigher(String app){
@@ -440,6 +440,8 @@ public class AverageResultRestController {
 
                     }
 
+
+
                     for (String b : bmName ) {
 
                         PerCore v1 = perCoreListFirst.getOrDefault(b,new PerCore());
@@ -489,6 +491,8 @@ public class AverageResultRestController {
                     }
 
 
+
+
                     for (String b : bmName ) {
 
                         double val1 = perDollarFirst.getOrDefault(b,0.0);
@@ -499,7 +503,7 @@ public class AverageResultRestController {
                         int flag = 0;
                         if(val1 != 0.0 && val2 != 0.0 ) {
 
-                            if (getLowerHigher(a.trim().toLowerCase()).equals("HIGHER")) {
+
                                 if (Double.compare(val1, val2) < 0) {
                                     flag =0;
                                     d = (val2 - val1) / Math.abs(val1); //+
@@ -514,22 +518,6 @@ public class AverageResultRestController {
                                     percentage =0;
                                 }
 
-                            } else {
-                                if (Double.compare(val1, val2) > 0) {
-                                    flag =0;
-                                    d = (val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2); //+
-                                }
-                                else if (Double.compare(val1, val2) < 0) {
-                                    flag =1;
-                                    d = Math.abs(val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2);  //-
-                                }
-                                else {
-                                    percentage =0;
-                                }
-
-                            }
                         }
 
                         if(flag==1)
@@ -555,7 +543,6 @@ public class AverageResultRestController {
                         int flag = 0;
                         if(val1 != 0.0 && val2 != 0.0 ) {
 
-                            if (getLowerHigher(a.trim().toLowerCase()).equals("HIGHER")) {
                                 if (Double.compare(val1, val2) < 0) {
                                     flag =0;
                                     d = (val2 - val1) / Math.abs(val1); //+
@@ -570,22 +557,7 @@ public class AverageResultRestController {
                                     percentage =0;
                                 }
 
-                            } else {
-                                if (Double.compare(val1, val2) > 0) {
-                                    flag =0;
-                                    d = (val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2); //+
-                                }
-                                else if (Double.compare(val1, val2) < 0) {
-                                    flag =1;
-                                    d = Math.abs(val1 - val2) / Math.abs(val2);
-                                    percentage = util.round(d * 100, 2);  //-
-                                }
-                                else {
-                                    percentage =0;
-                                }
 
-                            }
                         }
 
                         if(flag==1)
@@ -902,8 +874,13 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
 
             bmResList1.put(h.getBmName(),h.getAvgResult());
             perCoreListFirst.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "baseline"));
-            perDollarListFirst.put(h.getBmName(), h.getPerfPerDollar());
-            perWattListFirst.put(h.getBmName(), h.getPerfPerWatt());
+
+            double perfPerDollar = util.PerfPerDollar(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+
+            perDollarListFirst.put(h.getBmName(),perfPerDollar);
+
+            double perfPerWatt = util.PerfPerWatt(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perWattListFirst.put(h.getBmName(), perfPerWatt);
         }
 
 
@@ -911,16 +888,23 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
 
             bmResList2.put(h.getBmName(),h.getAvgResult());
             perCoreListSecond.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "comparative"));
-            perDollarListSecond.put(h.getBmName(), h.getPerfPerDollar());
-            perWattListSecond.put(h.getBmName(), h.getPerfPerWatt());
+
+            double perfPerDollar = util.PerfPerDollar(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perDollarListSecond.put(h.getBmName(),perfPerDollar);
+
+            double perfPerWatt = util.PerfPerWatt(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perWattListSecond.put(h.getBmName(), perfPerWatt);
         }
 
         for(HeatMap h : list3){
 
             bmResList3.put(h.getBmName(),h.getAvgResult());
             perCoreListThird.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "comparative"));
-            perDollarListThird.put(h.getBmName(), h.getPerfPerDollar());
-            perWattListThird.put(h.getBmName(), h.getPerfPerWatt());
+            double perfPerDollar = util.PerfPerDollar(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perDollarListThird.put(h.getBmName(),perfPerDollar);
+
+            double perfPerWatt = util.PerfPerWatt(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perWattListThird.put(h.getBmName(), perfPerWatt);
 
         }
 
@@ -928,10 +912,12 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
 
             bmResList4.put(h.getBmName(),h.getAvgResult());
             perCoreListFourth.put(h.getBmName(), new PerCore(h.getCores(), h.getAvgResult(), "comparative"));
-            perDollarListFourth.put(h.getBmName(), h.getPerfPerDollar());
-            perWattListFourth.put(h.getBmName(), h.getPerfPerWatt());
-        }
+            double perfPerDollar = util.PerfPerDollar(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perDollarListFourth.put(h.getBmName(),perfPerDollar);
 
+            double perfPerWatt = util.PerfPerWatt(h.getCpuSku(),h.getAvgResult(),h.getAppName());
+            perWattListFourth.put(h.getBmName(), perfPerWatt);
+        }
 
         List<Category> categories1 = new ArrayList<>();
         List<Category> categories2 = new ArrayList<>();

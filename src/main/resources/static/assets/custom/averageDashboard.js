@@ -64,20 +64,20 @@ function dataTable() {
                     return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
                 }
             },
-            {
-                data: 'perfPerDollar',
-                searchable: false,
-                "render": function(data, type, full) {
-                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
-                }
-            },
-            {
-                data: 'perfPerWatt',
-                searchable: false,
-                "render": function(data, type, full) {
-                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
-                }
-            },
+//            {
+//                data: 'perfPerDollar',
+//                searchable: false,
+//                "render": function(data, type, full) {
+//                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+//                }
+//            },
+//            {
+//                data: 'perfPerWatt',
+//                searchable: false,
+//                "render": function(data, type, full) {
+//                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+//                }
+//            },
             {
                 data: 'coefficientOfVariation',
                 searchable: false,

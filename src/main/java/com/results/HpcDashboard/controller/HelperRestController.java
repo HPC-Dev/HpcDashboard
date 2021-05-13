@@ -4,6 +4,7 @@ import com.results.HpcDashboard.models.*;
 import com.results.HpcDashboard.repo.AppCategoryRepo;
 import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.repo.ProcessorRepo;
+import com.results.HpcDashboard.repo.UserRepository;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,9 @@ public class HelperRestController {
 
     @Autowired
     AppCategoryRepo appCategoryRepo;
+
+    @Autowired
+    UserRepository userRepository;
 
 
     @GetMapping("/appMetricStatus")
@@ -63,6 +67,41 @@ public class HelperRestController {
             return Collections.emptyList();
         }
         return list;
+    }
+
+    @GetMapping("/userList")
+    public List<Map<String,String>> getUsers(){
+
+        List<User> list = null;
+        list = userRepository.findAll();
+        if(list ==null){
+            return Collections.emptyList();
+        }
+
+        List<Map<String,String>> userMap = new ArrayList<>();
+
+        Map<String,String> map;
+
+        for(User user: list)
+        {
+            map = new HashMap<>();
+            map.put("First Name",user.getFirstName());
+            map.put("Last Name",user.getLastName());
+            map.put("Email",user.getEmail());
+            Collection<Role> roles = user.getRoles();
+            String role = "";
+            for (Role r : roles) {
+                if(role == "")
+                    role += r.getName().substring(5);
+                else
+                    role += ", "+ r.getName().substring(5);
+            }
+            map.put("Roles",role);
+
+            userMap.add(map);
+
+        }
+        return userMap;
     }
 
 

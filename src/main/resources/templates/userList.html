@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" />
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/customForm.css}"/>
+    <link rel="icon" th:href="@{assets/favicon.ico}" />
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+    <title>User List</title>
+</head>
+
+<body>
+
+<div th:insert="~{fragments/header :: header}">...</div>
+
+
+<div class="container-fluid" style="max-width:1400px">
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-3">
+
+            <br>  <br>
+            <h3>User List</h3>
+            <br>
+            <form action="#"  method="post">
+            <div class="table-responsive" id="tableUsers" style="margin-left:10px; margin-top:20px;  max-height:600px;overflow:auto;">
+
+            </div>
+            </form>
+
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/custom/insertTables.js}"></script>
+
+</body>
+</html>

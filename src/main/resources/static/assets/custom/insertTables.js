@@ -24,6 +24,25 @@ function getData() {
         updateTableCategory(columnNames, data);
     });
 
+    $.getJSON("/helper/userList/", function(data) {
+
+            var columnNames = ['First Name', 'Last Name',  'Email', 'Roles'];
+            updateTableUsers(columnNames, data);
+        });
+
+}
+
+function updateTableUsers(columns, data) {
+    var table;
+
+    if (data.length > 0) {
+        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+
+    } else {
+        table = "<p></p>";
+    }
+
+    $('#tableUsers').html(table);
 }
 
 function updateTableStatus(columns, data) {

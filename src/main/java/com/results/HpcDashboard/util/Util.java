@@ -3,7 +3,9 @@ package com.results.HpcDashboard.util;
 
 import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.JobDto;
+import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.Processor;
+import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.repo.ProcessorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,8 +46,14 @@ public class Util {
     @Autowired
     ProcessorRepo processorRepo;
 
+    @Autowired
+    AppMapRepo appMapRepo;
+
+    @Autowired
+    Util util;
+
     public JobDto findJobDetails(EntityManager entityManager, String jobId) {
-        String queryStr = "select r.bm_name,r.cpu,r.nodes, r.run_type, r.cores from results r where r.job_id = ?1";
+        String queryStr = "select r.bm_name,r.cpu,r.nodes, r.run_type, r.cores, r.app_name from results r where r.job_id = ?1";
         try {
             Query query = entityManager.createNativeQuery(queryStr);
             query.setParameter(1, jobId );
@@ -55,6 +63,42 @@ public class Util {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public double PerfPerDollar(String cpu, double avgResult, String appName)
+    {
+        double perfPerDollar;
+
+        if (Double.compare(util.getCpuPrice(cpu), 0.0) > 0) {
+            String status = util.getLowerHigher(appName.trim());
+            if(status.equals("LOWER"))
+                perfPerDollar = util.round((1/avgResult) / util.getCpuPrice(cpu.trim()), 10);
+            else
+                perfPerDollar = util.round(avgResult / util.getCpuPrice(cpu.trim()), 10);
+        }
+        else{
+            perfPerDollar = 0;
+        }
+        return perfPerDollar;
+    }
+
+
+    public double PerfPerWatt(String cpu, double avgResult, String appName)
+    {
+        double perfPerWatt;
+
+        if (util.getCpuTDP(cpu) > 0) {
+        String status = util.getLowerHigher(appName.trim());
+            if (status.equals("LOWER"))
+                perfPerWatt = util.round((1 / avgResult) / util.getCpuTDP(cpu.trim()), 10);
+            else
+                perfPerWatt = util.round(avgResult / util.getCpuTDP(cpu.trim()), 10);
+            }
+        else{
+        perfPerWatt = 0;
+        }
+
+        return perfPerWatt;
     }
 
     public String[] performRegex(String individualResult){
@@ -126,6 +170,22 @@ public class Util {
             }
         }
         return cpuVal;
+    }
+
+    public String getLowerHigher(String app){
+
+        List<AppMap> appMaps = appMapRepo.findAllAppMap();
+        String appStatus = "";
+
+        for(int i = 0; i < appMaps.size(); i++)
+        {
+            if(appMaps.get(i).getAppName().equals(app)){
+                appStatus = appMaps.get(i).getStatus();
+            }
+
+        }
+        return appStatus;
+
     }
 
     public double getCpuPrice(String cpu) {
