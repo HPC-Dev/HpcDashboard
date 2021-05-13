@@ -277,22 +277,22 @@ function getHeaders(columns) {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
         }
          else if ( column === 'perDollar1') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "Per$" + '</font></th>')
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "/ $" + '</font></th>')
          }
          else if ( column === 'perDollar2') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "Per$" + '</font></th>')
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "/ $" + '</font></th>')
          }
          else if ( column === 'perDollar3') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "Per$" + '</font></th>')
+         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "/ $" + '</font></th>')
          }
          else if ( column === 'perWatt1') {
-                  headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "PerW" + '</font></th>')
+                  headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "/ Watt" + '</font></th>')
           }
           else if ( column === 'perWatt2') {
-          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "PerW" + '</font></th>')
+          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "/ Watt" + '</font></th>')
           }
           else if ( column === 'perWatt3') {
-          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "PerW" + '</font></th>')
+          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "/ Watt" + '</font></th>')
           }
 
         else {
