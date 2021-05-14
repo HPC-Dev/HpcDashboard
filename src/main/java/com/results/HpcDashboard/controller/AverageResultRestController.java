@@ -939,10 +939,10 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
             HeatMapResult h = resList.get(i);
             HeatMapResult h1 = new HeatMapResult();
             HeatMapResult h2 = new HeatMapResult();
-            if(cpuList.length > 2 && typeList.length > 2 ) {
+            if(cpuList.length > 2 && typeList.length > 2 && resList1.size() >0  ) {
                  h1 = resList1.get(i);
             }
-            if(cpuList.length > 3 && typeList.length > 3 ) {
+            if(cpuList.length > 3 && typeList.length > 3 && resList2.size() >0  ) {
                  h2 = resList2.get(i);
             }
 
@@ -977,18 +977,24 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
         double cpuPrice3 = 0.0;
         double cpuPrice4 = 0.0;
 
-        if(cpuList.length > 2 && typeList.length >2 )
+        int cpuWatt1 = util.getCpuTDP(cpu1.trim());
+        int cpuWatt2 = util.getCpuTDP(cpu2.trim());
+        int cpuWatt3 = 0;
+        int cpuWatt4 = 0;
+
+        if(cpuList.length > 2 && typeList.length >2 ) {
             cpuPrice3 = util.getCpuPrice(cpu3.trim());
-
-        if(cpuList.length > 3 && typeList.length >3 )
+            cpuWatt3 = util.getCpuTDP(cpu3.trim());
+        }
+        if(cpuList.length > 3 && typeList.length >3 ) {
             cpuPrice4 = util.getCpuPrice(cpu4.trim());
+            cpuWatt4 = util.getCpuTDP(cpu4.trim());
+        }
 
-
-
-        if(cpuList.length > 2 && typeList.length > 2 )
+        if(cpuList.length > 2 && typeList.length > 2 && resList1.size() >0 )
         columns.add("perNode2");
 
-        if(cpuList.length > 3 && typeList.length > 3 )
+        if(cpuList.length > 3 && typeList.length > 3  && resList2.size() >0)
         columns.add("perNode3");
 
         if(cpuList.length > 2 && typeList.length > 2 )
@@ -996,39 +1002,42 @@ public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
 
         columns.add("perCore1");
 
-        if(cpuList.length > 2 && typeList.length > 2 )
+        if(cpuList.length > 2 && typeList.length > 2 && resList1.size() >0)
         columns.add("perCore2");
 
-        if(cpuList.length > 3 && typeList.length > 3 )
+        if(cpuList.length > 3 && typeList.length > 3 && resList2.size() >0 )
         columns.add("perCore3");
 
-        if(cpuList.length > 2 && typeList.length > 2 )
-            columns.add("");
-
-        if (Double.compare(cpuPrice1, 0.0) > 0) {
-
-            if(Double.compare(cpuPrice2, 0.0) > 0)
-            columns.add("perDollar1");
-
-            if(cpuList.length > 2 && typeList.length > 2 && Double.compare(cpuPrice3, 0.0) > 0 )
-                columns.add("perDollar2");
-
-            if(cpuList.length > 3 && typeList.length > 3  && Double.compare(cpuPrice4, 0.0) > 0)
-                columns.add("perDollar3");
-
+        if (Double.compare(cpuPrice1, 0.0) > 0 && (Double.compare(cpuPrice2, 0.0) > 0 || Double.compare(cpuPrice3, 0.0) > 0 || Double.compare(cpuPrice4, 0.0) > 0 )) {
 
             if(cpuList.length > 2 && typeList.length > 2 )
                 columns.add("");
 
+            if(Double.compare(cpuPrice2, 0.0) > 0)
+            columns.add("perDollar1");
+
+            if(cpuList.length > 2 && typeList.length > 2 && Double.compare(cpuPrice3, 0.0) > 0 && resList1.size() >0 )
+                columns.add("perDollar2");
+
+            if(cpuList.length > 3 && typeList.length > 3  && Double.compare(cpuPrice4, 0.0) > 0 && resList2.size() >0)
+                columns.add("perDollar3");
+
         }
 
-        columns.add("perWatt1");
+        if (cpuWatt1 > 0  && ( cpuWatt2 > 0 || cpuWatt3 > 0 || cpuWatt4 > 0)) {
 
-        if(cpuList.length > 2 && typeList.length > 2 )
-            columns.add("perWatt2");
+            if(cpuList.length > 2 && typeList.length > 2 )
+                columns.add("");
 
-        if(cpuList.length > 3 && typeList.length > 3 )
-            columns.add("perWatt3");
+            if(cpuWatt2 > 0)
+                columns.add("perWatt1");
+
+            if(cpuList.length > 2 && typeList.length > 2 && cpuWatt3 > 0 && resList1.size() >0 )
+                columns.add("perWatt2");
+
+            if(cpuList.length > 3 && typeList.length > 3  && cpuWatt4 > 0 && resList2.size() >0)
+                columns.add("perWatt3");
+        }
 
         heatMapOutput.setColumns(columns);
 

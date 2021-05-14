@@ -140,6 +140,9 @@ select DISTINCT nodes from results ORDER BY nodes ASC;
 
 select DISTINCT cpu from results ORDER BY cpu ASC;
 
+select * from run_types;
+
+#drop table run_types;
 
 select * from user;
 select * from role;

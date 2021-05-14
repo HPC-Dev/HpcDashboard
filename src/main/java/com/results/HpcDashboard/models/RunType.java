@@ -22,9 +22,18 @@ import javax.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class RunType {
 
-    String mode;
+    @Id
+    String runType;
 
-    String ddr4_freq;
+    @Id
+    String cpu;
+
+    @Id
+    String app_name;
+
+    String freq;
+
+    String mem_freq;
 
     int nps;
 
@@ -35,15 +44,6 @@ public class RunType {
     String cTDP;
 
     String boost;
-
-    @Id
-    String runType;
-
-    @Id
-    String cpu;
-
-    @Id
-    String app_name;
 
     String apbdis;
 
