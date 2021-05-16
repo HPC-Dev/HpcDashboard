@@ -4,13 +4,13 @@ import com.results.HpcDashboard.dto.FormCommand;
 import com.results.HpcDashboard.dto.multichart.MultiChartResponse;
 import com.results.HpcDashboard.models.User;
 import com.results.HpcDashboard.services.*;
+import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -21,6 +21,9 @@ public class AppController {
 
     @Autowired
     AverageResultService averageResultService;
+
+    @Autowired
+    Util util;
 
     @ModelAttribute("command")
     public FormCommand formCommand() {
@@ -68,6 +71,9 @@ public class AppController {
     @GetMapping("/singleCPUCharts")
     public String showCharts(Model model) {
         List<String> cpu_list = averageResultService.getCpu();
+        Map<String, List<String>> cpuMap = util.getCPUDropdown(cpu_list);
+
+        model.addAttribute("cpuMap", cpuMap );
         model.addAttribute("cpus", cpu_list );
         return "singleCPUCharts";
     }
@@ -94,6 +100,10 @@ public class AppController {
 
         List<String> app_list = averageResultService.getApp();
         List<String> cpu_list = averageResultService.getCpu();
+
+        Map<String, List<String>> cpuMap = util.getCPUDropdown(cpu_list);
+
+        model.addAttribute("cpuMap", cpuMap );
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
         return "singleCPUResult";
@@ -109,7 +119,7 @@ public class AppController {
         return "scalingComparison";
     }
 
-    @GetMapping("/part-comparison")
+    @GetMapping("/partComparison")
     public String showDataComparison(Model model) {
 
         List<String> app_list = averageResultService.getApp();
@@ -121,16 +131,22 @@ public class AppController {
     public String showHeatMap(Model model) {
 
         List<String> cpu_list = averageResultService.getJustCpu();
+        Map<String, List<String>> cpuMap = util.getCPUDropdown(cpu_list);
+
+        model.addAttribute("cpuMap", cpuMap );
+
         model.addAttribute("cpus", cpu_list);
         return "heatMap";
     }
 
     @RequestMapping(value = "/cpus", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> findAllCPUs(
+    Map<String, List<String>> findAllCPUs(
             @RequestParam(value = "appName", required = true) String appName) {
 
-        return averageResultService.getCpu(appName);
+        List<String> cpu_list = averageResultService.getCpu(appName);
+
+        return util.getCPUDropdown(cpu_list);
     }
 
     @RequestMapping(value = "/runTypes", method = RequestMethod.GET)

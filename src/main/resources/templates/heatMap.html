@@ -33,10 +33,18 @@
 
         <div id="cpu1" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="cpuDrop1" name="cpuDrop1">
-                <option selected="true" disabled="disabled">-- CPU1 --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <option value="" selected="true" disabled="disabled">-- CPU1 --</option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
 
@@ -44,28 +52,52 @@
 
         <div id="cpu2" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="cpuDrop2" name="cpuDrop2">
-                <option selected="true" disabled="disabled">-- CPU2 --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <option value="" selected="true" disabled="disabled">-- CPU2 --</option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
 
         <div id="cpu3" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="cpuDrop3" name="cpuDrop3">
-                <option selected="true" disabled="disabled">-- CPU3 --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <option value="" selected="true" disabled="disabled">-- CPU3 --</option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
 
         <div id="cpu4" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="cpuDrop4" name="cpuDrop4">
-                <option selected="true" disabled="disabled">-- CPU4 --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <option value="" selected="true" disabled="disabled">-- CPU4 --</option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
 

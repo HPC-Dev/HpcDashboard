@@ -36,10 +36,18 @@
     <div class="row" >
         <div class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
+
                 <option value="" selected="true" disabled="disabled">-- CPU --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
 

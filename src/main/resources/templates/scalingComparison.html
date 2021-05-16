@@ -8,7 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
     <link rel="stylesheet" type="text/css"
           th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
     <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
@@ -30,7 +29,10 @@
 
 
 <div class="container-fluid" style="max-width:1400px; padding:0;">
+<!--    <h3>Scaling Comparison</h3>-->
+<!--    <br>-->
     <div class="row">
+
         <div id="app" class="custom-control col-sm-2 dropdown custom-control-inline">
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="" selected="true" disabled="disabled">-- App --</option>
@@ -83,23 +85,6 @@
 
     </div>
 
-<!--    <div class="row"  style="margin-top:20px">-->
-<!--        <div class="custom-control col-sm-2 custom-control-inline">-->
-
-<!--        </div>-->
-
-<!--    <div id="radio" class="form-group" style="margin-top: 12px; margin-left: 20px;" >-->
-<!--        <div class="custom-control custom-radio custom-control-inline">-->
-<!--            <input type="radio" id="option1" name="option" class="custom-control-input" value="actual">-->
-<!--            <label class="custom-control-label" for="option1">Actual data</label>-->
-<!--        </div>-->
-<!--        <div class="custom-control custom-radio custom-control-inline">-->
-<!--            <input type="radio" id="option2" name="option" class="custom-control-input" value="relative">-->
-<!--            <label class="custom-control-label" for="option2">Relative data</label>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    </div>-->
 
 </div>
 
@@ -108,17 +93,17 @@
 
 <div class="container-fluid" style="max-width:1300px; overflow-x:auto;padding:0;">
 
-    <h6 style="margin:0px;display:none;" id="p1">Perf Metric</h6>
+    <h6 style="margin:0px;display:none;" id="p1">Scaling Comparison Node</h6>
     <div class="table-responsive" id="table"></div>
 
-    <h6 style="margin-top:20px;display:none;" id="p2">Perf Metric 1</h6>
-    <div class="table-responsive" id="table1"></div>
+<!--    <h6 style="margin-top:20px;display:none;" id="p2">Scaling Comparison Core</h6>-->
+<!--    <div class="table-responsive" id="table1"></div>-->
 
-    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p3">Relative Scaling</h6>
-    <div class="table-responsive" id="tableScaling" style=""></div>
+<!--    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p3">Run count Comparison</h6>-->
+<!--    <div class="table-responsive" id="table2" style=""></div>-->
 
-    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p4">Relative Scaling 1</h6>
-    <div class="table-responsive" id="tableScaling1" style=""></div>
+<!--    <h6 style="margin-top:20px;margin-bottom:12px; display:none;" id="p4">Variance Comparison</h6>-->
+<!--    <div class="table-responsive" id="table3" style=""></div>-->
 
 
 </div>
@@ -127,7 +112,8 @@
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
 <script type="text/javascript" th:src="@{assets/custom/scalingComparison.js}"></script>
 
 </body>

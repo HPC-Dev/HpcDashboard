@@ -28,19 +28,38 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
-            var len = data.length;
-            for (var i = 0; i < len; i++) {
-                html += '<option value="' + data[i] + '">' +
-                    data[i] + '</option>';
+            //            var len = data.length;
+            //            for (var i = 0; i < len; i++) {
+            //                html += '<option value="' + data[i] + '">' +
+            //                    data[i] + '</option>';
+            //            }
+            //            html += '</option>';
+
+            for (var cpuGen in data) {
+
+                html += '<optgroup label="' + cpuGen + '">'
+
+                for (var cpu in data[cpuGen]) {
+                    html += '<option value="' + data[cpuGen][cpu] + '">' +
+                        data[cpuGen][cpu] + '</option>';
+
+                }
+
+                html += '</optgroup>'
             }
-            html += '</option>';
+
             $('#cpuDrop1').html(html);
 
-            if (data.includes(preCpu1)) {
-                $('#cpuDrop1').val(preCpu1);
-                getRunType1(preType1);
-            } else {
-                $('#cpuDrop1').val('');
+            for (var cpuGen in data) {
+
+                if (data[cpuGen].includes(preCpu1)) {
+                    $('#cpuDrop1').val(preCpu1);
+                    getRunType1(preType1);
+                    break;
+                } else {
+                    $('#cpuDrop1').val('');
+                }
+
             }
             getData();
 
@@ -53,19 +72,38 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-            var len = data.length;
-            for (var i = 0; i < len; i++) {
-                html += '<option value="' + data[i] + '">' +
-                    data[i] + '</option>';
+            //            var len = data.length;
+            //            for (var i = 0; i < len; i++) {
+            //                html += '<option value="' + data[i] + '">' +
+            //                    data[i] + '</option>';
+            //            }
+            //            html += '</option>';
+
+            for (var cpuGen in data) {
+
+                html += '<optgroup label="' + cpuGen + '">'
+
+                for (var cpu in data[cpuGen]) {
+                    html += '<option value="' + data[cpuGen][cpu] + '">' +
+                        data[cpuGen][cpu] + '</option>';
+
+                }
+
+                html += '</optgroup>'
             }
-            html += '</option>';
+
             $('#cpuDrop2').html(html);
 
-            if (data.includes(preCpu2)) {
-                $('#cpuDrop2').val(preCpu2);
-                getRunType2(preType2);
-            } else {
-                $('#cpuDrop2').val('');
+            for (var cpuGen in data) {
+
+                if (data[cpuGen].includes(preCpu2)) {
+                    $('#cpuDrop2').val(preCpu2);
+                    getRunType2(preType2);
+                    break;
+                } else {
+                    $('#cpuDrop2').val('');
+                }
+
             }
             getData();
 

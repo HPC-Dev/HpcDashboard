@@ -1,6 +1,3 @@
-var typeVal;
-var flag;
-
 var cpu1;
 var cpu2;
 var app;
@@ -11,6 +8,13 @@ var flag2;
 
 
 $('#appDrop').on("change", function() {
+
+    var preApp = $("#appDrop option:selected").val();
+    var preCpu1 = $("#cpuDrop1 option:selected").val();
+    var preCpu2 = $("#cpuDrop2 option:selected").val();
+    var preType1 = $("#typeDrop1 option:selected").val();
+    var preType2 = $("#typeDrop2 option:selected").val();
+
     var value = $(this).val();
     if (value != '') {
 
@@ -19,13 +23,46 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
-            var len = data.length;
-            for (var i = 0; i < len; i++) {
-                html += '<option value="' + data[i] + '">' +
-                    data[i] + '</option>';
+            //            var len = data.length;
+            //            for (var i = 0; i < len; i++) {
+            //                html += '<option value="' + data[i] + '">' +
+            //                    data[i] + '</option>';
+            //            }
+            //            html += '</option>';
+
+
+
+            for (var cpuGen in data) {
+
+                html += '<optgroup label="' + cpuGen + '">'
+
+                for (var cpu in data[cpuGen]) {
+                    html += '<option value="' + data[cpuGen][cpu] + '">' +
+                        data[cpuGen][cpu] + '</option>';
+
+                }
+
+                html += '</optgroup>'
             }
-            html += '</option>';
+
             $('#cpuDrop1').html(html);
+
+
+            for (var cpuGen in data) {
+
+                if (data[cpuGen].includes(preCpu1)) {
+                    $('#cpuDrop1').val(preCpu1);
+                    getRunType1(preType1);
+                    break;
+                } else {
+                    $('#cpuDrop1').val('');
+                }
+
+            }
+
+            getData();
+
+
         });
 
 
@@ -34,23 +71,52 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-            var len = data.length;
-            for (var i = 0; i < len; i++) {
-                html += '<option value="' + data[i] + '">' +
-                    data[i] + '</option>';
+            //            var len = data.length;
+            //            for (var i = 0; i < len; i++) {
+            //                html += '<option value="' + data[i] + '">' +
+            //                    data[i] + '</option>';
+            //            }
+            //            html += '</option>';
+
+            for (var cpuGen in data) {
+
+                html += '<optgroup label="' + cpuGen + '">'
+
+                for (var cpu in data[cpuGen]) {
+                    html += '<option value="' + data[cpuGen][cpu] + '">' +
+                        data[cpuGen][cpu] + '</option>';
+
+                }
+
+                html += '</optgroup>'
             }
-            html += '</option>';
+
             $('#cpuDrop2').html(html);
+
+
+            for (var cpuGen in data) {
+
+                if (data[cpuGen].includes(preCpu2)) {
+                    $('#cpuDrop2').val(preCpu2);
+                    getRunType2(preType2);
+                    break;
+                } else {
+                    $('#cpuDrop2').val('');
+                }
+
+            }
+
+            getData();
+
+
         });
 
-        $('#cpuDrop1').val('');
-        $('#cpuDrop2').val('');
         $('#typeDrop1').val('');
         $('#typeDrop2').val('');
-//        clearChart();
-//        clearHtml();
+        clearHtml();
     }
 });
+
 
 $("#type1").on("change", getData);
 
@@ -60,9 +126,15 @@ $("#cpu1").on("change", getRunType1);
 
 $("#cpu2").on("change", getRunType2);
 
-function getRunType1() {
+function getRunType1(preType1) {
+
     cpu1 = $('#cpuDrop1')[0].value;
     app = $('#appDrop')[0].value;
+
+    if ($("#typeDrop1 option:selected").val()) {
+        var preType1 = $("#typeDrop1 option:selected").val();
+    }
+
     if (app && cpu1) {
         $.getJSON("/runTypesByAPPCPU", {
             appName: app,
@@ -79,19 +151,31 @@ function getRunType1() {
             html += '</option>';
             $('#typeDrop1').html(html);
 
-            type1 = $('#typeDrop1')[0].value;
+            if (data.includes(preType1)) {
+                $('#typeDrop1').val(preType1);
+            } else {
+                $('#typeDrop1').val('');
+            }
+            getData();
 
         });
     }
 
-//    clearChart();
-//    clearHtml();
+    clearHtml();
 
 }
 
-function getRunType2() {
+function getRunType2(preType2) {
+
+
     cpu2 = $('#cpuDrop2')[0].value;
     app = $('#appDrop')[0].value;
+
+    if ($("#typeDrop2 option:selected").val()) {
+        var preType2 = $("#typeDrop2 option:selected").val();
+    }
+
+
     if (app && cpu2) {
 
         $.getJSON("/runTypesByAPPCPU", {
@@ -107,27 +191,33 @@ function getRunType2() {
             }
             html += '</option>';
             $('#typeDrop2').html(html);
-            type2 = $('#typeDrop2')[0].value;
+
+            if (data.includes(preType2)) {
+                $('#typeDrop2').val(preType2);
+            } else {
+                $('#typeDrop2').val('');
+            }
+            getData();
 
         });
     }
 
-//    clearHtml();
-//    clearChart();
+    clearHtml();
 
 }
 
-//function clearChart() {
-//    $('#multiBarChart').remove();
-//    $('#multiChart').append('<canvas id="multiBarChart" width="450" height="300" role="img"></canvas>');
-//}
-//
-//function clearHtml() {
-//    $('#tableNew').html('');
-//       $('#footnote').hide();
-//       $('.collapse').collapse('hide');
-//}
 
+function clearHtml() {
+     $('#table').html('');
+      $('#table1').html('');
+      $('#table2').html('');
+      $('#table3').html('');
+      $("#p1").hide();
+      $("#p2").hide();
+      $("#p3").hide();
+      $("#p4").hide();
+    $('.collapse').collapse('hide');
+}
 
 function getData() {
 
@@ -137,99 +227,47 @@ function getData() {
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
 
-//    clearChart();
-//    clearHtml();
+        clearHtml();
 
     var comment;
     if (app && cpu1 && cpu2 && type1 && type2) {
 
-
-        $.getJSON("/avg/result/" + cpu1 + "/" + app + "/" + type1, function(data) {
-
-            console.log(data);
-            var transformedData = [];
-            var columnNames = ['Nodes', 'Cores'];
-            data.forEach((item, index) => {
-                var row = transformedData.find(function(tr) {
-                    return tr.Nodes === item.nodes;
-                });
-                var rowIndex = transformedData.findIndex(function(tr) {
-                    return tr.Nodes === item.nodes;
-                })
-
-                if (!row) {
-                    row = {
-                        Nodes: item.nodes,
-                        Cores: item.cores
-                    };
-                    transformedData.push(row);
-                }
-
-                row[item.bmName] = item.avgResult;
-
-                if (columnNames.indexOf(item.bmName) === -1) {
-                    columnNames.push(item.bmName);
-                }
-
-            });
+        $.getJSON("/avg/scalingComparisonNode/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
+            var transformedData = data.resultData;
+            var columnNames = data.bmName;
             updateTable(columnNames, transformedData);
 
         });
 
-        $.getJSON("/avg/result/" + cpu2 + "/" + app + "/" + type2, function(data) {
-                    var transformedData = [];
-                    var columnNames = ['Nodes', 'Cores'];
-                    data.forEach((item, index) => {
-                        var row = transformedData.find(function(tr) {
-                            return tr.Nodes === item.nodes;
-                        });
-                        var rowIndex = transformedData.findIndex(function(tr) {
-                            return tr.Nodes === item.nodes;
-                        })
+        $.getJSON("/avg/scalingComparisonCore/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
+            var transformedData = data.resultData;
+            var columnNames = data.bmName;
+            updateTableCore(columnNames, transformedData);
 
-                        if (!row) {
-                            row = {
-                                Nodes: item.nodes,
-                                Cores: item.cores
-                            };
-                            transformedData.push(row);
-                        }
+        });
 
-                        row[item.bmName] = item.avgResult;
-
-                        if (columnNames.indexOf(item.bmName) === -1) {
-                            columnNames.push(item.bmName);
-                        }
-
-                    });
-                    updateTable1(columnNames, transformedData);
+         $.getJSON("/avg/scalingComparisonCount/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
+                    var transformedData = data.resultData;
+                    var columnNames = data.bmName;
+                    updateTableCount(columnNames, transformedData);
 
                 });
 
-        $.getJSON("/chart/scalingTable/" + cpu1 + "/" + app + "/" + type1, function(data) {
-                    comment = data.comment;
-                    if(data.scalingResultData.length >1) {
-                    updateTableScaling(data.nodeLabel, data.scalingResultData);
-                    }
-
-                });
-
-        $.getJSON("/chart/scalingTable/" + cpu2 + "/" + app + "/" + type2, function(data) {
-                       comment = data.comment;
-                       if(data.scalingResultData.length >1) {
-                       updateTableScaling1(data.nodeLabel, data.scalingResultData);
-                       }
-                     });
+        $.getJSON("/avg/scalingComparisonVariance/" + app + "/" + cpu1 + "/" + cpu2 + "/" + type1 + "/" + type2, function(data) {
+                            var transformedData = data.resultData;
+                            var columnNames = data.bmName;
+                            updateTableVariance(columnNames, transformedData);
+        });
 
     }
-     $('#table').html('');
-     $('#tableScaling').html('');
-     $('#table1').html('');
-     $('#tableScaling1').html('');
-     $("#p1").hide();
-     $("#p2").hide();
-     $("#p3").hide();
-     $("#p4").hide();
+    $('#table').html('');
+    $('#table1').html('');
+    $('#table2').html('');
+    $('#table3').html('');
+    $("#p1").hide();
+    $("#p2").hide();
+    $("#p3").hide();
+    $("#p4").hide();
 
 }
 
@@ -238,9 +276,7 @@ function updateTable(columns, data) {
 
     if (data.length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
-        //  table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + comment + "</p>"
         $("#p1").show();
-
     } else {
         table = "<p>No data available</p>";
     }
@@ -248,12 +284,11 @@ function updateTable(columns, data) {
     $('#table').html(table);
 }
 
-function updateTable1(columns, data) {
+function updateTableCore(columns, data) {
     var table1;
 
     if (data.length > 0) {
         table1 = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
-        //  table += " <p style='font-size:12px;text-align:left;font-family:verdana;'>" +"*" + comment + "</p>"
         $("#p2").show();
 
     } else {
@@ -263,24 +298,24 @@ function updateTable1(columns, data) {
     $('#table1').html(table1);
 }
 
-function updateTableScaling(columns, data) {
+function updateTableCount(columns, data) {
     var table;
 
     if (data.length > 0) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
         $("#p3").show();
     }
-    $('#tableScaling').html(table);
+    $('#table2').html(table);
 }
 
-function updateTableScaling1(columns, data) {
+function updateTableVariance(columns, data) {
     var table1;
 
     if (data.length > 0) {
         table1 = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
         $("#p4").show();
     }
-    $('#tableScaling1').html(table1);
+    $('#table3').html(table1);
 }
 
 function getHeaders(columns) {
@@ -350,21 +385,18 @@ function generateRowVariance(columns, rowData) {
             val = '';
         }
 
-        if(column != 'Nodes' &&  column != 'Cores' && rowData[column] != undefined){
+        if (column != 'Nodes' && column != 'Cores' && rowData[column] != undefined) {
 
-            if(val < 3.0){
-                row.push('<td bgcolor="#C8E6C9">' + val.concat('%') +  '</td>')
-            }
-            else if(val > 3.0 && val < 5.0 ){
+            if (val < 3.0) {
+                row.push('<td bgcolor="#C8E6C9">' + val.concat('%') + '</td>')
+            } else if (val > 3.0 && val < 5.0) {
                 row.push('<td bgcolor="#FFF9C4">' + val.concat('%') + '</td>')
-            }
-            else if(val > 5.0 ){
+            } else if (val > 5.0) {
                 row.push('<td bgcolor="FFCDD2">' + val.concat('%') + '</td>')
             }
-        }
-       else{
+        } else {
             row.push('<td>' + val + '</td>')
-       }
+        }
     });
 
     row.push('</tr>');
@@ -396,18 +428,16 @@ function generateRowCount(columns, rowData) {
             val = '';
         }
 
-        if(column != 'Nodes' &&  column != 'Cores' && rowData[column] != undefined){
+        if (column != 'Nodes' && column != 'Cores' && rowData[column] != undefined) {
 
-            if(val < 3){
-                row.push('<td bgcolor="#FFCDD2">' + val +  '</td>')
-            }
-            else {
+            if (val < 3) {
+                row.push('<td bgcolor="#FFCDD2">' + val + '</td>')
+            } else {
                 row.push('<td bgcolor="#C8E6C9">' + val + '</td>')
             }
-        }
-       else{
+        } else {
             row.push('<td>' + val + '</td>')
-       }
+        }
     });
 
     row.push('</tr>');

@@ -31,17 +31,35 @@
 
 <div class="container-fluid" style="max-width:1400px; padding:0;">
     <div class="row" >
+<!--        <div class="col-sm-2 dropdown">-->
+<!--            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">-->
+<!--                <option value="" selected="true" disabled="disabled">&#45;&#45; CPU &#45;&#45;</option>-->
+<!--                <option th:each="cpu : ${cpus}"-->
+<!--                        th:value="${cpu}"-->
+<!--                        th:text="${cpu}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+
+
         <div class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
+
                 <option value="" selected="true" disabled="disabled">-- CPU --</option>
-                <option th:each="cpu : ${cpus}"
-                        th:value="${cpu}"
-                        th:text="${cpu}"></option>
+
+                <optgroup th:each="cpuGen : ${cpuMap}"
+                          th:label="${cpuGen.key}">
+                    <option th:each="cpu : ${cpuGen.value}"
+                            th:value="${cpu}"
+                            th:text="${cpu}">
+                    </option>
+                </optgroup>
+
+
             </select>
         </div>
-        <div id="coreCount" style='display:none;' class="col-sm-3 ">
-            <input style="font-size:15px;" type="text" class="no-outline" id="coreValue" size="6" readonly></input>
-        </div>
+
+
+
     </div>
 
     <div class="row" style="margin-top: 8px;">

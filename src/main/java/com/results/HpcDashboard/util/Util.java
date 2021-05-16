@@ -146,8 +146,6 @@ public class Util {
 
 
     public String getCpuGen(String cpu) {
-        //HashMap<String, String> cpuGenMap = util.getCpuGenMap();
-
         List<Processor> processors = processorRepo.findAllProcessors();
         String cpuVal="";
         for(int i = 0; i < processors.size(); i++)
@@ -166,10 +164,31 @@ public class Util {
                 cpuVal  ="Rome";
             }
             else{
-                cpuVal="";
+                cpuVal="MISC";
             }
         }
         return cpuVal;
+    }
+
+    public Map<String, List<String>> getCPUDropdown(List<String> cpu_list){
+
+        Map<String, List<String>> cpuMap = new LinkedHashMap<>();
+
+        List<String> cpus;
+
+        for(int i=0; i< cpu_list.size(); i++)
+        {
+            if(cpuMap.containsKey(util.getCpuGen(cpu_list.get(i)))){
+                cpus = cpuMap.get(util.getCpuGen(cpu_list.get(i)));
+                cpus.add(cpu_list.get(i));
+            }
+            else{
+                cpus = new ArrayList<>();
+                cpus.add(cpu_list.get(i));
+                cpuMap.put(util.getCpuGen(cpu_list.get(i)), cpus);
+            }
+        }
+        return cpuMap;
     }
 
     public String getLowerHigher(String app){
