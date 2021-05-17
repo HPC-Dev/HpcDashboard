@@ -23,10 +23,15 @@ public class HeatMapService {
     HeatMapRepo heatMapRepo;
 
     @Transactional
-    public void updateHeatResult(String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType) {
+    public void updateHeatResult(String category, String isv, String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        heatMapRepo.updateHeatResult(bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType);
+        heatMapRepo.updateHeatResult(category,isv, bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType);
+    }
+
+    public List<HeatMap> getHeatMapResults(String bm_name) {
+
+        return heatMapRepo.getHeatMapResults(bm_name);
     }
 
     @Transactional
@@ -105,7 +110,5 @@ public class HeatMapService {
         return list;
 
     }
-
-
 
 }

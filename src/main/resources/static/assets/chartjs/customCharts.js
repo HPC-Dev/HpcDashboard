@@ -98,7 +98,7 @@ function clearForm() {
     $("#option1").prop("checked", false);
     $("#option2").prop("checked", false);
     $("#noChart").hide();
-    $('#tableNew').html('');
+    $('#tableScaling').html('');
     $('#tableNode').html('');
 }
 
@@ -132,7 +132,7 @@ function appChange() {
             if (data > 1) {
                 $("#radio").show();
                 if ($("#option1").is(":checked")) {
-                    $('#tableNew').html('');
+                    $('#tableScaling').html('');
                     getNodeChartData();
                 }
 
@@ -145,7 +145,7 @@ function appChange() {
                 $("#nodeChart").show();
                 $("#noChart").hide();
                 $('#comment').empty();
-                $('#tableNew').html('');
+                $('#tableScaling').html('');
                 getNodeChartData();
             }
         });
@@ -153,7 +153,7 @@ function appChange() {
 
     $("#noChart").hide();
     $('#comment').empty();
-    $('#tableNew').html('');
+    $('#tableScaling').html('');
     $('#tableNode').html('');
 
 }
@@ -167,7 +167,7 @@ $("#option1")
                 $("#nodeChart").show();
                 $("#noChart").hide();
                 $('#comment').empty();
-                $('#tableNew').html('');
+                $('#tableScaling').html('');
                 getNodeChartData();
             }
         }
@@ -318,7 +318,7 @@ function getData() {
             }
         });
     } else {
-        $('#tableNew').html('');
+        $('#tableScaling').html('');
     }
 }
 
@@ -339,7 +339,7 @@ function updateTable(columns, data) {
         table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
     }
 
-    $('#tableNew').html(table);
+    $('#tableScaling').html(table);
 }
 
 function getHeaders(columns) {
@@ -443,6 +443,8 @@ function getBmChartData() {
             var result = dataPoints;
 
             if (result.length > 0) {
+                $("#nodeChart").hide();
+                $("#multiChart").show();
                 var chart = new Chart(ctx, {
 
                     type: 'scatter',
@@ -515,7 +517,7 @@ function getBmChartData() {
                 });
             } else {
                 $("#noChart").show();
-                $('#tableNew').html('');
+                $('#tableScaling').html('');
                 $('#tableNode').html('');
             }
         });

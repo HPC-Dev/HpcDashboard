@@ -76,12 +76,12 @@ public class ResultDashboardController {
 
                 String[] resultData = individualResult.split(",");
 
-                if (resultData.length > 8 && individualResult.contains("[")) {
+                if (resultData.length > 15 && individualResult.contains("[")) {
                     resultData = util.performRegex(individualResult);
                 }
 
-                if (resultData.length != 8) {
-                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (job_id,app_name,bm_name,nodes,cores,node_name,result,cpu)");
+                if (resultData.length != 15) {
+                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type)");
                     return "redirect:/result";
                 }
                 try {

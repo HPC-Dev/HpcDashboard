@@ -5,6 +5,7 @@ import com.results.HpcDashboard.repo.AppCategoryRepo;
 import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.services.AppCategoryService;
 import com.results.HpcDashboard.services.ApplicationService;
+import com.results.HpcDashboard.services.HeatMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,9 @@ public class ApplicationController {
 
     @Autowired
     AppCategoryService appCategoryService;
+
+    @Autowired
+    HeatMapService heatMapService;
 
     @GetMapping("/application")
     public String showApplication() {
@@ -83,8 +87,19 @@ public class ApplicationController {
     public String submitAppCategory(@ModelAttribute AppCategory appCategory, final Locale locale, RedirectAttributes redirectAttrs) {
 
         appCategoryRepo.save(appCategory);
+
+        List<HeatMap> heatMapResult = heatMapService.getHeatMapResults(appCategory.getBmName().trim().toLowerCase());
+
+        if(heatMapResult.size() > 0)
+        {
+            for(HeatMap heatMap: heatMapResult)
+            {
+                heatMapService.updateHeatResult(appCategory.getCategory(),appCategory.getIsv(), heatMap.getCpuSku(), heatMap.getNodes(), heatMap.getBmName().trim().toLowerCase(), heatMap.getAvgResult(),heatMap.getPerCorePerf(),heatMap.getPerfPerDollar(),heatMap.getPerfPerWatt(), heatMap.getRunCount(), heatMap.getRunType());
+            }
+        }
+
         redirectAttrs.addFlashAttribute("insertSuccess", messages.getMessage("message.insertSuccess", null, locale));
-        return "redirect:/appMetricInsert";
+        return "redirect:/appCategoryInsert";
 
     }
 

@@ -205,7 +205,7 @@ function getData() {
     typeList = filteredTypeList;
 
     for (var i = 0; i < cpuList.length; i++) {
-        if (cpuList[i].includes("CPU")) {
+        if (cpuList[i].includes("CPU") || cpuList[i] == "" ) {
             cpuList.splice(i, 1);
             i--;
         }
