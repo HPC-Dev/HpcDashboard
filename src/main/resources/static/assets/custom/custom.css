@@ -88,3 +88,7 @@ table.dataTable thead .sorting_asc {
 table.dataTable thead .sorting_desc {
 	background-image: none !important;
 }
+
+.table td, .table th {
+    padding: .50rem;
+}

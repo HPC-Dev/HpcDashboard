@@ -20,7 +20,7 @@ $('#cpuDrop1').on("change", function() {
     var preValue1 = $("#typeDrop1 option:selected").val();
     // $("#type1").show();
     clearHtml();
-    $('#tableNew').html('');
+    $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
 
@@ -57,7 +57,7 @@ $('#cpuDrop2').on("change", function() {
 
     clearHtml();
     // $("#type2").show();
-    $('#tableNew').html('');
+    $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
             cpu: $(this).val(),
@@ -94,7 +94,7 @@ $('#cpuDrop3').on("change", function() {
     var preValue3 = $("#typeDrop3 option:selected").val();
     clearHtml();
     // $("#type2").show();
-    $('#tableNew').html('');
+    $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
             cpu: $(this).val(),
@@ -130,7 +130,7 @@ $('#cpuDrop4').on("change", function() {
     var preValue4 = $("#typeDrop4 option:selected").val();
     clearHtml();
     // $("#type2").show();
-    $('#tableNew').html('');
+    $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
             cpu: $(this).val(),
@@ -173,7 +173,7 @@ $("#type4").on("change", getData);
 
 function getData() {
     clearHtml();
-    $('#tableNew').html('');
+    $('#tableHeatMap').html('');
 
     cpuList = [];
     typeList = [];
@@ -222,12 +222,12 @@ function getData() {
                 updateTable(data.columns, data.heatMapResults);
             } else {
                 table = "<p>No data available</p>";
-                $('#tableNew').html(table);
+                $('#tableHeatMap').html(table);
             }
         });
     } else {
         clearHtml();
-        $('#tableNew').html('');
+        $('#tableHeatMap').html('');
     }
 
 }
@@ -260,7 +260,7 @@ function updateTable(columns, data, comment) {
         table = "<p>No data available</p>";
     }
 
-    $('#tableNew').html(table);
+    $('#tableHeatMap').html(table);
 }
 
 function getHeaders(columns) {
