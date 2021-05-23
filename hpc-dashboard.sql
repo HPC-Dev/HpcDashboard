@@ -70,7 +70,7 @@ select DISTINCT isv from heat_map where category="Computational Fluid Dynamics" 
 
 select DISTINCT app_name from app_category where isv="ansys";
 
-select * from heat_map where cpu_sku="Rome64" and run_type="baseline" and nodes=1 and category is not NULL;
+select * from heat_map;
 
 select DISTINCT ISV from heat_map where cpu_sku="Rome64" and run_type="freq_2933" and nodes=1 and category="Computational Fluid Dynamics";
 
@@ -142,7 +142,7 @@ select DISTINCT cpu from results ORDER BY cpu ASC;
 
 select * from run_types;
 
-#drop table run_types;
+select * from app_category;
 
 select * from user;
 select * from role;

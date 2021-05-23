@@ -217,6 +217,9 @@ function getData() {
         params.cpuList = cpuList;
         params.typeList = typeList;
 
+        if(cpuList.length > 3)
+        $('head').append('<link rel="stylesheet" href="assets/custom/heatMap.css"/>');
+
         $.getJSON("/avg/heatMap/", $.param(params, true), function(data) {
             if (data.heatMapResults != null && data.heatMapResults.length > 1) {
                 updateTable(data.columns, data.heatMapResults);
