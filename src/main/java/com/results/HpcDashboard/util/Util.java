@@ -69,12 +69,12 @@ public class Util {
     {
         double perfPerDollar;
 
-        if (Double.compare(util.getCpuPrice(cpu), 0.0) > 0) {
-            String status = util.getLowerHigher(appName.trim());
+        if (Double.compare(util.getCpuPrice(cpu.toLowerCase()), 0.0) > 0) {
+            String status = util.getLowerHigher(appName.trim().toLowerCase());
             if(status.equals("LOWER"))
-                perfPerDollar = util.round((1/avgResult) / util.getCpuPrice(cpu.trim()), 10);
+                perfPerDollar = util.round((1/avgResult) / util.getCpuPrice(cpu.trim().toLowerCase()), 10);
             else
-                perfPerDollar = util.round(avgResult / util.getCpuPrice(cpu.trim()), 10);
+                perfPerDollar = util.round(avgResult / util.getCpuPrice(cpu.trim().toLowerCase()), 10);
         }
         else{
             perfPerDollar = 0;
@@ -87,15 +87,15 @@ public class Util {
     {
         double perfPerWatt;
 
-        if (util.getCpuTDP(cpu) > 0) {
-        String status = util.getLowerHigher(appName.trim());
+        if (util.getCpuTDP(cpu.toLowerCase()) > 0) {
+            String status = util.getLowerHigher(appName.trim().toLowerCase());
             if (status.equals("LOWER"))
-                perfPerWatt = util.round((1 / avgResult) / util.getCpuTDP(cpu.trim()), 10);
+                perfPerWatt = util.round((1 / avgResult) / util.getCpuTDP(cpu.trim().toLowerCase()), 10);
             else
-                perfPerWatt = util.round(avgResult / util.getCpuTDP(cpu.trim()), 10);
-            }
+                perfPerWatt = util.round(avgResult / util.getCpuTDP(cpu.trim().toLowerCase()), 10);
+        }
         else{
-        perfPerWatt = 0;
+            perfPerWatt = 0;
         }
 
         return perfPerWatt;
@@ -150,7 +150,7 @@ public class Util {
         String cpuVal="";
         for(int i = 0; i < processors.size(); i++)
         {
-            if(processors.get(i).getCpuSku().equals(cpu)){
+            if(processors.get(i).getCpuSku().toLowerCase().equals(cpu.toLowerCase())){
                 cpuVal = processors.get(i).getCpuGeneration();
             }
 
@@ -198,7 +198,7 @@ public class Util {
 
         for(int i = 0; i < appMaps.size(); i++)
         {
-            if(appMaps.get(i).getAppName().equals(app)){
+            if(appMaps.get(i).getAppName().toLowerCase().equals(app.toLowerCase())){
                 appStatus = appMaps.get(i).getStatus();
             }
 
@@ -214,7 +214,7 @@ public class Util {
         double cpuPrice=0;
         for(int i = 0; i < processors.size(); i++)
         {
-            if(processors.get(i).getCpuSku().equals(cpu)){
+            if(processors.get(i).getCpuSku().toLowerCase().equals(cpu.toLowerCase())){
                 cpuPrice = processors.get(i).getPrice();
             }
 
@@ -229,7 +229,7 @@ public class Util {
 
         for(int i = 0; i < processors.size(); i++)
         {
-            if(processors.get(i).getCpuSku().equals(cpu)){
+            if(processors.get(i).getCpuSku().toLowerCase().equals(cpu.toLowerCase())){
                 cpuTDP = processors.get(i).getTdp();
             }
 
@@ -239,36 +239,36 @@ public class Util {
     }
 
     public HashMap<String,String> getAppMap() {
-            appMap.put("abaqus", "LOWER");
-            appMap.put("acusolve", "LOWER");
-            appMap.put("cfx","LOWER");
-            appMap.put("fluent","HIGHER");
-            appMap.put("gromacs","HIGHER");
-            appMap.put("hpcg","HIGHER");
-            appMap.put("hpl","HIGHER");
-            appMap.put("hycom","HIGHER");
-            appMap.put("lammps","HIGHER");
-            appMap.put("liggghts","LOWER");
-            appMap.put("lsdyna", "LOWER");
-            appMap.put("namd", "HIGHER");
-            appMap.put("openfoam", "LOWER");
-            appMap.put("optistruct", "LOWER");
-            appMap.put("ofoam", "LOWER");
-            appMap.put("pamcrash", "LOWER");
-            appMap.put("quantum-espresso", "LOWER");
-            appMap.put("radioss", "LOWER");
-            appMap.put("starccm", "LOWER");
-            appMap.put("stream", "HIGHER");
-            appMap.put("lmp", "HIGHER");
-            appMap.put("wrf", "LOWER");
-            appMap.put("cp2k","LOWER");
-            appMap.put("mechanical","HIGHER");
-            appMap.put("speccpu","HIGHER");
-            appMap.put("spec_cpu2017","HIGHER");
-            appMap.put("spec_jbb2015","HIGHER");
-            appMap.put("reveal", "LOWER");
-            return appMap;
-        }
+        appMap.put("abaqus", "LOWER");
+        appMap.put("acusolve", "LOWER");
+        appMap.put("cfx","LOWER");
+        appMap.put("fluent","HIGHER");
+        appMap.put("gromacs","HIGHER");
+        appMap.put("hpcg","HIGHER");
+        appMap.put("hpl","HIGHER");
+        appMap.put("hycom","HIGHER");
+        appMap.put("lammps","HIGHER");
+        appMap.put("liggghts","LOWER");
+        appMap.put("lsdyna", "LOWER");
+        appMap.put("namd", "HIGHER");
+        appMap.put("openfoam", "LOWER");
+        appMap.put("optistruct", "LOWER");
+        appMap.put("ofoam", "LOWER");
+        appMap.put("pamcrash", "LOWER");
+        appMap.put("quantum-espresso", "LOWER");
+        appMap.put("radioss", "LOWER");
+        appMap.put("starccm", "LOWER");
+        appMap.put("stream", "HIGHER");
+        appMap.put("lmp", "HIGHER");
+        appMap.put("wrf", "LOWER");
+        appMap.put("cp2k","LOWER");
+        appMap.put("mechanical","HIGHER");
+        appMap.put("speccpu","HIGHER");
+        appMap.put("spec_cpu2017","HIGHER");
+        appMap.put("spec_jbb2015","HIGHER");
+        appMap.put("reveal", "LOWER");
+        return appMap;
+    }
 
     public HashMap<String,String> getMetricMap() {
         metricMap.put("abaqus", "Elapsed Time");
@@ -407,8 +407,8 @@ public class Util {
         double CV = 0;
 
 
-            if(Double.compare(sd,0.0 ) > 0 )
-                CV = (sd/mean)*100;
+        if(Double.compare(sd,0.0 ) > 0 )
+            CV = (sd/mean)*100;
 
         return round(CV,2);
     }

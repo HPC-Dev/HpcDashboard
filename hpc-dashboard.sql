@@ -114,7 +114,7 @@ select * from average_result where cpu_sku in ( "Milan64_3200", "Milan64_2933", 
 
 select * from average_result where app_name= 'abaqus' and cpu_sku IN ("Milan64_3200", "Milan64_2933", "Rome64_2933") and run_type in("baseline","freq_2933") and nodes =1 ORDER BY bm_name,avg_result DESC;
 
-
+select * from app_category;
 
 select DISTINCT cpu_sku from average_result where run_type in("baseline","freq_2933");
 

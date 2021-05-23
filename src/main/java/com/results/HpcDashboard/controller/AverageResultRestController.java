@@ -43,7 +43,7 @@ public class AverageResultRestController {
         String appStatus = "";
 
         for (int i = 0; i < appMaps.size(); i++) {
-            if (appMaps.get(i).getAppName().equals(app)) {
+            if (appMaps.get(i).getAppName().toLowerCase().equals(app.toLowerCase())) {
                 appStatus = appMaps.get(i).getStatus();
             }
 
