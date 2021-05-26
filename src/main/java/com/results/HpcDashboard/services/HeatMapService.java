@@ -111,4 +111,26 @@ public class HeatMapService {
 
     }
 
+    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv, String category) {
+        List<HeatMap> list = null;
+        list = heatMapRepo.findHeatMapDataISV(cpu,type, isv, category);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+
+    }
+
+    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv) {
+        List<HeatMap> list = null;
+        list = heatMapRepo.findHeatMapDataISV(cpu,type, isv);
+
+        if(list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+
+    }
+
 }

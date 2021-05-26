@@ -413,7 +413,7 @@ public class ChartRestController {
         if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
-        else{
+        else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")){
             tempList = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }
 
@@ -592,7 +592,7 @@ public class ChartRestController {
         if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
             tempList = averageResultService.getBySelectedCPUAppDesc(app_name, cpus, runType);
         }
-        else{
+        else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")){
 
             tempList = averageResultService.getBySelectedCPUAppAsc(app_name, cpus, runType);
         }

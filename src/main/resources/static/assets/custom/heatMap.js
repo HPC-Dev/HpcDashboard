@@ -40,11 +40,15 @@ $('#cpuDrop1').on("change", function() {
 
             if (data.includes(preValue1)) {
                 $('#typeDrop1').val(preValue1);
-            } else {
+            } else if (data.includes('latest')) {
+              $('#typeDrop1').val('latest');
+              }
+              else{
+              $('#typeDrop1').val('');
+              }
+            getISV();
 
-                $('#typeDrop1').val('');
-            }
-            getData();
+            setTimeout(getData, 40);
         });
     }
 
@@ -75,11 +79,15 @@ $('#cpuDrop2').on("change", function() {
 
             if (data.includes(preValue2)) {
                 $('#typeDrop2').val(preValue2);
-            } else {
+            } else if (data.includes('latest')) {
+              $('#typeDrop2').val('latest');
+              }
+              else{
+              $('#typeDrop2').val('');
+             }
+            getISV();
 
-                $('#typeDrop2').val('');
-            }
-            getData();
+            setTimeout(getData, 40);
 
         });
 
@@ -112,11 +120,16 @@ $('#cpuDrop3').on("change", function() {
 
             if (data.includes(preValue3)) {
                 $('#typeDrop3').val(preValue3);
-            } else {
+            } else if (data.includes('latest')) {
 
-                $('#typeDrop3').val('');
-            }
-            getData();
+             $('#typeDrop3').val('latest');
+             }
+             else{
+             $('#typeDrop3').val('');
+                          }
+           getISV();
+
+           setTimeout(getData, 40);
         });
 
     }
@@ -148,11 +161,16 @@ $('#cpuDrop4').on("change", function() {
 
             if (data.includes(preValue4)) {
                 $('#typeDrop4').val(preValue4);
-            } else {
+            } else if (data.includes('latest')) {
 
-                $('#typeDrop4').val('');
+                $('#typeDrop4').val('latest');
             }
-            getData();
+            else{
+             $('#typeDrop4').val('');
+            }
+            getISV();
+
+            setTimeout(getData, 40);
         });
 
     }
@@ -161,20 +179,43 @@ $('#cpuDrop4').on("change", function() {
 });
 
 
+$('#type1').on("change", function() {
 
-$("#type1").on("change", getData);
+getISV();
 
-$("#type2").on("change", getData);
+setTimeout(getData, 40);
 
-$("#type3").on("change", getData);
+});
 
-$("#type4").on("change", getData);
+$('#type2').on("change", function() {
+
+getISV();
+
+setTimeout(getData, 40);
+
+});
+
+$('#type3').on("change", function() {
+
+getISV();
+
+setTimeout(getData, 40);
+
+});
+
+$('#type4').on("change", function() {
+
+getISV();
+
+setTimeout(getData, 40);
+
+});
 
 
-function getData() {
-    clearHtml();
-    $('#tableHeatMap').html('');
+$("#isv").on("change", getData);
 
+
+function captureCPUsTypes(){
     cpuList = [];
     typeList = [];
 
@@ -211,11 +252,60 @@ function getData() {
         }
     }
 
-    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+}
+
+
+function getISV() {
+
+captureCPUsTypes();
+if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
 
         var params = {};
         params.cpuList = cpuList;
         params.typeList = typeList;
+
+    var preISV = $("#isvDrop option:selected").val();
+
+   $.getJSON("/avg/isvDrop/", $.param(params, true), function(data) {
+                    var html = '<option value="All" selected="true" >All</option>';
+                    var len = data.length;
+
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' + data[i] + '">' +
+                            data[i] + '</option>';
+                    }
+                    html += '</option>';
+                    $('#isvDrop').html(html);
+
+                    if (data.includes(preISV)) {
+                        $('#isvDrop').val(preISV);
+                    } else {
+
+                        $('#isvDrop').val('All');
+                    }
+                });
+    }
+
+}
+
+
+function getData() {
+    clearHtml();
+    $('#tableHeatMap').html('');
+
+    captureCPUsTypes();
+
+
+    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+
+    var isv = $('#isvDrop')[0].value;
+
+
+        var params = {};
+        params.cpuList = cpuList;
+        params.typeList = typeList;
+        params.isv  = isv;
+
 
         if(cpuList.length > 3)
         $('head').append('<link rel="stylesheet" href="assets/custom/heatMap.css"/>');

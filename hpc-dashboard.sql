@@ -142,6 +142,8 @@ select DISTINCT cpu from results ORDER BY cpu ASC;
 
 select * from run_types;
 
+select * from heat_map where cpu_sku in ("6242","6244") and run_type in ("legacy","legacy") and nodes=1  and category is not NULL;
+
 select * from app_category;
 
 select * from user;

@@ -16,6 +16,8 @@ public interface HeatMapRepo extends JpaRepository<HeatMap, HeatMapId> {
     public static final String GET_HEAT_RESULT = "SELECT * from heat_map where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String GET_HEAT_MAP_DATA ="select * from heat_map where cpu_sku=:cpu and run_type=:type and nodes=1 and category is not NULL";
     public static final String GET_HEAT_MAP_DATA_CATEGORY="select * from heat_map where cpu_sku=:cpu and run_type=:type and nodes=1 and category=:category";
+    public static final String GET_HEAT_MAP_DATA_ISV="select * from heat_map where cpu_sku=:cpu and run_type=:type and nodes=1 and isv=:isv";
+    public static final String GET_HEAT_MAP_DATA_ISV_CATEGORY="select * from heat_map where cpu_sku=:cpu and run_type=:type and nodes=1 and isv=:isv and category=:category";
     public static final String GET_HEAT_MAP_RESULTS= "SELECT * from heat_map where bm_name=:bm_name";
 
     @Modifying
@@ -34,6 +36,13 @@ public interface HeatMapRepo extends JpaRepository<HeatMap, HeatMapId> {
 
     @Query(nativeQuery =true,value = GET_HEAT_MAP_DATA_CATEGORY)
     List<HeatMap> findHeatMapData(String cpu, String type, String category);
+
+
+    @Query(nativeQuery =true,value = GET_HEAT_MAP_DATA_ISV)
+    List<HeatMap> findHeatMapDataISV(String cpu, String type, String isv);
+
+    @Query(nativeQuery =true,value = GET_HEAT_MAP_DATA_ISV_CATEGORY)
+    List<HeatMap> findHeatMapDataISV(String cpu, String type, String isv, String category);
 
     @Query(nativeQuery =true,value = GET_HEAT_MAP_RESULTS)
     List<HeatMap> getHeatMapResults(String bm_name);

@@ -156,14 +156,14 @@ public class AverageResultRestController {
                 double val2 = r2.getOrDefault(bm, 0.0);
 
                 if (val1 != 0.0 && val2 != 0.0) {
-                    double relativeValue;
+                    double relativeValue = 0.0;
                     if (getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
                         if (Double.compare(val1, val2) == 0) {
                             relativeValue = 1;
                         } else {
                             relativeValue = util.round( (val2 / val1), 3);
                         }
-                    } else {
+                    } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
                         if (Double.compare(val1, val2) == 0) {
                             relativeValue = 1;
                         } else {
@@ -406,7 +406,7 @@ public class AverageResultRestController {
                         perfDifference.put(k, 0 + "%");
                     }
                     comment = "Higher is better";
-                } else {
+                } else if (getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")){
                     if (Double.compare(val1, val2) > 0) {
                         double d = (val1 - val2) / Math.abs(val2);
                         double percentage = util.round(d * 100, 2);
@@ -519,7 +519,7 @@ public class AverageResultRestController {
     }
 
 
-    private void getHeatMapNodeResult(String cpu1, String type1, String cpu2, String type2, String cpu3, String type3, String cpu4, String type4, LinkedHashSet<String> category, Map<String, Double> bmResList1, Map<String, Double> bmResList2, Map<String, PerCore> perCoreListFirst, Map<String, PerCore> perCoreListSecond, Map<String, Double> perDollarFirst, Map<String, Double> perDollarSecond, Map<String, Double> perWattFirst, Map<String, Double> perWattSecond, List<Category> categories) {
+    private void getHeatMapNodeResult(String cpu1, String type1, String cpu2, String type2, String cpu3, String type3, String cpu4, String type4, LinkedHashSet<String> category, Map<String, Double> bmResList1, Map<String, Double> bmResList2, Map<String, PerCore> perCoreListFirst, Map<String, PerCore> perCoreListSecond, Map<String, Double> perDollarFirst, Map<String, Double> perDollarSecond, Map<String, Double> perWattFirst, Map<String, Double> perWattSecond, List<Category> categories, String isvSelected) {
 
         List<List<HeatMap>> filteredLists = null;
         for (String cat : category) {
@@ -539,11 +539,23 @@ public class AverageResultRestController {
             double perWattCatAvg = 0;
             double perWattAppAvg = 0;
 
-            List<HeatMap> list5 = heatMapService.getHeatMapData(cpu1, type1, cat);
-            List<HeatMap> list6 = heatMapService.getHeatMapData(cpu2, type2, cat);
-            List<HeatMap> list7 = heatMapService.getHeatMapData(cpu3, type3, cat);
-            List<HeatMap> list8 = heatMapService.getHeatMapData(cpu4, type4, cat);
+            List<HeatMap> list5;
+            List<HeatMap> list6;
+            List<HeatMap> list7;
+            List<HeatMap> list8;
 
+            if(isvSelected.equals("All")) {
+                list5 = heatMapService.getHeatMapData(cpu1, type1, cat);
+                list6 = heatMapService.getHeatMapData(cpu2, type2, cat);
+                list7 = heatMapService.getHeatMapData(cpu3, type3, cat);
+                list8 = heatMapService.getHeatMapData(cpu4, type4, cat);
+            }
+            else {
+                list5 = heatMapService.getHeatMapDataISV(cpu1, type1, isvSelected, cat);
+                list6 = heatMapService.getHeatMapDataISV(cpu2, type2, isvSelected, cat);
+                list7 = heatMapService.getHeatMapDataISV(cpu3, type3, isvSelected, cat);
+                list8 = heatMapService.getHeatMapDataISV(cpu4, type4, isvSelected, cat);
+            }
 
             filteredLists = filterLists(list5, list6, list7, list8);
 
@@ -552,6 +564,7 @@ public class AverageResultRestController {
             list6 = filteredLists.get(1);
 
             Set<String> isv = new LinkedHashSet<>();
+
             for (HeatMap heatMap : list5) {
                 if (cat.contains(heatMap.getCategory())) {
                     isv.add(heatMap.getIsv());
@@ -656,7 +669,7 @@ public class AverageResultRestController {
                                     percentage = 0;
                                 }
 
-                            } else {
+                            } else if (getLowerHigher(a.trim().toLowerCase()).equals("LOWER")) {
                                 if (Double.compare(val1, val2) > 0) {
                                     flag = 0;
                                     d = (val1 - val2) / Math.abs(val2);
@@ -709,7 +722,7 @@ public class AverageResultRestController {
                                 d = d1 * d2;
                                 d = d - 1;
 
-                            } else {
+                            } else if (getLowerHigher(a.trim().toLowerCase()).equals("LOWER")) {
 
                                 d1 = val1 / val2;
                                 d2 = (double) core1 / core2;
@@ -999,11 +1012,10 @@ public class AverageResultRestController {
         return resList;
     }
 
-    @GetMapping("/heatMap")
-    public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList) {
-        HeatMapOutput heatMapOutput = new HeatMapOutput();
-        List<Category> categories = new ArrayList<>();
-        List<HeatMapResult> resList = new ArrayList<>();
+    @GetMapping("/isvDrop")
+    public LinkedHashSet<String>  getISVDropDown(String[] cpuList, String[] typeList) {
+        LinkedHashSet<String>  isvs = new LinkedHashSet<>();
+
         String cpu1 = cpuList[0];
         String cpu2 = cpuList[1];
         String type1 = typeList[0];
@@ -1029,6 +1041,61 @@ public class AverageResultRestController {
 
         List<HeatMap> list1 = heatMapService.getHeatMapData(cpu1, type1);
         List<HeatMap> list2 = heatMapService.getHeatMapData(cpu2, type2);
+
+        if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
+            return isvs;
+
+        List<List<HeatMap>> filteredLists = null;
+
+        filteredLists = filterLists(list1, list2, list3, list4);
+
+        list1 = filteredLists.get(0);
+
+        isvs = list1.stream()
+                .map(HeatMap::getIsv)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return isvs;
+    }
+
+    @GetMapping("/heatMap")
+    public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList, String isv) {
+        HeatMapOutput heatMapOutput = new HeatMapOutput();
+        List<Category> categories = new ArrayList<>();
+        List<HeatMapResult> resList = new ArrayList<>();
+        String cpu1 = cpuList[0];
+        String cpu2 = cpuList[1];
+        String type1 = typeList[0];
+        String type2 = typeList[1];
+        String cpu3 = null;
+        String cpu4 = null;
+        String type3 = null;
+        String type4 = null;
+        List<HeatMap> list1;
+        List<HeatMap> list2;
+        List<HeatMap> list3 = new ArrayList<>();
+        List<HeatMap> list4 = new ArrayList<>();
+
+        if (cpuList.length > 2 && typeList.length > 2) {
+            cpu3 = cpuList[2];
+            type3 = typeList[2];
+            list3 = heatMapService.getHeatMapData(cpu3, type3);
+
+        }
+        if (cpuList.length > 3 && typeList.length > 3) {
+            cpu4 = cpuList[3];
+            type4 = typeList[3];
+            list4 = heatMapService.getHeatMapData(cpu4, type4);
+        }
+
+        if(isv.equals("All")) {
+            list1 = heatMapService.getHeatMapData(cpu1, type1);
+            list2 = heatMapService.getHeatMapData(cpu2, type2);
+        }
+        else {
+            list1 = heatMapService.getHeatMapDataISV(cpu1, type1, isv);
+            list2 = heatMapService.getHeatMapDataISV(cpu2, type2, isv);
+        }
 
 
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
@@ -1141,9 +1208,9 @@ public class AverageResultRestController {
         List<HeatMapResult> resList2 = new ArrayList<>();
 
 
-        getHeatMapNodeResult(cpu1, type1, cpu2, type2, cpu3, type3, cpu4, type4, category, bmResList1, bmResList2, perCoreListFirst, perCoreListSecond, perDollarListFirst, perDollarListSecond, perWattListFirst, perWattListSecond, categories);
-        getHeatMapNodeResult(cpu1, type1, cpu3, type3, cpu2, type2, cpu4, type4, category, bmResList1, bmResList3, perCoreListFirst, perCoreListThird, perDollarListFirst, perDollarListThird, perWattListFirst, perWattListThird, categories1);
-        getHeatMapNodeResult(cpu1, type1, cpu4, type4, cpu2, type2, cpu3, type3, category, bmResList1, bmResList4, perCoreListFirst, perCoreListFourth, perDollarListFirst, perDollarListFourth, perWattListFirst, perWattListFourth, categories2);
+        getHeatMapNodeResult(cpu1, type1, cpu2, type2, cpu3, type3, cpu4, type4, category, bmResList1, bmResList2, perCoreListFirst, perCoreListSecond, perDollarListFirst, perDollarListSecond, perWattListFirst, perWattListSecond, categories, isv);
+        getHeatMapNodeResult(cpu1, type1, cpu3, type3, cpu2, type2, cpu4, type4, category, bmResList1, bmResList3, perCoreListFirst, perCoreListThird, perDollarListFirst, perDollarListThird, perWattListFirst, perWattListThird, categories1, isv);
+        getHeatMapNodeResult(cpu1, type1, cpu4, type4, cpu2, type2, cpu3, type3, category, bmResList1, bmResList4, perCoreListFirst, perCoreListFourth, perDollarListFirst, perDollarListFourth, perWattListFirst, perWattListFourth, categories2, isv);
 
         resList = getConsolidatedResult(categories, resList);
         resList1 = getConsolidatedResult(categories1, resList1);

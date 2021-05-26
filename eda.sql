@@ -1,9 +1,83 @@
 use eda;
 
 
-show tables;
+-- show tables;
 
-INSERT INTO `eda`.`hibernate_sequence`
-(`next_val`)
-VALUES
-(1);
+-- INSERT INTO `eda`.`hibernate_sequence`
+-- (`next_val`)
+-- VALUES
+-- (1);
+
+
+CREATE TABLE main_collection (
+     eda_id MEDIUMINT NOT NULL AUTO_INCREMENT,
+  id  INT NOT NULL,
+  host  VARCHAR(30) NOT NULL,   
+date   VARCHAR(30) NOT NULL,
+manufacturer VARCHAR(30) NOT NULL, 
+product VARCHAR(30) NOT NULL, 
+bios VARCHAR(10) NOT NULL, 
+os VARCHAR(50) NOT NULL, 
+cpu VARCHAR(50) NOT NULL,
+num_processors INT NOT NULL,
+mem_total  INT NOT NULL,
+mem_speed INT NOT NULL,
+network_speed VARCHAR(25) NOT NULL,
+disk_type VARCHAR(10) NOT NULL,
+physical_sockets  INT NOT NULL,
+microcode VARCHAR(10) NOT NULL,
+threads_per_core INT NOT NULL,
+numa_nodes INT NOT NULL,
+active_profile VARCHAR(30) NOT NULL,
+live_sockets INT NULL,
+VCS_GFX_2020d03_AllCores_Passing_Jobs INT,
+VCS_GFX_2020d03_AllCores_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_1T_Passing_Jobs INT,
+VCS_GFX_2020d03_1T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_2T_Passing_Jobs INT,
+VCS_GFX_2020d03_2T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_3T_Passing_Jobs INT,
+VCS_GFX_2020d03_3T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_4T_Passing_Jobs INT,
+VCS_GFX_2020d03_4T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_5T_Passing_Jobs INT,
+VCS_GFX_2020d03_5T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_6T_Passing_Jobs INT,
+VCS_GFX_2020d03_6T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_7T_Passing_Jobs INT,
+VCS_GFX_2020d03_7T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_8T_Passing_Jobs INT,
+VCS_GFX_2020d03_8T_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_AllCores_Numa_Passing_Jobs INT,
+VCS_GFX_2020d03_AllCores_Numa_Runtime_Mean  DOUBLE,
+VCS_GFX_2020d03_HalfLoad_Passing_Jobs INT,
+VCS_GFX_2020d03_HalfLoad_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_QuarterLoad_Passing_Jobs INT,
+VCS_GFX_2020d03_QuarterLoad_Runtime_Mean DOUBLE,
+VCS_GFX_2020d03_ThreeQuarterLoad_Passing_Jobs INT,
+VCS_GFX_2020d03_ThreeQuarterLoad_Runtime_Mean DOUBLE,
+I2Place_yuga_smu_mp0_t_2019d12_SP3_AllCores_Passing_Jobs INT,
+I2Place_yuga_smu_mp0_t_2019d12_SP3_AllCores_Runtime_Mean DOUBLE,
+I2Route_yuga_smu_mp0_t_2019d12_SP3_AllCores_Passing_Jobs INT,
+I2Route_yuga_smu_mp0_t_2019d12_SP3_AllCores_Runtime_Mean DOUBLE,
+PrimeTime_yuga_smu_mp0_t_2019d12_SP3_AllCores_Passing_Jobs INT,
+PrimeTime_yuga_smu_mp0_t_2019d12_SP3_AllCores_Runtime_Mean DOUBLE,
+FineSim_arx3ddata140_2019d03_3_AllCores_Passing_Jobs INT,
+FineSim_arx3ddata140_2019d03_3_AllCores_Runtime_Mean DOUBLE,
+PrimeTime_mi100ca_2019d12_SP3_Single_32T_Passing_Jobs INT,
+PrimeTime_mi100ca_2019d12_SP3_Single_32T_Runtime_Mean DOUBLE,
+DC_yuga_smu_mp0_t_2019d12_SP3_AllCores_Passing_Jobs INT,
+DC_yuga_smu_mp0_t_2019d12_SP3_AllCores_Runtime_Mean DOUBLE,
+SpectreMX_N7_U32_CDRPLL_20d10d068_AllCores_CPUtime_Mean DOUBLE,
+Calibre_yuga_smu_mp0_t_2021d1_16d10_AllCores_Passing_Jobs INT,
+Calibre_yuga_smu_mp0_t_2021d1_16d10_AllCores_Runtime_Mean DOUBLE,
+RedHawk_SC_Nv21_gc_top_dyn_2021_R1d0_AllCores_Passing_Jobs INT,
+RedHawk_SC_Nv21_gc_top_dyn_2021_R1d0_AllCores_Runtime_Mean DOUBLE,
+Star_RCXT_yuga_smu_mp0_t_2019d12_SP5_AllCores_Passing_Jobs INT,
+Star_RCXT_yuga_smu_mp0_t_2019d12_SP5_AllCores_Runtime_Mean DOUBLE,
+FineSim_arx3ddata140_2019d03_SP2_1_AllCores_Passing_Jobs INT,
+FineSim_arx3ddata140_2019d03_SP2_1_AllCores_Runtime_Mean DOUBLE,
+SpectreMX_N7_U32_CDRPLL_20d10d068_AllCores_NUMA_Passing_Jobs INT,
+SpectreMX_N7_U32_CDRPLL_20d10d068_AllCores_NUMA_Runtime_Mean DOUBLE,
+     PRIMARY KEY (eda_id)
+);
